@@ -23,10 +23,10 @@ usage()
 # Default options 
 wall_id=0
 wall_files=(
-${HOME}/Documents/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png
-${HOME}/Documents/wallpapers/black_1920x1080.png
-${HOME}/Documents/wallpapers/purple_1920x1080.png
-${HOME}/Documents/wallpapers/gray_1920x1080.png
+"$HOME/Documents/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png"
+"$HOME/Documents/wallpapers/black_1920x1080.png"
+"$HOME/Documents/wallpapers/purple_1920x1080.png"
+"$HOME/Documents/wallpapers/gray_1920x1080.png"
 )
 
 # Get command line options 
@@ -61,8 +61,8 @@ if [ ! -e "$wall_file" ]; then
 fi
 
 # Run
-cmd="pcmanfm --set-wallpaper=$wall_file --wallpaper-mode=stretch"
-$cmd
+cmd="pcmanfm --set-wallpaper=\"$wall_file\" --wallpaper-mode=stretch"
+eval $cmd
 
 unset wall_id wall_file wall_files cmd 
 

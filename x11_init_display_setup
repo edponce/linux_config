@@ -14,7 +14,7 @@ if [ $(synclient -l | grep 'HorizTwoFingerScroll' | awk '{ print $NF }') -eq 0 ]
 fi
 
 # Enable numlock
-if [ $(numlockx status | awk '{ print $NF }') = "off" ]; then
+if [ "$(numlockx status | awk '{ print $NF }')" = "off" ]; then
     numlockx on
 fi
 

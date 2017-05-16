@@ -11,7 +11,7 @@ usage()
     echo "Default frame rate is 30 frames/sec."
     echo "Default window is fullscreen, set to select specific window."
     echo "Default is disabled audio."
-    echo "Default outfile is '$HOME/screencast.avi'."
+    echo "Default outfile is \"$HOME/screencast.avi\""
     echo "Supported outfile formats: avi, mp4, mpg, mkv"
     echo
     echo "Video codecs:"
@@ -115,11 +115,11 @@ sleep $timer
 
 # Run
 if [ $use_audio -eq 0 ]; then
-    cmd="ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast $outfile"
+    cmd="ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast \"$outfile\""
 else
-    cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 $outfile"
+    cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 \"$outfile\""
 fi
-$cmd
+eval $cmd
 
 unset timer vcodec acodec framerate use_window screen_dims screen_offs x y offs_x offs_y screen_id use_audio outfile cmd 
 

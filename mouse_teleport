@@ -111,7 +111,7 @@ fi
 
 # Run
 cmd="xdotool $movement --sync -- $x $y"
-$cmd
+eval $cmd
 
 unset movement direction_id screen_id screen_dims screen_offs edge_dist rel_dist x y cmd 
 
