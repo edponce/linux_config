@@ -1,0 +1,125 @@
+#!/bin/bash
+
+. custom_utils
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--timer SECONDS] [--vcodec VIDEO_CODEC] [--rate FRAME_RATE] [--window] [--screen SCREEN_ID] [--audio] [--outfile OUTFILE]"
+    echo
+    echo "Default timer is 5 seconds prior to recording."
+    echo "Default frame rate is 30 frames/sec."
+    echo "Default window is fullscreen, set to select specific window."
+    echo "Default is disabled audio."
+    echo "Default outfile is '$HOME/screencast.avi'."
+    echo "Supported outfile formats: avi, mp4, mpg, mkv"
+    echo
+    echo "Video codecs:"
+    echo " libx264 (high) (default)"
+    echo " huffyuv (normal)"
+    echo " libxvid (low)"
+    echo
+    echo "Screen IDs:"
+    echo " 0 -> lower-left (default)"
+    echo " 1 -> second"
+    echo
+}
+
+# Default options
+timer=5
+vcodec="libx264"
+acodec="pcm_s16le"
+framerate=30
+use_window=0
+screen_id=0
+use_audio=0
+outfile="$HOME/screencast.avi"
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -t | --timer)
+        timer=$2
+        shift 2
+        ;;
+        -v | --vcodec)
+        vcodec="$2"
+        shift 2
+        ;;
+        -r | --rate)
+        framerate=$2
+        shift 2
+        ;;
+        -w | --window)
+        use_window=1
+        shift 1
+        ;;
+        -s | --screen)
+        screen_id=$2
+        shift 2
+        ;;
+        -a | --audio)
+        use_audio=1
+        shift 1
+        ;;
+        -o | --outfile)
+        outfile="$2"
+        shift 2
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate
+if [ $timer -lt 0 ] || [ $timer -gt 60 ]; then
+    echo "Error: invalid timer value."
+    exit 1 
+fi
+
+if [ "$vcodec" != "libx264" ] && [ "$vcodec" != "huffyuv" ] && [ "$vcodec" != "libxvid" ]; then
+    echo "Error: invalid video codec value."
+    exit 1 
+fi
+
+if [ $framerate -lt 20 ] || [ $framerate -gt 75 ]; then
+    echo "Error: invalid framerate value."
+    exit 1 
+fi
+
+if [ $screen_id -lt 0 ] || [ $screen_id -gt 1 ]; then
+    echo "Error: invalid screen value."
+    exit 1 
+fi
+
+# Set video dimensions and offsets
+if [ $use_window -eq 0 ]; then
+    screen_position $screen_id
+else
+    echo "Please click on the window to record."
+    window_position
+fi
+offs_x=${screen_offs[0]}
+offs_y=${screen_offs[1]}
+x=${screen_dims[0]}
+y=${screen_dims[1]}
+
+sleep $timer
+
+# Run
+if [ $use_audio -eq 0 ]; then
+    cmd="ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast $outfile"
+else
+    cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 $outfile"
+fi
+$cmd
+
+unset timer vcodec acodec framerate use_window screen_dims screen_offs x y offs_x offs_y screen_id use_audio outfile cmd 
+

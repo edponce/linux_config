@@ -1,0 +1,47 @@
+#!/bin/bash 
+
+# Usage information
+while [ $1 ]; do 
+    case $1 in 
+        -h | --help)
+        echo "Usage: $(basename $0) [--help] [--file SASfile]"
+        echo
+        echo "If a SAS file is not provided, current directory is searched for one."
+        echo "All other arguments are passed directly to SAS command line."
+        exit 0
+        ;;
+        -f | --file)
+        SASFILE=$2
+        shift 2
+        ;;
+        *)
+        SASOPTS+="$SASOPTS $1"
+        shift 1
+        ;;
+    esac
+done
+
+# Validate SAS file
+if [[ -z $SASFILE ]]; then
+    SASFILE=`ls | grep ".*\.sas$"`
+    NUMFILES=`ls | grep ".*\.sas$" | wc -l`
+    if [[ $NUMFILES -eq 0 ]]; then
+        echo "Warning: no automatic SAS file found, '$SASFILE'."
+        exit 1
+    elif [[ $NUMFILES -gt 1 ]]; then
+        echo "Error: too many SAS files found, '$SASFILE'."
+        exit 1
+    else
+        echo "Automatic SAS file found, '$SASFILE'."
+    fi
+fi
+if [[ ! -e $SASFILE ]]; then
+    echo "Error: SAS file does not exists, '$SASFILE'."
+    exit 1
+fi
+
+# Run commands
+sas -nonews $SASOPTS $SASFILE
+
+unset SASFILE NUMFILES
+

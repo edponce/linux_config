@@ -1,0 +1,45 @@
+#!/bin/bash 
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--nojvm] [--run COMMAND|SCRIPT]"
+    echo
+    echo "Default is enabled Java Virtual Machine."
+    echo "If a command or script is not provided, MATLAB interpreter is opened."
+    echo
+}
+
+# Default options
+jvmcmd=
+runcmd=
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -n | --nojvm)
+        jvmcmd="-nodisplay -nojvm"
+        shift 1
+        ;;
+        -r | --run)
+        runcmd="-r $2"
+        shift 2
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 0
+        ;;
+    esac
+done
+
+# Run 
+cmd="matlab -nodesktop -nosplash $jvmcmd $runcmd"
+$cmd
+
+unset jvmcmd runcmd cmd
+

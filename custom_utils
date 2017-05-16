@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Get dimensions and offsets of selected screen
+#  0 -> lower-left (default)
+#  1 -> second screen
+# Returns: screen_dims, screen_offs
+screen_position()
+{
+    screen_dims=()
+    screen_offs=()
+    local sid=0
+    if [ $1 ]; then
+        sid=$1
+    fi
+    if [ $sid -eq 0 ]; then
+        # Lower-left screen
+        local screen_regex="+0+0\b"
+    elif [ $sid -eq 1 ]; then
+        # Second screen
+        local num_screens=$(xrandr | grep "\bconnected\b" | wc -l)
+        if [ $num_screens -gt 1 ] && [ $sid -eq 1 ]; then
+            local screen_regex="+[1-9]\+.*+0\b\|+0+[1-9]\+.*\|+[1-9]\+.*+[1-9]\+.*\b"
+        fi
+    else
+        return
+    fi
+
+    # Parse dimensions and offsets
+    local screen_query=$(xrandr | grep "$screen_regex")
+    if [[ $screen_query =~ "primary" ]]; then
+        screen_dims=( $(echo "$screen_query" | awk -F' |+' '{ print $4 }' | awk -F'x' '{ print $1 " " $2 }') )
+        screen_offs=( $(echo "$screen_query" | awk -F' |+' '{ print $5 " " $6 }') )
+    else
+        screen_dims=( $(echo "$screen_query" | awk -F' |+' '{ print $3 }' | awk -F'x' '{ print $1 " " $2 }') )
+        screen_offs=( $(echo "$screen_query" | awk -F' |+' '{ print $4 " " $5 }') )
+    fi
+}
+
+# Get dimensions and offsets of selected window
+# Returns: screen_dims, screen_offs
+window_position()
+{
+    local win_query=$(xwininfo | grep "X\|Y\|geometry")
+    local win_dims=( $(echo "$win_query" | grep "X\|Y" | awk -F':' '{ print $2 }') )
+    screen_offs=( $(( win_dims[0] - win_dims[2] )) $(( win_dims[1] - win_dims[3] )) )
+    screen_dims=( $(echo "$win_query" | grep "geometry" | awk -F' ' '{ print $2 }' | awk -F'+|-' '{ print $1 }' | awk -F'x' '{ print $1 " " $2 }') )
+}
+

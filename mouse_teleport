@@ -1,0 +1,117 @@
+#!/bin/bash
+
+. custom_utils
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID]"
+    echo
+    echo "Moves mouse in the specified direction using preset or relative screen positions." 
+    echo "In dual extended screens, a screen number is used to select one."
+    echo
+    echo "Screen IDs:"
+    echo " 0 -> lower-left (default)"
+    echo " 1 -> second"
+    echo
+    echo "Direction IDs:"
+    echo " 0 -> left (default)"
+    echo " 1 -> up"
+    echo " 2 -> right"
+    echo " 3 -> down"
+    echo
+}
+
+# Default options 
+screen_id=0
+movement="mousemove"
+rel_dist=10
+direction_id=0
+edge_dist=60
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -r | --relative)
+        movement="mousemove_relative"
+        rel_dist=$2
+        shift 2
+        ;;
+        -s | --screen)
+        screen_id=$2
+        shift 2
+        ;;
+        -d | --direction)
+        direction_id=$2
+        shift 2
+        break
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate
+if [ $rel_dist -lt 0 ]; then
+    echo "Error: invalid relative distance value."
+    exit 1 
+fi
+
+if [ $screen_id -lt 0 ] || [ $screen_id -gt 1 ]; then
+    echo "Error: invalid screen value."
+    exit 1 
+fi
+
+if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
+    echo "Error: invalid direction value."
+    exit 1 
+fi
+
+# Move mouse
+if [ "$movement" = "mousemove" ]; then
+    screen_position $screen_id
+
+    # Move mouse to preset position 
+    if [ $direction_id -eq 0 ]; then
+        x=$edge_dist
+        y=$(( screen_dims[1] / 2 ))
+    elif [ $direction_id -eq 1 ]; then
+        x=$(( screen_dims[0] / 2 ))
+        y=$edge_dist
+    elif [ $direction_id -eq 2 ]; then
+        x=$(( screen_dims[0] - edge_dist ))
+        y=$(( screen_dims[1] / 2 ))
+    elif [ $direction_id -eq 3 ]; then
+        x=$(( screen_dims[0] / 2 ))
+        y=${screen_dims[1]}
+    fi
+    x=$(( screen_offs[0] + x ))
+    y=$(( screen_offs[1] + y ))
+else
+    # Move mouse to relative position 
+    x=0
+    y=0
+    if [ $direction_id -eq 0 ]; then
+        x=-$rel_dist
+    elif [ $direction_id -eq 1 ]; then
+        y=-$rel_dist
+    elif [ $direction_id -eq 2 ]; then
+        x=$rel_dist
+    elif [ $direction_id -eq 3 ]; then
+        y=$rel_dist
+    fi
+fi
+
+# Run
+cmd="xdotool $movement --sync -- $x $y"
+$cmd
+
+unset movement direction_id screen_id screen_dims screen_offs edge_dist rel_dist x y cmd 
+

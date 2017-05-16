@@ -1,0 +1,60 @@
+#!/bin/bash 
+
+# Usage information
+while [ $1 ]; do 
+    case $1 in 
+        -h | --help)
+        echo "Usage: $(basename $0) [--help] [--file asciifile]"
+        echo
+        echo "If an ASCIIDoc file is not provided, current directory is searched for one."
+        echo "All other arguments are ignored."
+        exit 0
+        ;;
+        -f | --file)
+        ASCIIFILE=$2
+        shift 2
+        ;;
+        *)
+        echo "Invalid argument: $1"
+        exit 0
+        ;;
+    esac
+done
+
+# Validate ASCIIDoc file
+if [[ -z $ASCIIFILE ]]; then
+    ASCIIFILE=`ls | grep ".*\.asciidoc$"`
+    NUMFILES=`ls | grep ".*\.asciidoc$" | wc -l`
+    if [[ $NUMFILES -eq 0 ]]; then
+        echo "Warning: no automatic ASCIIDoc file found, '$ASCIIFILE'."
+        exit 1
+    elif [[ $NUMFILES -gt 1 ]]; then
+        echo "Error: too many ASCIIDoc files found, '$ASCIIFILE'."
+        exit 1
+    else
+        echo "Automatic ASCIIDoc file found, '$ASCIIFILE'."
+    fi
+fi
+if [[ ! -e $ASCIIFILE ]]; then
+    echo "Error: ASCIIDoc file does not exists, '$ASCIIFILE'."
+    exit 1
+fi
+
+# Internal stuff
+BASEFILE=${ASCIIFILE%.*}
+
+# Define commands
+#ASCIIDOC_CMD="asciidoc -b docbook $ASCIIFILE"
+#DBLATEX_CMD="dblatex $BASEFILE.xml -T simple"
+ASCIIDOC_CMD="a2x -d article -f pdf $ASCIIFILE"
+VIEW_CMD="evince $BASEFILE.pdf"
+
+# Run commands
+$ASCIIDOC_CMD
+#$DBLATEX_CMD
+#rm $BASEFILE.xml
+$VIEW_CMD & disown
+
+#unset ASCIIFILE NUMFILES BASEFILE ASCIIDOC_CMD DBLATEX_CMD VIEW_CMD
+unset ASCIIFILE NUMFILES BASEFILE ASCIIDOC_CMD VIEW_CMD
+

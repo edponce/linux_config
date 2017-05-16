@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DOTFILE=$1
+
+if [ ! -z $DOTFILE ]; then
+    dot -Tpng $DOTFILE -o graph.png
+fi
+
+#if [ ! -z $DOTFILE ]; then
+#    dot -Txdot $DOTFILE | dot2tex > graph.tex
+#fi
+

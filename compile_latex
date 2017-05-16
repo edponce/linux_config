@@ -1,0 +1,73 @@
+#!/bin/bash 
+
+# Usage information
+while [ $1 ]; do 
+    case $1 in 
+        -h | --help)
+        echo "Usage: $(basename $0) [--help] [--nobib] [--outdir example] [--file TeXfile]"
+        echo
+        echo "If a LaTeX file is not provided, current directory is searched for one."
+        echo "Default output directory is 'build'."
+        echo "All other arguments are ignored."
+        echo "The 'nobib' does not runs bibTeX."
+        exit 0
+        ;;
+        -n | --nobib)
+        NOBIB=1
+        shift 1
+        ;;
+        -o | --outdir)
+        OUTDIR=$2
+        shift 2
+        ;;
+        -f | --file)
+        TEXFILE=$2
+        shift 2
+        ;;
+        *)
+        echo "Invalid argument: $1"
+        exit 0
+        ;;
+    esac
+done
+
+# Validate TeX file
+if [[ -z $TEXFILE ]]; then
+    TEXFILE=`ls | grep ".*\.tex$"`
+    NUMFILES=`ls | grep ".*\.tex$" | wc -l`
+    if [[ $NUMFILES -eq 0 ]]; then
+        echo "Warning: no automatic TeX file found, '$TEXFILE'."
+        exit 1
+    elif [[ $NUMFILES -gt 1 ]]; then
+        echo "Error: too many TeX files found, '$TEXFILE'."
+        exit 1
+    else
+        echo "Automatic TeX file found, '$TEXFILE'."
+    fi
+fi
+if [[ ! -e $TEXFILE ]]; then
+    echo "Error: TeX file does not exists, '$TEXFILE'."
+    exit 1
+fi
+
+# Validate output directory
+[[ -z $OUTDIR ]] && OUTDIR="build"
+[[ ! -d $OUTDIR ]] && mkdir $OUTDIR
+
+# Define commands
+BASEFILE=${TEXFILE%.*}
+PDFLATEX_CMD="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=$OUTDIR $TEXFILE"
+BIBTEX_CMD="bibtex $OUTDIR/$BASEFILE"
+PDFVIEW_CMD="evince $OUTDIR/$BASEFILE.pdf"
+
+# Run commands
+if [[ -z $NOBIB ]]; then
+    $PDFLATEX_CMD
+    $BIBTEX_CMD
+fi
+$PDFLATEX_CMD
+$PDFLATEX_CMD
+$PDFVIEW_CMD & disown
+
+unset TEXFILE NUMFILES NOBIB OUTDIR BASEFILE PDFLATEX_CMD BIBTEX_CMD PDFVIEW_CMD
+

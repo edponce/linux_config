@@ -1,0 +1,293 @@
+# Idea: make cmd/GUI program where one can search/select commands from this list 
+# Use a database
+
+# Reset password Ubuntu
+# Boot in recovery mode (hold <SHIFT> to access boot menu)
+# After boot-up, 'Drop to root shell prompt'
+# Remount filesystem with read/write access
+#   mount -o rw,remount /
+# Find usernames
+#   ls /home
+# Reset password
+#   passwd USER
+# Resume normal boot
+#   exit
+
+# Extract line 4 from file.txt
+awk 'NR==4' file.txt
+
+# On bash
+# Toggle verbosity
+bash -v
+bash +v
+
+# (GUI) Get detailed system info
+# System profiler and benchmark
+sudo hardinfo
+
+# Install/remove .deb packages
+sudo dpkg -i PACKAGE
+sudo dpkg -r PACKAGE
+# Remove all, including config files
+sudo dpkg -P PACKAGE
+# Remove orphan packages
+sudo apt-get autoremove 
+
+sudo apt-get clean
+sudo apt-get auto-clean
+
+# HP Linux Imaging and Printing System
+# HPLIP cannot detect a printer, check firewall blocking ports (5353/udp)
+# in trusted networks you may open network services
+#    http://hplipopensource.com/node/375
+hp-check
+hp-info
+hp-printsettings
+# Start printer tray and display
+hp-systray -x
+
+# To scan HP-Deskjet 3510
+hp-scan
+
+# Enable horizontal scroll for Synaptics touchpad
+synclient -l 
+synclient HorizTwoFingerScroll=1
+
+# Play VLC without GUI
+cvlc -I cli -Z /home/edponce/Music/Random/*
+cvlc -I ncurses -Z -L /home/edponce/Music/Random/*
+cvlc -I http -Z /home/edponce/Music/Random/*
+cvlc -I rc -Z /home/edponce/Music/Random/*
+
+# Video camera
+guvcview --gui=gtk3
+guvcview -z
+guvcview --verbosity=2
+
+# Disk and devices
+sudo parted -l
+sudo fdisk -l
+sudo lsblk -l
+sudo lsblk -lO  # all columns
+df -h
+
+# Firewall
+sudo ufw reset
+sudo ufw status
+sudo ufw app list 
+sudo ufw app info CUPS 
+sudo ufw allow 22/tcp        # 53/tcp, 80/tcp, 443/tcp
+sudo ufw deny 1:21/tcp       # 1:21/udp
+sudo ufw deny 23:52/tcp      # 23:52/udp
+sudo ufw deny 54:79/tcp      # 54:79/udp
+sudo ufw deny 81:442/tcp     # 81:442/udp
+sudo ufw deny 444:65535/tcp  # 444:65535/udp
+sudo ufw disable             # allows changes to take effect
+sudo ufw enable              # allows changes to take effect
+
+# List ports and applications
+sudo netstat -pan
+sudo nmap -sT -O localhost
+# To check if port is associated with the official list of services
+cat /etc/services | grep PORT
+lsof -i | grep PORT
+
+# list open files
+lsof
+
+# Find all sockets available
+sudo find / -type s
+
+# Show IP routing tables
+sudo iptables -L
+
+# List all running processes
+ps -A
+sudo pkill PROC_NAME
+
+# TeX manager
+tlmgr --gui
+tlmgr update --list
+tlmgr update --all
+tlmgr info PACKAGE
+tlmgr install PACKAGE
+
+# Configure Openbox
+# ~/.config/openbox/lubuntu-rc.xml
+openbox --reconfigure
+
+# Change wallpaper of login screen
+sudo vi /etc/lightdm/lightdm-gtk-greeter.conf.d/30_lubuntu.conf 
+
+# Change wallpaper using Desktop preferences
+# In .config/pcmanfm/lubuntu/desktop-items-0.conf
+# In .config/pcmanfm/lubuntu/desktop-items-1.conf
+#   wallpaper=/usr/share/lubuntu/wallpapers/lubuntu-eduardo-wallpaper.png
+pcmanfm --set-wallpaper=/usr/share/lubuntu/wallpapers/lubuntu-eduardo-wallpaper.png --wallpaper-mode=stretch
+
+# Convert source file into html
+# asciidoc
+# texttohtml
+# pdf2[html|tex|...]
+
+# To disable services at boot
+sudo echo "manual" >> /etc/init/SERVICE.conf
+
+# To disable services permanently
+sudo mv /etc/init/SERVICE.conf /etc/init/SERVICE.conf.disabled
+
+# View tasks and memory usage
+top
+htop
+
+# Convert/transform/resize image
+# Use larger dimension, keep aspect ratio
+convert -resize 1920x1200 orig.png dest.png
+# Convert to specified dimensions, distorts 
+convert -resize 100x200! orig.png dest.png
+# Chop a piece of the image
+convert -chop 50x50+100+50 orig.png dest.png  # offset 100-x, 50-y
+
+# Graph-related programs
+gc
+tred
+
+# Compile ASCIIDoc to HTML (default)
+asciidoc -a toc template.asciidoc
+
+# Compile ASCIIDoc to DocBook, then to PDF (default)
+asciidoc -b docbook template.txt 
+dblatex template.xml -T simple
+
+# Format a partition
+sync && sudo umount /dev/sdc1
+fdisk /dev/sdc
+# d - delete
+# n - new partition
+# p - primary
+# 1 - partition 1
+# use defaults
+# t, 83 - Linux type
+# w - write changes
+sudo mkfs.ext4 /dev/sdc1
+sudo mkdir /media/edponce/mymount
+sudo mount /dev/sdc1 /media/edponce/mymount
+
+# Change drive label (ext#)
+sudo e2label /dev/sdc1    # print current
+sudo e2label /dev/sdc1 NEW_LABEL   # set new label 
+
+# Backup partition
+# Use a live OS, umount read partition, mount write partition
+sudo -i
+dd if=/dev/sda1 conv=sync,noerror bs=64K | gzip -c | split -b4G - /media/edponce/MY_HDD/backup.img.gz
+# To restore
+cat /media/edponce/MY_HDD/backup.img.gz* | gzip -c | dd of=/dev/sda1
+# Restore boot loader (512 B or 448 MBR)
+cat /media/edponce/MY_HDD/backup.img.gz* | gzip -c | count -c=1 dd of=/dev/sda1
+
+# View terminal special character settings
+# lnext = ^V, enters the next character quoted so literally
+stty -a
+
+# Autostart locations
+# system-wide, /etc/xdg/autostart
+# per-user (overwrites), /.config/autostart
+
+# Service, module defaults
+ls /etc/default
+
+# For init (or System V) scripts, stop/start services
+# /etc/init.d
+cat /etc/services
+sudo service SERVICE start
+sudo service SERVICE stop
+
+# For upstart scripts, remove/restore services 
+# upstart, deprecated since 15.04, but still used by some default apps
+# /etc/init
+sudo update-rc.d -f bluetooth remove
+sudo update-rc.d -f bluetooth defaults
+# if file exists, /etc/init/bluetooth.service
+sudo echo 'manual' > /etc/init/bluetooth.override
+
+# For systemd, disable/enable services
+# /etc/init.d 
+# /lib/systemd/system
+# /usr/local/lib/systemd/system
+sudo systemctl disable ModemManager.service
+sudo systemctl stop ModemManager.service
+sudo systemctl enable ModemManager.service
+sudo systemctl start ModemManager.service
+sudo systemctl status ModemManager.service
+sudo systemctl show ModemManager.service
+# Can be used to check dependencies
+sudo systemctl list-dependencies ModemManager.service
+sudo systemctl list-dependencies --reverse ModemManager.service
+sudo systemctl show NetworkManager-wait-online.service
+sudo systemctl list-unit-files
+sudo systemctl list-units
+
+# Local http server
+webfsd
+
+# Get systemd statistics
+systemd-analyze blame
+systemd-analyze critical-chain
+systemd-analyze plot > boottimes.svg
+systemd-analyze plot > boottimes.html 
+systemd-analyze dot | dot -Tsvg > bootdeps.svg
+
+# Shared libraries
+# Shared libraries directories
+# /etc/ld.so.conf
+# /etc/ld.so.conf.d/
+# To see libraries dependencies on a binary
+ldd /usr/bin/mpirun
+
+# Convert HTML to PDF
+wkhtmltopdf test.html test.pdf
+
+# Convert image to PDF
+convert file.png file.pdf
+
+# Merge PDF files
+pdftk "file1.pdf" "file2.pdf" cat output "merged.pdf"
+
+# Openbox window properties
+obxprop | grep "^_OB_APP"
+
+# X window properties, keyboard
+xprop
+xprop -root # get all viewable windows
+xwininfo
+xwininfo -root -tree # get all windows
+xkbevd
+xev
+xdriinfo
+xglxinfo
+xvinfo
+
+# Send keyboard events to window
+xdotool
+xdotool key --window 33554448 F11
+xdotool windowsize --sync 33554448 25% 100%
+xdotool search lxterminal
+
+# Search string in tar.gz file
+zgrep string file.tar.gz
+zgrep -ai string file.tar.gz
+
+# Change spell/ispell language
+sudo select-default-ispell --show-choices
+sudo select-default-ispell --set-default=american-insane
+
+# Spell checkers (interactive)
+spell
+ispell
+aspell -l en_US -c file.txt
+aspell -l es -a
+
+# Change keyboard layout to US (international with dead keys)
+setxkbmap -model pc105 -layout us -variant intl
+

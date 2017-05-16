@@ -1,0 +1,58 @@
+#!/bin/bash 
+
+# Usage information
+while [ $1 ]; do 
+    case $1 in 
+        -h | --help)
+        echo "Usage: $(basename $0) [--help] [--outdir example] [PS files]"
+        echo
+        echo "If a PostScript file is not provided, current directory is searched for all."
+        echo "Default output files are placed in current directory."
+        exit 0
+        ;;
+        -o | --outdir)
+        OUTDIR=$2
+        shift 2
+        ;;
+        *)
+        PSFILE+="$1 "
+        shift 1
+        ;;
+    esac
+done
+
+# Validate output directory
+[[ -z $OUTDIR ]] && OUTDIR="."
+[[ ! -d $OUTDIR ]] && mkdir $OUTDIR
+
+# Validate SAS file
+if [[ -z $PSFILE ]]; then
+    PSFILE=`ls | grep ".*\.ps$"`
+    NUMFILES=`ls | grep ".*\.ps$" | wc -l`
+    if [[ $NUMFILES -eq 0 ]]; then
+        echo "Warning: no automatic PS file found, '$PSFILE'."
+        exit 1
+    else
+        echo "Automatic PS file found, '$PSFILE'."
+    fi
+fi
+
+# Iterate through all PS files
+for i in $PSFILE; do 
+    if [[ ! -e $i ]]; then
+        echo "Error: PS file does not exists, '$i'."
+        continue 
+    fi
+
+    CURRFILE=$(basename $i)
+    BASEFILE=${CURRFILE%.*}
+    PDFFILE=${BASEFILE}.pdf
+
+    # Run command to convert file
+    ps2eps --force --ignoreBB --rotate=+ $i
+    epstopdf --outfile=${OUTDIR}/${BASEFILE}.pdf ${BASEFILE}.eps
+    rm ${BASEFILE}.eps
+done
+
+unset OUTDIR PSFILE NUMFILES CURRFILE BASEFILE PDFFILE
+

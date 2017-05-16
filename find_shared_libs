@@ -1,0 +1,48 @@
+#!/bin/bash
+
+
+# Set path to process
+DIR=$1
+if [ -z "$DIR" ]; then
+    DIR=/bin
+fi
+
+# Find shared libraries
+# get shared libraries only (and that have a path)
+# delete up to the start of a full path
+# delete version and trailing info
+# sort strings
+# get unique and count
+# sort numerically
+SHLIBS=`find "$DIR" -type f -perm /a+x -exec ldd {} \; \
+    | grep '.*\/.*\.so' \
+    | sed -r -e 's/\W(.*=>\W)?//' \
+    | sed -r -e 's/\.so.*/\.so/' \
+    | sort \
+    | uniq -c \
+    | sort -n -r`
+
+# Count libraries
+SHLIBS_CNT=0
+if [ ! -z "$SHLIBS" ]; then
+    SHLIBS_CNT=`echo "$SHLIBS" | wc -l`
+fi
+
+# Accumulate count of library references
+#SHLIBS_TREFS=`echo "$SHLIBS" | awk '{ print $1 }' | perl -e 'my $n = 0; while(<>) { $n+=$_; } print $n;'`
+SHLIBS_TREFS=$(echo "$SHLIBS" | perl -e
+    '
+    my $n = 0;
+    while(<>) {
+        my @F = split " ";
+        $n += shift @F;
+    }
+    print $n;
+    ') 
+
+# Print info
+[ ! -z "$SHLIBS" ] && echo "$SHLIBS"
+echo "Total shared libs: $SHLIBS_CNT"
+echo "Total lib references: $SHLIBS_TREFS"
+echo "Path used: $DIR"
+
