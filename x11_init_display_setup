@@ -5,16 +5,16 @@
 
 # Set display to main monitor only
 if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk '{ print $NF }') -gt 1 ]; then
-    /usr/bin/xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 --off --output VGA-1-2 --off --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 --off
+    /home/edponce/default_monitor
 fi
 
 # Enable horizontal two finger scroll for Synaptic touchpad
 if [ $(synclient -l | grep 'HorizTwoFingerScroll' | awk '{ print $NF }') -eq 0 ]; then
-    /usr/bin/synclient HorizTwoFingerScroll=1
+    synclient HorizTwoFingerScroll=1
 fi
 
 # Enable numlock
 if [ "$(numlockx status | awk '{ print $NF }')" = "off" ]; then
-    /usr/bin/numlockx on
+    numlockx on
 fi
 

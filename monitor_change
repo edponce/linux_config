@@ -1,3 +1,109 @@
 #!/bin/bash
 
-/home/edponce/bin/default_monitor
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--protocol PROTOCOL] [--mirror] [--direction DIRECTION_ID]"
+    echo
+    echo "Change monitor configuration."
+    echo "Default is extended screen for external monitors."
+    echo
+    echo "Protocols:"
+    echo " 0 -> LVDS1 (default)"
+    echo " 1 -> VGA"
+    echo " 2 -> HDMI"
+    echo
+    echo "Direction IDs:"
+    echo " 0 -> left (default)"
+    echo " 1 -> right"
+    echo
+}
+
+# Default options
+mon_proto=0
+mirror=0
+direction_id=0
+mon_scripts_dir="/home/edponce/bin"
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -p | --protocol)
+        mon_proto=$2
+        shift 2
+        ;;
+        -m | --mirror)
+        mirror=1
+        shift 1
+        ;;
+        -d | --direction)
+        direction_id=$2
+        shift 2
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate        
+if [ $mon_proto -lt 0 ] || [ $mon_proto -gt 2 ]; then
+    echo "Error: invalid protocol value."
+    exit 1 
+fi
+
+if [ $direction_id -lt 0 ] || [ $direction_id -gt 1 ]; then
+    echo "Error: invalid direction value."
+    exit 1 
+fi
+
+# NOTE: need to check if VGA and/or HDMI are available options.
+
+# Select monitor protocol and position
+if [ $mon_proto -eq 0 ]; then
+    if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk '{ print $NF }') -gt 1 ]; then
+        cmd="$mon_scripts_dir/default_monitor"
+    else
+        exit 0 
+    fi
+else
+    # Extended mode
+    if [ $mirror -eq 0 ]; then
+        # Left
+        if [ $direction_id -eq 0 ]; then
+            # Protocol
+            if [ $mon_proto -eq 1 ]; then
+                cmd="$mon_scripts_dir/left_vga"  
+            elif [ $mon_proto -eq 2 ]; then
+                cmd="$mon_scripts_dir/left_hdmi"  
+            fi
+        elif [ $direction_id -eq 1 ]; then
+            # Protocol
+            if [ $mon_proto -eq 1 ]; then
+                cmd="$mon_scripts_dir/right_vga"  
+            elif [ $mon_proto -eq 2 ]; then
+                cmd="$mon_scripts_dir/right_hdmi"  
+            fi
+        fi
+
+    # Mirror mode
+    elif [ $mirror -eq 1 ]; then
+        # Protocol
+        if [ $mon_proto -eq 1 ]; then
+            cmd="$mon_scripts_dir/mirror_vga"  
+        elif [ $mon_proto -eq 2 ]; then
+            cmd="$mon_scripts_dir/mirror_hdmi"  
+        fi
+    fi
+fi
+
+# Run
+eval $cmd
+
+unset mon_proto mirror direction_id mon_scripts_dir cmd
