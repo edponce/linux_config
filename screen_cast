@@ -103,7 +103,6 @@ fi
 if [ $use_window -eq 0 ]; then
     screen_position $screen_id
 else
-    echo "Please click on the window to record."
     window_position
 fi
 offs_x=${screen_offs[0]}

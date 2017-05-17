@@ -262,8 +262,9 @@ xprop
 xprop -root # get all viewable windows
 xwininfo
 xwininfo -root -tree # get all windows
+sudo showkey  # keycodes
+xev  # keycodes and keynames
 xkbevd
-xev
 xdriinfo
 xglxinfo
 xvinfo
@@ -290,4 +291,17 @@ aspell -l es -a
 
 # Change keyboard layout to US (international with dead keys)
 setxkbmap -model pc105 -layout us -variant intl
+
+# Check memory usage for process
+cat /proc/<PROC_ID>/smaps
+valgrind --tool=massif --pages-as-heap=yes --massif-out-file=massif.out a.out 
+grep mem_heap_B massif.out | awk -F'=' '{ print $2 }' | sort -g | tail -n 1
+
+# Control external monitors
+# Rule file invokes ~/bin/monitor_change script
+ls /etc/udev/rules.d
+ls /lib/udev/rules.d/99-monitor-change.rules
+udevinfo
+sudo udevadm control --reload-rules
+sudo service udev restart
 

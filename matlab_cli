@@ -3,15 +3,15 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--nojvm] [--run COMMAND|SCRIPT]"
+    echo "Usage: $(basename $0) [--help] [--jvm] [--run COMMAND|SCRIPT]"
     echo
-    echo "Default is enabled Java Virtual Machine."
-    echo "If a command or script is not provided, MATLAB interpreter is opened."
+    echo "Default is disabled Java Virtual Machine."
+    echo "If a command or script is not provided, MATLAB interpreter is started."
     echo
 }
 
 # Default options
-jvmcmd=
+jvmcmd="-nodisplay -nojvm"
 runcmd=
 
 # Get command line options 
@@ -21,12 +21,12 @@ while [ "$1" ]; do
         usage
         exit 0
         ;;
-        -n | --nojvm)
-        jvmcmd="-nodisplay -nojvm"
+        -j | --jvm)
+        jvmcmd=
         shift 1
         ;;
         -r | --run)
-        runcmd="-r $2"
+        runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end, exit(0);\""
         shift 2
         ;;
         *)
@@ -39,7 +39,7 @@ done
 
 # Run 
 cmd="matlab -nodesktop -nosplash $jvmcmd $runcmd"
-$cmd
+eval $cmd
 
 unset jvmcmd runcmd cmd
 
