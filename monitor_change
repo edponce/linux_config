@@ -6,16 +6,19 @@ usage()
     echo "Usage: $(basename $0) [--help] [--protocol PROTOCOL] [--mirror] [--direction DIRECTION_ID]"
     echo
     echo "Change monitor configuration."
-    echo "Default is extended screen for external monitors."
+    echo "Default is extended screen."
+    echo "Direction ID is ignored if mirror option is set."
     echo
     echo "Protocols:"
     echo " 0 -> LVDS1 (default)"
     echo " 1 -> VGA"
     echo " 2 -> HDMI"
     echo
-    echo "Direction IDs:"
+    echo "Direction IDs for extended mode:"
     echo " 0 -> left (default)"
-    echo " 1 -> right"
+    echo " 1 -> above"
+    echo " 2 -> right"
+    echo " 3 -> below"
     echo
 }
 
@@ -23,7 +26,6 @@ usage()
 mon_proto=0
 mirror=0
 direction_id=0
-mon_scripts_dir="/home/edponce/bin"
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -53,12 +55,12 @@ while [ "$1" ]; do
 done
 
 # Validate        
-if [ $mon_proto -lt 0 ] || [ $mon_proto -gt 2 ]; then
+if [ $mon_proto -lt 0 ] && [ $mon_proto -gt 2 ]; then
     echo "Error: invalid protocol value."
     exit 1 
 fi
 
-if [ $direction_id -lt 0 ] || [ $direction_id -gt 1 ]; then
+if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
     echo "Error: invalid direction value."
     exit 1 
 fi
@@ -66,44 +68,39 @@ fi
 # NOTE: need to check if VGA and/or HDMI are available options.
 
 # Select monitor protocol and position
+if [ $mirror -eq 0 ]; then
+    # Extended mode
+    if [ $direction_id -eq 0 ]; then
+        rel_pos="--left-of LVDS1"  
+    elif [ $direction_id -eq 1 ]; then
+        rel_pos="--above LVDS1"  
+    elif [ $direction_id -eq 2 ]; then
+        rel_pos="--right-of LVDS1"  
+    elif [ $direction_id -eq 3 ]; then
+        rel_pos="--below LVDS1"  
+    fi
+elif [ $mirror -eq 1 ]; then
+    # Mirror mode
+    rel_pos="--pos 0x0"
+fi
+
+# Protocol
+lvds="--primary --auto --pos 0x0 --rotate normal"
+vga="--off"
+hdmi="--off" 
 if [ $mon_proto -eq 0 ]; then
-    if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk '{ print $NF }') -gt 1 ]; then
-        cmd="$mon_scripts_dir/default_monitor"
-    else
+    if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk '{ print $NF }') -eq 1 ]; then
         exit 0 
     fi
-else
-    # Extended mode
-    if [ $mirror -eq 0 ]; then
-        # Left
-        if [ $direction_id -eq 0 ]; then
-            # Protocol
-            if [ $mon_proto -eq 1 ]; then
-                cmd="$mon_scripts_dir/left_vga"  
-            elif [ $mon_proto -eq 2 ]; then
-                cmd="$mon_scripts_dir/left_hdmi"  
-            fi
-        elif [ $direction_id -eq 1 ]; then
-            # Protocol
-            if [ $mon_proto -eq 1 ]; then
-                cmd="$mon_scripts_dir/right_vga"  
-            elif [ $mon_proto -eq 2 ]; then
-                cmd="$mon_scripts_dir/right_hdmi"  
-            fi
-        fi
-
-    # Mirror mode
-    elif [ $mirror -eq 1 ]; then
-        # Protocol
-        if [ $mon_proto -eq 1 ]; then
-            cmd="$mon_scripts_dir/mirror_vga"  
-        elif [ $mon_proto -eq 2 ]; then
-            cmd="$mon_scripts_dir/mirror_hdmi"  
-        fi
-    fi
+elif [ $mon_proto -eq 1 ]; then
+    vga="--auto $rel_pos --rotate normal"
+elif [ $mon_proto -eq 2 ]; then
+    hdmi="--auto $rel_pos --rotate normal"
 fi
 
 # Run
+cmd="xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output VGA-1-2 --off --output LVDS1 $lvds --output VGA1 $vga"
 eval $cmd
 
-unset mon_proto mirror direction_id mon_scripts_dir cmd
+unset mon_proto mirror direction_id rel_pos lvds vga hdmi cmd
+

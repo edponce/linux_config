@@ -5,7 +5,7 @@
 
 # Set display to main monitor only
 if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk '{ print $NF }') -gt 1 ]; then
-    /home/edponce/default_monitor
+    /home/edponce/monitor_change
 fi
 
 # Enable horizontal two finger scroll for Synaptic touchpad
