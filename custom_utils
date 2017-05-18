@@ -6,27 +6,27 @@
 # Returns: screen_dims, screen_offs
 screen_position()
 {
+    local sid screen_regex num_screens screen_query
     screen_dims=()
     screen_offs=()
-    local sid=0
+
+    sid=0
     if [ $1 ]; then
         sid=$1
     fi
     if [ $sid -eq 0 ]; then
         # Lower-left screen
-        local screen_regex="+0+0\b"
-    elif [ $sid -eq 1 ]; then
-        # Second screen
-        local num_screens=$(xrandr | grep "\bconnected\b" | wc -l)
-        if [ $num_screens -gt 1 ] && [ $sid -eq 1 ]; then
-            local screen_regex="+[1-9]\+.*+0\b\|+0+[1-9]\+.*\|+[1-9]\+.*+[1-9]\+.*\b"
-        fi
+        screen_regex="+0+0\b"
     else
-        return
+        # Second screen
+        num_screens=$(xrandr | grep "\bconnected\b" | wc -l)
+        if [ $num_screens -gt 1 ] && [ $sid -eq 1 ]; then
+            screen_regex="+[1-9]\+.*+0\b\|+0+[1-9]\+.*\|+[1-9]\+.*+[1-9]\+.*\b"
+        fi
     fi
 
     # Parse dimensions and offsets
-    local screen_query="$(xrandr | grep $screen_regex | sed -e 's/primary //' -e 's/ /:/g' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/')"
+    screen_query="$(xrandr | grep $screen_regex | sed -e 's/primary //' -e 's/ /:/g' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/')"
     screen_dims=( $(echo "$screen_query" | awk -F':' '{ print $3 " " $4 }') )
     screen_offs=( $(echo "$screen_query" | awk -F':' '{ print $5 " " $6 }') )
 }
@@ -35,8 +35,12 @@ screen_position()
 # Returns: screen_dims, screen_offs
 window_position()
 {
+    local win_query
+    screen_dims=()
+    screen_offs=()
+
     echo "Please click on a window to use its geometry info."
-    local win_query="$(xwininfo | grep "geometry" | sed -e 's/-geometry //' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/g')"
+    win_query="$(xwininfo | grep "geometry" | sed -e 's/-geometry //' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/g')"
     screen_dims=( $(echo "$win_query" | awk -F':' '{ print $1 " " $2 }') )
     screen_offs=( $(echo "$win_query" | awk -F':' '{ print $3 " " $4 }') )
 }

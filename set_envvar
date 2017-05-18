@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# NOTE: This script is to be source, not executed.
+# The 'exit' statement should never appear on this code as it is sourced
+# by .bashrc during login, thus exiting the login shell right after user
+# logs in. If this happens, the brute force solution is to press Ctrl+C
+# immediately after user logs in (it may take several tries).
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] ENV_VAR \"VALUE1\" [\"VALUE2\" ...]"
+    echo
+    echo "Adds a list of values to an environment variable."
+    echo "The environment variable may exist or not."
+    echo "Duplicate values are prevented."
+    echo "This script is to be source, not executed."
+    echo
+}
+
+# Default options
+env_var=
+arg_value=()
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        return 0 
+        ;;
+        *)
+        env_var="$1"
+        arg_value=("${@:2}")
+        shift $#
+    esac
+done
+
+# Validate
+if [ -z "$env_var" ]; then
+    echo "Error: missing name of environment variable."
+    return 1
+fi
+
+if [ ${#arg_value[@]} -eq 0 ]; then
+    echo "Error: missing value(s) for environment variable."
+    return 1
+fi
+
+# Prevent duplicate values to environment variable 
+env_value=()
+for value in "${arg_value[@]}"; do
+    if [[ ! ${!env_var} =~ (:)?$value(:.*)?$ ]]; then
+        env_value+=("$value")
+    fi
+done
+
+if [ ${#env_value[@]} -eq 0 ]; then
+    return 0
+fi
+
+# Convert values into delimited string
+env_str=$(IFS=":"; echo "${env_value[*]}")
+if [ -z "${!env_var}" ]; then
+    cmd="export $env_var=$env_str"
+else
+    cmd="export $env_var=$env_str:${!env_var}"
+fi
+
+#Run
+eval $cmd
+
+unset env_var arg_value env_value env_str cmd
+
