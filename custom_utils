@@ -1,47 +1,85 @@
 #!/bin/bash
 
 # Get dimensions and offsets of selected screen
-#  0 -> lower-left (default)
-#  1 -> second screen
-# Returns: screen_dims, screen_offs
+#  0 -> LVDS1
+#  1 -> lower-left (default)
+#  2 -> second screen
+#  
+# Outputs: screen_dims, screen_offs
 screen_position()
 {
     local sid screen_regex num_screens screen_query
     screen_dims=()
     screen_offs=()
 
-    sid=0
-    if [ $1 ]; then
+    sid=1
+    if [ $# -eq 1 ]; then
         sid=$1
     fi
+
     if [ $sid -eq 0 ]; then
+        # LVDS1 screen
+        screen_regex="LVDS1"
+    elif [ $sid -eq 1 ]; then
         # Lower-left screen
         screen_regex="+0+0\b"
-    else
+    elif [ $sid -eq 2 ]; then
         # Second screen
-        num_screens=$(xrandr | grep "\bconnected\b" | wc -l)
-        if [ $num_screens -gt 1 ] && [ $sid -eq 1 ]; then
+        num_screens=$(xrandr | grep -c '\bconnected\b')
+        if [ $num_screens -gt 1 ]; then
             screen_regex="+[1-9]\+.*+0\b\|+0+[1-9]\+.*\|+[1-9]\+.*+[1-9]\+.*\b"
         fi
     fi
 
     # Parse dimensions and offsets
-    screen_query="$(xrandr | grep $screen_regex | sed -e 's/primary //' -e 's/ /:/g' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/')"
-    screen_dims=( $(echo "$screen_query" | awk -F':' '{ print $3 " " $4 }') )
-    screen_offs=( $(echo "$screen_query" | awk -F':' '{ print $5 " " $6 }') )
+    if [ ! -z "$screen_regex" ]; then
+        screen_query="$(xrandr | grep $screen_regex | sed -e 's/primary //' -e 's/ /:/g' -e 's/+/:/g' -e 's/x/:/')"
+        screen_dims=( $(echo "$screen_query" | awk -F':' '{ print $3 " " $4 }') )
+        screen_offs=( $(echo "$screen_query" | awk -F':' '{ print $5 " " $6 }') )
+    fi
 }
 
 # Get dimensions and offsets of selected window
-# Returns: screen_dims, screen_offs
+# Outputs: win_dims, win_offs
 window_position()
 {
     local win_query
-    screen_dims=()
-    screen_offs=()
+    win_dims=()
+    win_offs=()
 
     echo "Please click on a window to use its geometry info."
-    win_query="$(xwininfo | grep "geometry" | sed -e 's/-geometry //' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/g')"
-    screen_dims=( $(echo "$win_query" | awk -F':' '{ print $1 " " $2 }') )
-    screen_offs=( $(echo "$win_query" | awk -F':' '{ print $3 " " $4 }') )
+    win_query="$(xwininfo | grep 'geometry' | sed -e 's/-geometry //' -e 's/+/:/g' -e 's/-/:-/g' -e 's/x/:/g')"
+    win_dims=( $(echo "$win_query" | awk -F':' '{ print $1 " " $2 }') )
+    win_offs=( $(echo "$win_query" | awk -F':' '{ print $3 " " $4 }') )
+}
+
+# Restore windows relative positions when disconnected from external monitor
+window_restore()
+{
+    #local win_list
+    win_id=() win_desk=() win_offs=() win_dims=()
+
+    readarray -t win_list <<< "$(wmctrl -l -G)"
+    for win in "${win_list[@]}"; do
+        if [ $(echo "$win" | awk -F' ' '{ print $2 }') -ne -1 ]; then
+            win_id+=( $(echo "$win" | awk -F' ' '{ print $1 }') )
+            win_desk+=( $(echo "$win" | awk -F' ' '{ print $2 }') )
+            win_offs+=( $(echo "$win" | awk -F' ' '{ print $3 " " $4 }') )
+            win_dims+=( $(echo "$win" | awk -F' ' '{ print $5 " " $6 }') )
+        fi
+    done
+    
+    screen_position 1
+    for (( w=0, x=0, y=1; w < ${#win_id[@]}; w++, x+=2, y+=2 )); do
+        xoffs=${win_offs[$x]}
+        yoffs=${win_offs[$y]}
+        if [ $xoffs -gt ${screen_dims[0]} ]; then
+            xoffs=$(( xoffs - screen_dims[0] ))
+        fi
+        if [ $yoffs -gt ${screen_dims[1]} ]; then
+            yoffs=$(( yoffs - screen_dims[1] ))
+        fi
+        echo "wmctrl -i -r ${win_id[$w]} -e 0,$xoffs,$yoffs,${win_dims[$x]},${win_dims[$y]}"
+    done
 }
 

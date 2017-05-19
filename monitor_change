@@ -26,6 +26,9 @@ usage()
 mon_proto=0
 mirror=0
 direction_id=0
+vga="--off"
+hdmi="--off" 
+win_restore=0
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -65,9 +68,7 @@ if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
     exit 1 
 fi
 
-# NOTE: need to check if VGA and/or HDMI are available options.
-
-# Select monitor protocol and position
+# Select monitor relative position
 if [ $mirror -eq 0 ]; then
     # Extended mode
     if [ $direction_id -eq 0 ]; then
@@ -84,23 +85,33 @@ elif [ $mirror -eq 1 ]; then
     rel_pos="--pos 0x0"
 fi
 
-# Protocol
-lvds="--primary --auto --pos 0x0 --rotate normal"
-vga="--off"
-hdmi="--off" 
+# Select monitor protocol
+mon_query="$(xrandr)"
 if [ $mon_proto -eq 0 ]; then
-    if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk '{ print $NF }') -eq 1 ]; then
-        exit 0 
+    if [ $(echo "$mon_query" | grep -c '\bconnected\b') -gt 1 ]; then
+        # Restore windows into default screen
+        . custom_utils
+        window_restore
     fi
 elif [ $mon_proto -eq 1 ]; then
-    vga="--auto $rel_pos --rotate normal"
+    if [ $(echo "$mon_query" | grep -c 'VGA1 connected\b') -eq 1 ]; then
+        vga="--auto $rel_pos --rotate normal"
+    else
+        echo "Error: VGA connection was not detected."
+        exit 1
+    fi
 elif [ $mon_proto -eq 2 ]; then
-    hdmi="--auto $rel_pos --rotate normal"
+    if [ $(echo "$mon_query" | grep -c 'HDMI1 connected\b') -eq 1 ]; then
+        hdmi="--auto $rel_pos --rotate normal"
+    else
+        echo "Error: HDMI connection was not detected."
+        exit 1
+    fi
 fi
 
 # Run
-cmd="xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output VGA-1-2 --off --output LVDS1 $lvds --output VGA1 $vga"
+cmd="xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output VGA-1-2 --off --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga"
 eval $cmd
 
-unset mon_proto mirror direction_id rel_pos lvds vga hdmi cmd
+unset mon_proto mirror direction_id mon_query rel_pos lvds vga hdmi cmd
 

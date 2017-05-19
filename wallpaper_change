@@ -15,7 +15,7 @@ usage()
         else
             echo " $wid -> $wfile"
         fi
-        wid=$(( wid + 1 ))
+        wid=$((wid + 1))
     done
     echo
 }
@@ -62,7 +62,7 @@ fi
 
 # Run
 cmd="pcmanfm --set-wallpaper=\"$wall_file\" --wallpaper-mode=stretch"
-eval $cmd
+eval "$cmd"
 
 unset wall_id wall_file wall_files cmd 
 

@@ -11,7 +11,7 @@ usage()
     echo "Default frame rate is 30 frames/sec."
     echo "Default window is fullscreen, set to select specific window."
     echo "Default is disabled audio."
-    echo "Default outfile is \"$HOME/screencast.avi\""
+    echo "Default outfile is \"$HOME/screencast_<DATE,TIME>.avi\""
     echo "Supported outfile formats: avi, mp4, mpg, mkv"
     echo
     echo "Video codecs:"
@@ -33,7 +33,7 @@ framerate=30
 use_window=0
 screen_id=0
 use_audio=0
-outfile="$HOME/screencast.avi"
+outfile="$HOME/screencast_$(date +%m-%d-%Y_%H-%M).avi"
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -101,14 +101,20 @@ fi
 
 # Set video dimensions and offsets
 if [ $use_window -eq 0 ]; then
-    screen_position $screen_id
+    screen_position $((screen_id + 1))
+    offs_x=${screen_offs[0]}
+    offs_y=${screen_offs[1]}
+    x=${screen_dims[0]}
+    y=${screen_dims[1]}
+    unset screen_dims screen_offs 
 else
     window_position
+    offs_x=${win_offs[0]}
+    offs_y=${win_offs[1]}
+    x=${win_dims[0]}
+    y=${win_dims[1]}
+    unset win_dims win_offs 
 fi
-offs_x=${screen_offs[0]}
-offs_y=${screen_offs[1]}
-x=${screen_dims[0]}
-y=${screen_dims[1]}
 
 sleep $timer
 
@@ -118,7 +124,7 @@ if [ $use_audio -eq 0 ]; then
 else
     cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 \"$outfile\""
 fi
-eval $cmd
+eval "$cmd"
 
-unset timer vcodec acodec framerate use_window screen_dims screen_offs x y offs_x offs_y screen_id use_audio outfile cmd 
+unset timer vcodec acodec framerate use_window x y offs_x offs_y screen_id use_audio outfile cmd 
 

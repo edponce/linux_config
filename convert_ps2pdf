@@ -11,7 +11,7 @@ while [ $1 ]; do
         exit 0
         ;;
         -o | --outdir)
-        OUTDIR=$2
+        OUTDIR="$2"
         shift 2
         ;;
         *)
@@ -22,14 +22,14 @@ while [ $1 ]; do
 done
 
 # Validate output directory
-[[ -z $OUTDIR ]] && OUTDIR="."
-[[ ! -d $OUTDIR ]] && mkdir $OUTDIR
+[ -z "$OUTDIR" ] && OUTDIR="."
+[ ! -d "$OUTDIR" ] && mkdir $OUTDIR
 
 # Validate SAS file
-if [[ -z $PSFILE ]]; then
+if [ -z "$PSFILE" ]; then
     PSFILE=`ls | grep ".*\.ps$"`
     NUMFILES=`ls | grep ".*\.ps$" | wc -l`
-    if [[ $NUMFILES -eq 0 ]]; then
+    if [ $NUMFILES -eq 0 ]; then
         echo "Warning: no automatic PS file found, '$PSFILE'."
         exit 1
     else

@@ -301,7 +301,13 @@ grep mem_heap_B massif.out | awk -F'=' '{ print $2 }' | sort -g | tail -n 1
 # Rule file invokes ~/bin/monitor_change script
 ls /etc/udev/rules.d
 ls /lib/udev/rules.d/99-monitor-change.rules
-udevinfo
 sudo udevadm control --reload-rules
 sudo service udev restart
+
+# Restore windows when disconnecting external monitor
+wmctrl -l -G  # list current windows
+# Move window, -e gravity,xoffs,yoffs,width,height
+# gravity (g) specifies position of window's frame
+# 0=default, 1=nw, 2=n, 3=ne, 4=w, 5=c, 6=e, 7=sw, 8=s, 9=se
+wmctrl -i -r 0x0200000e -e 0,0,0,60,60
 

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. custom_utils
-
 usage()
 {
     echo
@@ -73,27 +71,29 @@ if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
     exit 1 
 fi
 
-# Move mouse
+# Move mouse pointer
 if [ "$movement" = "mousemove" ]; then
-    screen_position $screen_id
+    . custom_utils
+    screen_position $((screen_id + 1))
 
     # Move mouse to preset position 
     if [ $direction_id -eq 0 ]; then
         x=$edge_dist
-        y=$(( screen_dims[1] / 2 ))
+        y=$((screen_dims[1] / 2))
     elif [ $direction_id -eq 1 ]; then
-        x=$(( screen_dims[0] / 2 ))
+        x=$((screen_dims[0] / 2))
         y=$edge_dist
     elif [ $direction_id -eq 2 ]; then
-        x=$(( screen_dims[0] - edge_dist ))
-        y=$(( screen_dims[1] / 2 ))
+        x=$((screen_dims[0] - edge_dist))
+        y=$((screen_dims[1] / 2))
     elif [ $direction_id -eq 3 ]; then
-        x=$(( screen_dims[0] / 2 ))
+        x=$((screen_dims[0] / 2))
         y=${screen_dims[1]}
     fi
-    x=$(( screen_offs[0] + x ))
-    y=$(( screen_offs[1] + y ))
-else
+    x=$((screen_offs[0] + x))
+    y=$((screen_offs[1] + y))
+    unset screen_dims screen_offs
+elif [ "$movement" = "mousemove_relative" ]; then
     # Move mouse to relative position 
     x=0
     y=0
@@ -110,7 +110,7 @@ fi
 
 # Run
 cmd="xdotool $movement --sync -- $x $y"
-eval $cmd
+eval "$cmd"
 
-unset movement direction_id screen_id screen_dims screen_offs edge_dist rel_dist x y cmd 
+unset movement direction_id screen_id edge_dist rel_dist x y cmd 
 
