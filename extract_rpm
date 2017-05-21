@@ -49,7 +49,7 @@ fi
 
 # Run
 cmd="rpm2cpio \"$file\" | cpio -i --make-directories"
-eval $cmd
+eval "$cmd"
 
 unset file cmd
 

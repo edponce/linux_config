@@ -6,7 +6,7 @@ usage()
     echo "Usage: $(basename $0) [--help] [--jvm] [--run \"COMMAND\"|SCRIPT.m]"
     echo
     echo "Starts MATLAB interpreter without GUI."
-    echo "Command or script can be executed during startup."
+    echo "Command is executed during startup, script is executed then exit."
     echo "Default is disabled Java Virtual Machine."
     echo
 }
@@ -28,10 +28,11 @@ while [ "$1" ]; do
         shift 1
         ;;
         -r | --run)
-        # Check if a script or a command
         if [ "${2##*.}" = "m" ]; then
-            runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end\""
+            # Script
+            runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end, exit(0);\""
         else
+            # Command
             runcmd="-r \"try, $2, catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end\""
         fi
         shift 2
@@ -46,7 +47,7 @@ done
 
 # Run 
 cmd="matlab $deskcmd $jvmcmd $runcmd"
-eval $cmd
+eval "$cmd"
 
 unset deskcmd jvmcmd runcmd cmd
 

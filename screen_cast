@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. custom_utils
-
 usage()
 {
     echo
@@ -100,17 +98,18 @@ if [ $screen_id -lt 0 ] || [ $screen_id -gt 1 ]; then
 fi
 
 # Set video dimensions and offsets
+. custom_utils
 if [ $use_window -eq 0 ]; then
     screen_position $((screen_id + 1))
-    offs_x=${screen_offs[0]}
-    offs_y=${screen_offs[1]}
+    x_offs=${screen_offs[0]}
+    y_offs=${screen_offs[1]}
     x=${screen_dims[0]}
     y=${screen_dims[1]}
     unset screen_dims screen_offs 
-else
+elif [ $use_window -eq 1 ]; then
     window_position
-    offs_x=${win_offs[0]}
-    offs_y=${win_offs[1]}
+    x_offs=${win_offs[0]}
+    y_offs=${win_offs[1]}
     x=${win_dims[0]}
     y=${win_dims[1]}
     unset win_dims win_offs 
@@ -120,11 +119,11 @@ sleep $timer
 
 # Run
 if [ $use_audio -eq 0 ]; then
-    cmd="ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast \"$outfile\""
-else
-    cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$offs_x,$offs_y -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 \"$outfile\""
+    cmd="ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v $vcodec -crf 0 -preset:v ultrafast \"$outfile\""
+elif [ $use_audio -eq 1 ]; then
+    cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 \"$outfile\""
 fi
 eval "$cmd"
 
-unset timer vcodec acodec framerate use_window x y offs_x offs_y screen_id use_audio outfile cmd 
+unset timer vcodec acodec framerate use_window x y x_offs y_offs screen_id use_audio outfile cmd 
 
