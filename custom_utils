@@ -59,6 +59,8 @@ window_position()
 # Restore windows relative positions when disconnected from external monitor
 window_restore()
 {
+    return
+
     local w_list x_offs y_offs move
     local w_id=() w_desk=() w_offs=() w_dims=()
 
