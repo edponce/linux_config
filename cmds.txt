@@ -59,6 +59,9 @@ cvlc -I ncurses -Z -L /home/edponce/Music/Random/*
 cvlc -I http -Z /home/edponce/Music/Random/*
 cvlc -I rc -Z /home/edponce/Music/Random/*
 
+# Change VLC output device to HDMI
+open, right-click -> Audio -> Audio Device -> HDMI
+
 # Video camera
 guvcview --gui=gtk3
 guvcview -z
@@ -160,8 +163,9 @@ asciidoc -b docbook template.txt
 dblatex template.xml -T simple
 
 # Format a partition
-sync && sudo umount /dev/sdc1
-fdisk /dev/sdc
+sync
+sudo umount /dev/sdc1
+sudo fdisk /dev/sdc
 # d - delete
 # n - new partition
 # p - primary
@@ -170,12 +174,19 @@ fdisk /dev/sdc
 # t, 83 - Linux type
 # w - write changes
 sudo mkfs.ext4 /dev/sdc1
+sudo mkfs.fat -F 32 -I /dev/sdc1
+sudo mkfs.ntfs /dev/sdc1
+
+# Mounting media
 sudo mkdir /media/edponce/mymount
 sudo mount /dev/sdc1 /media/edponce/mymount
+sudo mount -o loop ISO/FILE.iso /media/edponce/mymount
 
 # Change drive label (ext#)
 sudo e2label /dev/sdc1    # print current
 sudo e2label /dev/sdc1 NEW_LABEL   # set new label 
+sudo fatlabel /dev/sdc1 NEW_LABEL
+sudo ntfslabel /dev/sdc1 NEW_LABEL
 
 # Backup partition
 # Use a live OS, umount read partition, mount write partition
@@ -279,6 +290,10 @@ xdotool search lxterminal
 zgrep string file.tar.gz
 zgrep -ai string file.tar.gz
 
+# Search in history, get line number then specify range
+zgrep -n vlc ~/.history/bash_history.1.gz
+zcat ~/.history/bash_history.1.gz | awk '{ if (NR > 4590 && NR < 4990) print }'
+
 # Change spell/ispell language
 sudo select-default-ispell --show-choices
 sudo select-default-ispell --set-default=american-insane
@@ -310,4 +325,26 @@ wmctrl -l -G  # list current windows
 # gravity (g) specifies position of window's frame
 # 0=default, 1=nw, 2=n, 3=ne, 4=w, 5=c, 6=e, 7=sw, 8=s, 9=se
 wmctrl -i -r 0x0200000e -e 0,0,0,60,60
+
+# Rsync, backup
+rsync -avh /source/dir /dest/dir
+rsync -aAXvzh /source/dir /dest/dir
+
+# Tar, backup
+tar cv - /some/dir | gzip -c | split -b4G - backup.tgz
+tar czvf backup.tgz /some/dir
+# Update newer file versions
+tar uzvf backup.tgz /some/dir
+# Restore (preserve symbolic links as they were)
+tar xhzvf backup.tgz
+# Home hidden files
+tar cvzf hidden_home.tgz ~/.[a-zA-Z]* --exclude-backups --exclude-caches-all --exclude-from=hidden_ignore_tar.txt
+
+# CUPS browser
+localhost:631
+# Printing from terminal
+lpstat -p -d  # list printers
+lpstat -s  # more info on printers
+lp -n 1 file.pdf  # prints 1 copy to default printer
+lp -n 2 -d hp-3511 file.pdf  # prints 2 copies to specified printer
 

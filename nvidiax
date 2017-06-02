@@ -1,0 +1,136 @@
+#!/bin/bash
+
+# X11 NVIDIA configuration file, do not change
+declare -r x11_nvidia_file="/usr/share/X11/xorg.conf.d/52-nvidia.conf"
+declare -r default_perf_level=3
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--perf PERF_LEVEL] [--tool LAUNCH_TOOL_ID] --run \"APPLICATION\""
+    echo
+    echo "Runs an application on NVIDIA GPU with power management control."
+    echo "An X11 'Device' configuration file sets NVIDIA PowerMizer options."
+    echo
+    echo "This script may require root privileges to change the performance level"
+    echo "of the X11 NVIDIA configuration file."
+    echo
+    echo "X11 NVIDIA configuration file: $x11_nvidia_file"
+    echo
+    echo "GPU Performance levels:"
+    echo " 1 -> high"
+    echo " 2 -> medium"
+    echo " 3 -> low (default)"
+    echo
+    echo "GPU launcher tools:"
+    echo " 0 -> none"
+    echo " 1 -> primusrun"
+    echo " 2 -> optirun (default)"
+    echo
+}
+
+# Default options
+launch_tool=2
+perf_level=$default_perf_level
+perf_level_changed=0
+app=
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -t | --tool)
+        launch_tool=$2
+        shift 2
+        ;;
+        -p | --perf)
+        perf_level=$2
+        shift 2
+        ;;
+        -r | --run)
+        #shift 1
+        #app="$@"
+        #shift $# 
+        app="$2"
+        shift 2 
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 0
+        ;;
+    esac
+done
+
+# Validate
+if [ -z "$app" ]; then
+    echo "Error: no application was specified."
+    usage
+    exit 1
+fi
+
+which $(echo "$app" | cut -d' ' -f1 -) > /dev/null
+if [ $? -ne 0 ]; then
+    echo "Error: application '$app' was not found."
+    exit 1
+fi
+
+if [ $launch_tool -lt 0 ] || [ $launch_tool -gt 2 ]; then
+    echo "Error: invalid launch tool identifier [0-2]."
+    exit 1 
+fi
+
+if [ $launch_tool -gt 0 ]; then
+    if [ ! -e "$x11_nvidia_file" ]; then
+        echo "Error: X11 NVIDIA configuration file '$x11_nvidia_file' does not exists."
+        exit 1
+    fi
+
+    if [ $perf_level -lt 1 ] || [ $perf_level -gt 3 ]; then
+        echo "Error: invalid performance level [1-3]."
+        exit 1 
+    fi
+
+    # Check that NVIDIA modules are not loaded
+    if [ $(lsmod | grep -c nvidia) -gt 0 ]; then
+        echo "Warning: Please close all applications using NVIDIA modules...exiting."
+        exit 0
+    fi
+
+    # Set performance level in X11 NVIDIA configuration file
+    if [ $perf_level -ne $default_perf_level ]; then
+        echo "Setting NVIDIA GPU performance level to $perf_level."
+        sudo sed -i "s/\b\(PowerMizer\(Level\|Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$perf_level/g" "$x11_nvidia_file"
+        if [ $? -ne 0 ]; then
+            echo "Warning: unable to change performance level, using default of $default_perf_level."
+        else
+            perf_level_changed=1
+        fi
+        sleep 1
+    fi
+fi
+
+# Select launcher tool 
+if [ $launch_tool -eq 0 ]; then
+    cmd="$app"
+elif [ $launch_tool -eq 1 ]; then
+    cmd="primusrun $app"
+elif [ $launch_tool -eq 2 ]; then
+    cmd="optirun $app"
+fi
+
+# Run
+eval "$cmd"
+
+# Restore default performance level
+if [ $perf_level_changed -eq 1 ]; then
+    echo "Restoring NVIDIA GPU performance level to $default_perf_level."
+    sudo sed -i "s/\b\(PowerMizer\(Level\|Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$default_perf_level/g" "$x11_nvidia_file"
+    perf_level_changed=0
+fi
+
+unset perf_level perf_level_changed launch_tool app cmd
+

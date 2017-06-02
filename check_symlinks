@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# Directory names to ignore
+prune_dirs=(
+"help"
+"icons"
+"doc"
+)
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--recursive] [--path SEARCH_PATH]"
+    echo
+    echo "Search given path for dangling symbolic links and prints them."
+    echo "Default is to search current directory non-recursively."
+    echo "Hidden directories and files are searched."
+    echo
+    echo "These directories are ignored by default:"
+    printf "\t%s\n" "${prune_dirs[@]}"
+    echo
+}
+
+# Default options
+search_path="."
+recursive=0
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -r | --recursive)
+        recursive=1
+        shift 1
+        ;;
+        -p | --path)
+        search_path="$2"
+        shift 2
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate        
+if [ ! -d "$search_path" ]; then
+    echo "Error: search path does not exists, $search_path"
+    exit 1
+fi
+
+# Set command to prune unwanted directories 
+prune_cmd=
+if [ ${#prune_dirs[@]} -gt 0 ]; then
+    prune_cmd="-type d ("
+    cnt=0
+    for d in "${prune_dirs[@]}"; do
+        if [ $cnt -eq 0 ]; then
+            prune_cmd+=" -name $d "
+        else
+            prune_cmd+="-o -name $d "
+        fi
+        cnt=$((cnt + 1))
+    done
+    prune_cmd+=") -prune -o"
+    unset cnt
+fi
+
+# Run
+if [ $recursive -eq 0 ]; then
+    symlinks=($(find "$search_path" -maxdepth 1 $prune_cmd -type l -exec test ! -e "{}" \; -print))
+elif [ $recursive -eq 1 ]; then
+    symlinks=($(find "$search_path" $prune_cmd -type l -exec test ! -e "{}" \; -print))
+fi
+
+if [ ${#symlinks[@]} -gt 0 ]; then
+    printf '%s\n' "${symlinks[@]}"
+    echo "Dangling symbolic links: ${#symlinks[@]}"
+fi
+
+unset recursive search_path symlinks prune_dirs prune_cmd
+
