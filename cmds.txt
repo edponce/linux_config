@@ -275,6 +275,7 @@ xwininfo
 xwininfo -root -tree # get all windows
 sudo showkey  # keycodes
 xev  # keycodes and keynames
+acpi_listen # BIOS-specific events (Fn key)
 xkbevd
 xdriinfo
 xglxinfo
@@ -348,3 +349,6 @@ lpstat -s  # more info on printers
 lp -n 1 file.pdf  # prints 1 copy to default printer
 lp -n 2 -d hp-3511 file.pdf  # prints 2 copies to specified printer
 
+# Update latest kernel image
+# Required when a module file or similar config are modified
+sudo update-initramfs -u

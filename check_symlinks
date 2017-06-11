@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Directory names to ignore
-prune_dirs=(
-"help"
-"icons"
-"doc"
-)
+declare -ra prune_dirs=("help" "icons" "doc" "man")
 
 usage()
 {
