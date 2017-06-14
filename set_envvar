@@ -6,16 +6,16 @@
 # logs in. If this happens, the brute force solution is to press Ctrl+C
 # immediately after user logs in (it may take several tries).
 
-usage()
+usage_set_envvar()
 {
     echo
     echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\" ...]"
     echo
     echo "Adds a list of values to an environment variable."
-    echo "If environment variable exists, values are added (can be overwritten via option)."
-    echo "Default delimiter symbol is ':'."
+    echo "If environment variable exists, values are prepended (set option to overwrite)."
+    echo "Default delimiter symbol is colon, ':'."
     echo "Duplicate values are prevented."
-    echo "This script is to be source, not executed."
+    echo "This script is to be sourced, not executed."
     echo
 }
 
@@ -29,7 +29,7 @@ arg_value=()
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
+        usage_set_envvar
         return 0 
         ;;
         -o | --overwrite)

@@ -98,13 +98,13 @@ if [ $launch_tool -gt 0 ]; then
     fi
 
     # Get current performance level in X11 NVIDIA configuration file
-    default_perf_level=$(grep "RegistryDwords" "$x11_nvidia_file" | grep -o 'PowerMizerLevel=0x[[:digit:]]' | awk -F'=0x' '{ print $2 }')
+    default_perf_level=$(grep "RegistryDwords" "$x11_nvidia_file" | grep -o 'PowerMizerDefault=0x[[:digit:]]' | awk -F'=0x' '{ print $2 }')
     echo "Current NVIDIA GPU performance level is $default_perf_level."
 
     # Set performance level in X11 NVIDIA configuration file
     if [ $perf_level -ne $default_perf_level ]; then
         echo "Setting NVIDIA GPU performance level to $perf_level."
-        sed -i "s/\b\(PowerMizer\(Level\|Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$perf_level/g" "$x11_nvidia_file"
+        sudo sed -i "s/\b\(PowerMizer\(Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$perf_level/g" "$x11_nvidia_file"
         perf_level_changed=1
         sleep 1
     fi
@@ -125,7 +125,7 @@ eval "$cmd"
 # Restore default performance level
 if [ $perf_level_changed -eq 1 ]; then
     echo "Restoring NVIDIA GPU performance level to $default_perf_level."
-    sed -i "s/\b\(PowerMizer\(Level\|Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$default_perf_level/g" "$x11_nvidia_file"
+    sudo sed -i "s/\b\(PowerMizer\(Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$default_perf_level/g" "$x11_nvidia_file"
     perf_level_changed=0
 fi
 
