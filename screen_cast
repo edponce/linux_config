@@ -9,7 +9,7 @@ usage()
     echo "Default frame rate is 30 frames/sec."
     echo "Default window is fullscreen, set to select specific window."
     echo "Default is disabled audio."
-    echo "Default outfile is \"$HOME/screencast_<DATE,TIME>.avi\""
+    echo "Default outfile is \"$HOME/screencast_DATE_TIME.avi\""
     echo "Supported outfile formats: avi, mp4, mpg, mkv"
     echo
     echo "Video codecs:"

@@ -57,6 +57,7 @@ window_position()
 }
 
 # Restore windows relative positions when disconnected from external monitor
+# Outputs: N/A
 window_restore()
 {
     return
@@ -99,5 +100,44 @@ window_restore()
             wmctrl -i -r ${w_id[$w]} -t ${w_desk[$w]} -e 0,$x_offs,$y_offs,${w_dims[$x]},${w_dims[$y]}
         fi
     done
+}
+
+# Get current cursor row in terminal window
+# Outputs: "cursor_row cursor_col"
+get_cursor_pos()
+{
+    local tty_state cursor_pos cursor_row cursor_col
+
+    # Redirect tty to current shell
+    exec < /dev/tty
+
+    # Setting/unsetting raw mode may not put back all the settings that were previously in effect.
+    # Need to save the terminal settings and then restore it.
+    tty_state=$(stty -g)
+
+    # Set terminal to raw mode, disable 'echo back', set 0 chars minimum for a completed read
+    stty raw -echo min 0
+
+    # Send cursor position query command to tty
+    echo -en "\033[6n" > /dev/tty
+    # User string #7
+    #tput u7 > /dev/tty # when TERM=xterm (and relatives)
+
+    # Get cursor position from tty
+    IFS=';' read -r -d R -a cursor_pos
+
+    # Restore terminal settings
+    stty "$tty_state"
+
+    # Get cursor row and column, change from one-based counting to zero-based.
+    # Works with: tput cup $cursor_row $cursor_col
+    #cursor_row=$((${cursor_pos[0]:2} - 1)) # strip off the ESC-[
+    #cursor_col=$((${cursor_pos[1]} - 1))
+
+    # Get cursor row and column
+    cursor_row=$(echo "${cursor_pos[0]}" | sed 's/.*\[//g') # strip off the ESC-[
+    cursor_col=${cursor_pos[1]}
+
+    echo "$cursor_row $cursor_col"
 }
 

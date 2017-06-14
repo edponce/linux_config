@@ -79,5 +79,5 @@ if [ ${#symlinks[@]} -gt 0 ]; then
     echo "Dangling symbolic links: ${#symlinks[@]}"
 fi
 
-unset recursive search_path symlinks prune_dirs prune_cmd
+unset recursive search_path symlinks prune_cmd
 

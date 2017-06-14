@@ -352,3 +352,14 @@ lp -n 2 -d hp-3511 file.pdf  # prints 2 copies to specified printer
 # Update latest kernel image
 # Required when a module file or similar config are modified
 sudo update-initramfs -u
+
+# Change sudoers permissions
+sudo visudo -f /etc/sudoers
+
+# Get number of rows/cols in relative to terminal window size
+tput lines
+tput cols
+
+# Sound settings
+pavucontrol # gui, Configuration tab
+

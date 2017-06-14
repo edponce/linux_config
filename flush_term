@@ -1,0 +1,57 @@
+#!/bin/bash 
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--row ROW]"
+    echo
+    echo "Clears terminal window after having the specified empty rows."
+    echo "Default empty rows allowed is 0."
+    echo
+}
+
+# Default options
+empty_rows=0
+
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -r | --row)
+        empty_rows=$2
+        shift 2 
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        exit 0
+        ;;
+    esac
+done
+
+# Get terminal window maximum number of rows
+declare -r max_rows=$(tput lines)
+
+# Validate
+if [ $empty_rows -lt 0 ]; then
+    echo "Error: invalid empty rows value."
+    exit 1 
+fi
+if [ $empty_rows -ge $max_rows ]; then
+    echo "Warning: adjusting empty rows to maximum rows in terminal window."
+    empty_rows=$((max_rows - 1))
+fi
+
+# Get current cursor row in terminal window
+. custom_utils
+declare -ra curr_pos=($(get_cursor_pos))
+
+# Run
+if [ $((max_rows - ${curr_pos[0]})) -le $empty_rows ]; then
+    clear
+fi 
+
+unset empty_rows
+
