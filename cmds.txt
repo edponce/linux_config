@@ -362,4 +362,10 @@ tput cols
 
 # Sound settings
 pavucontrol # gui, Configuration tab
+pacmd stat
+pacmd info
+pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:analog-stereo"
+pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-stereo"
+pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-surround"
+pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-surround71"
 

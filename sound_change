@@ -1,0 +1,80 @@
+#!/bin/bash
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--profile PROFILE_ID] [--input]"
+    echo
+    echo "Change sound card configuration."
+    echo "Default is ALSA PCI card with output analog stereo profile."
+    echo "Default is to disable input analog stereo."
+    echo
+    echo "Profiles:"
+    echo " 0 -> off"
+    echo " 1 -> analog stereo (default)"
+    echo " 2 -> HDMI stereo"
+    echo " 3 -> HDMI surround"
+    echo " 4 -> HDMI surround 7.1"
+    echo
+}
+
+# Default options
+declare -r sound_card="alsa_card.pci-0000_00_1b.0"
+profile_id=1
+input=0
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -p | --profile)
+        profile_id=$2
+        shift 2
+        ;;
+        -i | --input)
+        input=1
+        shift 1
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate        
+if [ $profile_id -lt 0 ] && [ $profile_id -gt 4 ]; then
+    echo "Error: invalid output profile value."
+    exit 1 
+fi
+
+# Select sound output profile 
+if [ $profile_id -eq 0 ]; then
+    profile="off"
+else
+    if [ $profile_id -eq 1 ]; then
+        profile="output:analog-stereo" 
+    elif [ $profile_id -eq 2 ]; then
+        profile="output:hdmi-stereo" 
+    elif [ $profile_id -eq 3 ]; then
+        profile="output:hdmi-surround" 
+    elif [ $profile_id -eq 4 ]; then
+        profile="output:hdmi-surround71" 
+    fi
+
+    # Check for sound input profile
+    if [ $input -eq 1 ]; then
+        profile+="+input:analog-stereo"
+    fi
+fi
+
+# Run
+cmd="pacmd set-card-profile $sound_card \"$profile\""
+eval "$cmd"
+
+unset profile_id profile input cmd
+
