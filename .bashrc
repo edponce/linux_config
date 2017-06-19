@@ -117,11 +117,11 @@ else
         history_val=$((history_last + 1))
         history_curr="(${cyan_c}${history_val}${off_c})"
 
-        # Check if current dir has a .git repo
+        # Check if current dir has a .git repo, but hide $HOME git repo
         git_branch=
-        if [ $(ls -A | grep '^.git$') ]; then
+        if [ "$PWD" != "$HOME" ] && [ $(ls -A | grep '^.git$') ]; then
             git_branch="${cyan_c}$(git branch | grep '\*' | awk '{ print $NF }')${off_c}:"
-        fi 
+        fi
 
         # Check if error occurred from last command
         err_cmd=
