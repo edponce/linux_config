@@ -369,3 +369,7 @@ pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-stereo"
 pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-surround"
 pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-surround71"
 
+# Send email
+# Type '.' to end email body
+mail -v -s "Subject blah 5" -S smtp=smtp.gmail.com:587 -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user=edponce2010@gmail.com -S smtp-auth-password=ak823hs -S ssl-verify=ignore -S from=edponce2010@gmail.com edponce00@hotmail.com
+

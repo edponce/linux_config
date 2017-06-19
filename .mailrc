@@ -1,0 +1,40 @@
+account gmail {
+    set smtp-use-starttls
+    set ssl-verify=ignore
+    set smtp-auth=login
+    set smtp=smtp.gmail.com:587
+    set from=edponce2010@gmail.com
+    set smtp-auth-user=edponce2010@gmail.com
+    set smtp-auth-password=linkinpark3097
+}
+
+account hotmail {
+    set smtp-use-starttls
+    set ssl-verify=ignore
+    set smtp-auth=login
+    set smtp=smtp.live.com:587
+    set from=edponce00@hotmail.com
+    set smtp-auth-user=edponce00@hotmail.com
+    set smtp-auth-password=epm85L!fe
+}
+
+account utk {
+    set smtp-use-starttls
+    set ssl-verify=ignore
+    set smtp-auth=login
+    set smtp=smtp.office365.com:587
+    set from=eponcemo@utk.edu
+    set smtp-auth-user=eponcemo@utk.edu
+    set smtp-auth-password=epm85L!fe
+}
+
+account icloud {
+    set smtp-use-starttls
+    set ssl-verify=ignore
+    set smtp-auth=login
+    set smtp=smtp.mail.me.com:587
+    set from=edponce00@icloud.com
+    set smtp-auth-user=edponce00@icloud.com
+    set smtp-auth-password=Edp12345
+}
+

@@ -1,0 +1,37 @@
+# Eduardo custom: default options in /etc/screenrc
+
+# ------------------------------------------------------------------------------
+# GENERAL SETTINGS
+# ------------------------------------------------------------------------------
+startup_message off
+vbell off
+vbell_msg ""
+defscrollback 4096 
+
+# ------------------------------------------------------------------------------
+# SCREEN KEYBINDINGS
+# ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
+# TERMINAL SETTINGS
+# ------------------------------------------------------------------------------
+# use normal screen buffer, allows scrollback
+termcapinfo xterm*|xterms|xs|rxvt* ti@:te@
+
+
+# ------------------------------------------------------------------------------
+# STARTUP SCREENS
+# ------------------------------------------------------------------------------
+
+# Example of automatically running some programs in windows on screen startup.
+#
+#   The following will open top in the first window, an ssh session to monkey
+#   in the next window, and then open mutt and tail in windows 8 and 9
+#   respectively.
+#
+# screen top
+# screen -t monkey ssh monkey
+# screen -t mail 8 mutt
+# screen -t daemon 9 tail -f /var/log/daemon.log
+
