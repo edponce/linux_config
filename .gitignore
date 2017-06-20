@@ -15,6 +15,7 @@
 #.config/
 .config/dconf/
 .config/libreoffice/
+.config/xpad/
 .cups/
 .dbus/
 Desktop/
