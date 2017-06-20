@@ -1,6 +1,0 @@
-JAC Paper
-discdisc - rp1 <= rp2
-spheresphere - rp1==rp2
-
-Are there any other plots with discrepancies?
--Figure 7 and 10, data without 'if' statement that truncates model before plane separation (dPC) 3~3.4

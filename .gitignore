@@ -13,6 +13,7 @@
 .cinelerra-cv/
 .clamtk/
 #.config/
+.config/dconf/
 .config/libreoffice/
 .cups/
 .dbus/
