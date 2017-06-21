@@ -1,0 +1,63 @@
+#!/bin/bash
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--applet \"APPLET\"] [--click CLICK_ID]"
+    echo
+    echo "Click applet in panel."
+    echo
+}
+
+# Default options 
+applet="Xpad"
+click_id=1
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate
+
+# Save current mouse position
+eval $(xdotool getmouselocation --shell)
+
+# Get dimensions and position of applet 
+#xwininfo -root -tree | grep "$applet" | head -n 1
+applet_dims=(16 16)
+applet_pos=(1711 1063)
+
+# Show panel bar
+x=$((applet_pos[0] + applet_dims[0]/2))
+y=$((applet_pos[1] + applet_dims[1]))
+cmd="xdotool mousemove --sync -- $x $y"
+eval "$cmd"
+
+sleep 1 # allow panel to appear
+
+# Move mouse on top of applet
+y=$((applet_pos[1] + applet_dims[1]/2))
+cmd="xdotool mousemove --sync -- $x $y"
+eval "$cmd"
+
+# Click applet 
+cmd="xdotool key click $click_id"
+eval "$cmd"
+
+# Restore mouse location
+cmd="xdotool mousemove --sync -- $X $Y"
+eval "$cmd"
+
+unset applet click_id X Y SCREEN WINDOW applet_dims applet_pos x y cmd 
+
