@@ -505,6 +505,12 @@
         <command>galculator</command>
       </action>
     </keybind>
+    <!-- Eduardo custom: Toggle Xpad notes on Ctrl + Alt + N -->
+    <keybind key="C-A-N">
+      <action name="Execute">
+        <command>click_applet -c 1 -a "Xpad"</command>
+      </action>
+    </keybind>
     <!-- Lock the screen on Ctrl + Alt + L -->
     <keybind key="C-A-L">
       <action name="Execute">
