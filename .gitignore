@@ -14,6 +14,7 @@
 .clamtk/
 #.config/
 .config/dconf/
+.config/gpicview/
 .config/libreoffice/
 .config/xpad/
 .cups/
