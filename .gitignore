@@ -41,7 +41,7 @@ Dropbox/
 .gnupg/
 .gnuplot_history
 .hardinfo/
-.history/
+#.history/
 .hplip/
 .ICAClient/
 .ipython/
