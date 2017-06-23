@@ -16,6 +16,7 @@
 .config/dconf/
 .config/gpicview/
 .config/libreoffice/
+.config/pulse
 .config/xpad/
 .cups/
 .dbus/
