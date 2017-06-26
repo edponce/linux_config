@@ -82,7 +82,7 @@ fi
 
 if [ $launch_tool -gt 0 ]; then
     # Check that NVIDIA modules are not loaded/used by other applications 
-    if [ $(lsmod | grep -c nvidia) -gt 0 ]; then
+    if [ $(lsmod | grep -c 'nvidia') -gt 0 ]; then
         echo "Warning: Please close all applications using NVIDIA modules...exiting."
         exit 0
     fi
@@ -98,7 +98,7 @@ if [ $launch_tool -gt 0 ]; then
     fi
 
     # Get current performance level in X11 NVIDIA configuration file
-    default_perf_level=$(grep "RegistryDwords" "$x11_nvidia_file" | grep -o 'PowerMizerDefault=0x[[:digit:]]' | awk -F'=0x' '{ print $2 }')
+    default_perf_level=$(grep 'RegistryDwords' "$x11_nvidia_file" | grep -o 'PowerMizerDefault=0x[[:digit:]]' | awk -F'=0x' '{ print $2 }')
     echo "Current NVIDIA GPU performance level is $default_perf_level."
 
     # Set performance level in X11 NVIDIA configuration file

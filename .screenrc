@@ -7,11 +7,17 @@ startup_message off
 vbell off
 vbell_msg ""
 defscrollback 4096 
+# enable mouse support
+mousetrack on
 
 # ------------------------------------------------------------------------------
 # SCREEN KEYBINDINGS
 # ------------------------------------------------------------------------------
-
+# set escape key to '`' instead of 'Ctrl + a'
+escape ``
+# move input focus to the next region, use 'j' and 'k' as in vi.
+bind j focus down
+bind k focus up 
 
 # ------------------------------------------------------------------------------
 # TERMINAL SETTINGS
@@ -34,4 +40,17 @@ termcapinfo xterm*|xterms|xs|rxvt* ti@:te@
 # screen -t monkey ssh monkey
 # screen -t mail 8 mutt
 # screen -t daemon 9 tail -f /var/log/daemon.log
+screen -t main_bash 1 bash
+screen -t extra_bash 2 bash
+screen -t top 0 top
+screen -t syslog 9 tail -f /var/log/syslog | grep -E -i 'error|warn'
 
+# Arrange windows in regions
+# split vertically
+split -v
+# move to next region
+focus
+select extra_bash
+# move to next region
+focus
+select main_bash

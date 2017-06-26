@@ -51,7 +51,7 @@ window_position()
         wid=
     fi
 
-    readarray -t win_values <<< "$(xwininfo $wid | grep -P '(X|Y|Width|Height):' | awk -F':' '{ print $2 }')"
+    readarray -t win_values <<< "$(xwininfo $wid | grep -E '(X|Y|Width|Height):' | awk -F':' '{ print $2 }')"
     win_offs=($((win_values[0] - win_values[2])) $((win_values[1] - win_values[3])))
     win_dims=(${win_values[4]} ${win_values[5]})
 }

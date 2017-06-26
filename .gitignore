@@ -13,6 +13,7 @@
 .cinelerra-cv/
 .clamtk/
 #.config/
+.config/byobu/.ssh-agent
 .config/dconf/
 .config/gpicview/
 .config/libreoffice/

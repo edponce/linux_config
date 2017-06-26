@@ -1,0 +1,46 @@
+#!/bin/bash 
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] command"
+    echo
+    echo "Wrapper to invoke a command and clear terminal after its completion."
+    echo
+}
+
+# Default options
+cmd=
+
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        *)
+        cmd="$@"
+        shift $# 
+        ;;
+    esac
+done
+
+# Validate
+if [ -z "$cmd" ]; then
+    echo "Error: no command was specified."
+    exit 1
+fi
+
+which $(echo "$cmd" | cut -d' ' -f1 -) > /dev/null
+if [ $? -ne 0 ]; then
+    echo "Error: command '$cmd' was not found."
+    exit 1
+fi
+
+# Run 
+eval "$cmd"
+clear
+
+unset cmd 
+

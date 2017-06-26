@@ -378,3 +378,9 @@ mail -v -s "Subject blah 5" -S smtp=smtp.gmail.com:587 -S smtp-use-starttls -S s
 # Belkin router
 # Dashboard access 192.168.2.1
 
+# Print desktop notification (bash)
+notify-send 'Hello, world!' 'This is an example notify.' --icon=dialog-information
+
+# Get C and library flags required for gcc/g++ compiler
+pkg-config --cflags --libs libnotify
+
