@@ -71,9 +71,14 @@ else
 
     # Colors
     declare -r off_c="\[\033[00m\]"
-    declare -r cyan_c="\[\033[01;36m\]"
-    declare -r green_c="\[\033[01;32m\]"
+    declare -r black_c="\[\033[01;30m\]"
     declare -r red_c="\[\033[01;31m\]"
+    declare -r green_c="\[\033[01;32m\]"
+    declare -r yellow_c="\[\033[01;33m\]"
+    declare -r blue_c="\[\033[01;34m\]"
+    declare -r magenta_c="\[\033[01;35m\]"
+    declare -r cyan_c="\[\033[01;36m\]"
+    declare -r white_c="\[\033[01;37m\]"
     declare -r history_backup_dir="$HOME/.history"
 
     prompt_command() {
@@ -81,7 +86,7 @@ else
         local err_cmd 
 
         local history_last file_num history_basefile history_backupfile 
-        local history_val history_curr git_branch
+        local history_val history_curr git_branch prompt_symbol
 
         # History consistency between shells
         if [ $((SECONDS - history_last_sync_seconds)) -gt $history_max_sync_seconds ]; then
@@ -129,8 +134,15 @@ else
             err_cmd="[${red_c}${err_cmd_val}${off_c}]"
         fi
 
+        # Set prompt symbol depending on terminal
+        if [ -z "$STY" ]; then
+            prompt_symbol="${green_c}\$${off_c}" # lxterminal
+        else
+            prompt_symbol="${yellow_c}\$${off_c}" # screen
+        fi
+
         # Set prompt
-        PS1="${debian_chroot:+($debian_chroot)}${history_curr}${err_cmd} ${git_branch}\W${green_c}\$${off_c} " # default interactive prompt
+        PS1="${debian_chroot:+($debian_chroot)}${history_curr}${err_cmd} ${git_branch}\W${prompt_symbol} " # default interactive prompt
     }
     
     prompt_234_command() {

@@ -21,8 +21,8 @@ alias dropbox_start='dbus-launch dropbox start'
 alias iotop='sudo iotop'
 alias powertop='sudo powertop'
 alias imagemagick='display-im6'
-alias vi='cmd_clear vi'
 alias screen='cmd_clear screen'
+alias screen0='cmd_clear screen -c ~/.screen/.default_screenrc'
 
 # NVIDIA, settings and visual profiler
 alias nvidia-settingsx='optirun nvidia-settings -c :8' 
