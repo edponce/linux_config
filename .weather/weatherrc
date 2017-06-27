@@ -1,0 +1,59 @@
+# Copyright (c) 2006-2012 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+# use, copy, modify, and distribute this software is granted under terms
+# provided in the LICENSE file distributed with this software.
+
+# NOTE: Predefined IATA/FAA airport codes are now in the airports file.
+
+# Weather data:
+#  1. weather --info "search city"
+#
+#  2. metar keynames obtained from:
+#     a. NOAA's Aviation Weather Center
+#        https://aviationweather.gov/addsmetars
+#     b. http://tgftp.nws.noaa.gov/data/nsd_cccc.txt
+#
+#     zone forecasts obtained from the NOAA's Public Forecast Zone Maps
+#     http://www.nws.noaa.gov/mirs/public/prods/maps/pfzones_list.htm
+
+
+[default]
+description = Default settings
+cachedir = ~/.weather
+setpath = .:~/.weather:/var/lib/weather-util:/usr/share/weather-util
+defargs = knoxville 
+
+[knoxville]
+description = Conditions at Knoxville, TN 
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/KDKX.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/tn/tnz069.txt
+
+[tys]
+description = Conditions at McGhee Tyson Airport, TN
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/KTYS.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/tn/tnz069.txt
+
+[nashville]
+description = Conditions at Nashville, TN
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/KBNA.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/tn/tnz027.txt
+
+[ornl]
+description = Conditions at Oak Ridge, TN
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/KOQT.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/tn/tnz036.txt
+
+[pr]
+description = Conditions at San Juan, PR 
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/TJSJ.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/pr/prz001.txt
+
+[houston]
+description = Conditions at Houston, TX (Bush Intl Airport) 
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/KIAH.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/tx/txz163.txt
+
+[miami]
+description = Conditions at Miami, FL (Intl Airport) 
+metar = http://tgftp.nws.noaa.gov/data/observations/metar/decoded/KMIA.TXT
+zone_forecast = http://tgftp.nws.noaa.gov/data/forecasts/zone/fl/flz073.txt
+

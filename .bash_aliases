@@ -22,7 +22,7 @@ alias iotop='sudo iotop'
 alias powertop='sudo powertop'
 alias imagemagick='display-im6'
 alias screen='cmd_clear screen'
-alias screen0='cmd_clear screen -c ~/.screen/.default_screenrc'
+alias screen0='cmd_clear screen -c ~/.screen/screenrc0'
 
 # NVIDIA, settings and visual profiler
 alias nvidia-settingsx='optirun nvidia-settings -c :8' 

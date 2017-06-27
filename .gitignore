@@ -17,7 +17,7 @@
 .config/dconf/
 .config/gpicview/
 .config/libreoffice/
-.config/pulse
+.config/pulse/
 .config/xpad/
 .cups/
 .dbus/
@@ -100,7 +100,8 @@ Videos/
 .viminfo
 #.vimrc
 VirtualBox*/
-.weather/
+.weather/datacache/
+.weather/searches
 .wget-hsts
 .Xauthority
 #.xinputrc

@@ -125,24 +125,13 @@ screen -t top 9 top
 # SCREEN LAYOUTS
 # ------------------------------------------------------------------------------
 #  -----------
-#  |         |
-#  |         |
-#  |         |
-#  |         |
-#  |         |
-#  -----------
-# 0
-layout new one
-select 0
-
-#  -----------
 #  |    |    |
 #  |    |    |
 #  |    |    |
 #  |    |-----
 #  |    |    |
 #  -----------
-# 1
+# 0
 layout new v2h1
 select 0
 split -v
@@ -154,112 +143,6 @@ resize 15
 select 9
 focus left 
 
-#  -----------
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  -----------
-# 2
-layout new v2
-select 0
-split -v
-focus right
-select 1
-focus left
-
-
-#  ----------
-#  |  |  |  |
-#  |  |  |  |
-#  |  |  |  |
-#  |  |  |  |
-#  |  |  |  |
-#  ----------
-# 3
-layout new v3
-select 0
-split -v
-split -v
-focus right
-select 1
-focus left 
-
-#  -----------
-#  |    |    |
-#  |    |    |
-#  -----------
-#  |    |    |
-#  |    |    |
-#  -----------
-# 4
-layout new four
-select 0
-split -v
-split
-focus down 
-select 1
-focus right 
-split
-focus down 
-select 9
-focus
-
-#  -----------
-#  |         |
-#  |         |
-#  -----------
-#  |         |
-#  |         |
-#  -----------
-# 5
-layout new h2
-select 0
-split
-focus down
-select 1
-focus up
-
-#  ----------
-#  |  |  |  |
-#  |  |  |  |
-#  ----------
-#  |  |  |  |
-#  |  |  |  |
-#  ----------
-# 6
-layout new six
-select 0
-split -v
-split -v
-split
-focus down
-select 1
-focus right
-split
-focus right
-split
-focus down
-select 9
-focus
-
-#  -----------
-#  |         |
-#  -----------
-#  |         |
-#  -----------
-#  |         |
-#  -----------
-# 7
-layout new h3
-select 0
-split
-split
-focus down 
-select 1
-focus up 
-
-layout attach one # default layout when attaching
+layout attach v2h1 # default layout when attaching
 layout select v2h1 # default layout
 

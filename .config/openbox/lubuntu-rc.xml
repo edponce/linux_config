@@ -482,6 +482,7 @@
     </keybind>
     <!-- Eduardo custom: Launch default browser on Ctrl + Alt + S -->
     <keybind key="C-A-S">
+      <action name="ToggleMaximize"/>
       <action name="Execute">
         <command>lxterminal -e screen</command>
       </action>
