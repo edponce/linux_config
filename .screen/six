@@ -1,0 +1,26 @@
+#  ----------
+#  |  |  |  |
+#  |  |  |  |
+#  ----------
+#  |  |  |  |
+#  |  |  |  |
+#  ----------
+# 6
+layout new six
+select 0
+split -v
+split -v
+split
+focus down
+select 1
+focus right
+select 2
+split
+focus down
+select 3
+focus right
+select 4
+split
+focus down
+select 9
+focus

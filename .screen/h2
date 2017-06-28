@@ -1,0 +1,14 @@
+#  -----------
+#  |         |
+#  |         |
+#  -----------
+#  |         |
+#  |         |
+#  -----------
+# 5
+layout new h2
+select 0
+split
+focus
+select 1
+focus

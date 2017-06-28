@@ -1,0 +1,20 @@
+#  -----------
+#  |    |    |
+#  |    |    |
+#  -----------
+#  |    |    |
+#  |    |    |
+#  -----------
+# 8
+layout new four
+select 0
+split -v
+split
+focus down 
+select 1
+focus right 
+select 2
+split
+focus down 
+select 9
+focus

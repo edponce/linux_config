@@ -1,19 +1,20 @@
-# Eduardo custom: default options in /etc/screenrc
+# Eduardo custom: system-wide options in /etc/screenrc
 
 # ------------------------------------------------------------------------------
 # GENERAL SETTINGS
 # ------------------------------------------------------------------------------
-#nethack on #???
+#nethack on # changes style of error messages to be funnier
 #defflow on # will force screen to process ^S/^Q
-#autodetach off # automatically detach session on SIGHUP
+autodetach on # automatically detach session on SIGHUP
 defnonblock 5 # enable non-blocking mode to better cope with flaky ssh connections.
-deflogin on # enable login mode
-startup_message off # disable startup message
-vbell off # disable visual bell
+deflogin on # login mode
+startup_message off # startup message
+vbell off # visual bell
 vbell_msg ""
-bell off # disable bell
+bell off # sound bell
 bell_msg ""
 defscrollback 2048 # set size for scrollback buffer
+defwrap on # line-wrap
 mousetrack on # mouse support for selecting regions
 altscreen on # allows viewing shell's history after command execution
 layout autosave on # save layouts after detaching or layout switching
@@ -38,6 +39,7 @@ bind O login off
 bind } history
 bind ^H hardcopy # rebind hardcopy, need 'h' for focus movement
 bind ' ' windowlist -b # show windowlist with space
+bind ^D displays # show listing of attached displays
 
 # Move input focus between regions using vi-like shortcuts
 bind \t focus
@@ -50,9 +52,18 @@ bind x remove # set remove region to 'x' instead of 'X'
 bind q only # retain only current region, remove others
 bind ; colon # change colon (literal command) symbol to a semi-colon
 
-# Switch layouts
+# Switch layouts using Shift+[0-9]
 bind y layout prev
 bind u layout next 
+bind ) eval "layout remove one" "source ~/.screen/one"
+bind ! eval "layout remove v2h1" "source ~/.screen/v2h1"
+bind @ eval "layout remove v2" "source ~/.screen/v2"
+bind \# eval "layout remove v3" "source ~/.screen/v3"
+bind $ eval "layout remove v4" "source ~/.screen/v4"
+bind % eval "layout remove h2" "source ~/.screen/h2"
+bind \^ eval "layout remove six" "source ~/.screen/six"
+bind & eval "layout remove h3" "source ~/.screen/h3"
+bind * eval "layout remove four" "source ~/.screen/four"
 
 bind s split # horizontal split
 bind r eval "command -c rsz" # enter resize mode
@@ -75,11 +86,11 @@ bind -c rsz -k kr eval "focus right" "command -c rsz"
 # ------------------------------------------------------------------------------
 # TERMINAL SETTINGS
 # ------------------------------------------------------------------------------
-caption always "%3n %t" # show number and window name
-hardstatus off # disable hardstatus bar
+caption always "%3n %t" # show number and name for each region
 
 # Hardstatus to display a bar at the bottom with current window highlighted
-#hardstatus on
+hardstatus off # hardstatus bar
+#hardstatus on # hardstatus bar
 #hardstatus alwayslastline
 #hardstatus string "%{= kG}[%{G}%H%? %1`%?%{g}][%= %{= kw}%-w%{+b yk} %n*%t%?(%u)%? %{-}%+w %=%{g}][%{B}%m/%d %{W}%C%A%{g}]"
 
@@ -106,9 +117,6 @@ termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
 # (which has scrollback), not the alternate screen buffer.
 termcapinfo xterm|xterms|xs|rxvt ti@:te@
 
-# scrollback with Shift-PgUp|PgDn
-#bindkey -m "^[[5~" stuff ^b
-#bindkey -m "^[[6~" stuff ^f
 
 # ------------------------------------------------------------------------------
 # STARTUP SCREENS
@@ -124,142 +132,8 @@ screen -t top 9 top
 # ------------------------------------------------------------------------------
 # SCREEN LAYOUTS
 # ------------------------------------------------------------------------------
-#  -----------
-#  |         |
-#  |         |
-#  |         |
-#  |         |
-#  |         |
-#  -----------
-# 0
-layout new one
-select 0
-
-#  -----------
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  |    |-----
-#  |    |    |
-#  -----------
-# 1
-layout new v2h1
-select 0
-split -v
-focus right
-select 1
-split
-focus down
-resize 15
-select 9
-focus left 
-
-#  -----------
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  |    |    |
-#  -----------
-# 2
-layout new v2
-select 0
-split -v
-focus right
-select 1
-focus left
-
-
-#  ----------
-#  |  |  |  |
-#  |  |  |  |
-#  |  |  |  |
-#  |  |  |  |
-#  |  |  |  |
-#  ----------
-# 3
-layout new v3
-select 0
-split -v
-split -v
-focus right
-select 1
-focus left 
-
-#  -----------
-#  |    |    |
-#  |    |    |
-#  -----------
-#  |    |    |
-#  |    |    |
-#  -----------
-# 4
-layout new four
-select 0
-split -v
-split
-focus down 
-select 1
-focus right 
-split
-focus down 
-select 9
-focus
-
-#  -----------
-#  |         |
-#  |         |
-#  -----------
-#  |         |
-#  |         |
-#  -----------
-# 5
-layout new h2
-select 0
-split
-focus down
-select 1
-focus up
-
-#  ----------
-#  |  |  |  |
-#  |  |  |  |
-#  ----------
-#  |  |  |  |
-#  |  |  |  |
-#  ----------
-# 6
-layout new six
-select 0
-split -v
-split -v
-split
-focus down
-select 1
-focus right
-split
-focus right
-split
-focus down
-select 9
-focus
-
-#  -----------
-#  |         |
-#  -----------
-#  |         |
-#  -----------
-#  |         |
-#  -----------
-# 7
-layout new h3
-select 0
-split
-split
-focus down 
-select 1
-focus up 
-
+source ~/.screen/one
 layout attach one # default layout when attaching
-layout select v2h1 # default layout
+source ~/.screen/v2h1 # default layout
+#layout select v2h1 # default layout
 

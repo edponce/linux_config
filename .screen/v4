@@ -1,0 +1,20 @@
+#  ---------
+#  | | | | |
+#  | | | | |
+#  | | | | |
+#  | | | | |
+#  | | | | |
+#  ---------
+# 4
+layout new v4
+select 0
+split -v
+split -v
+split -v
+focus
+select 1
+focus
+select 2
+focus
+select 3
+focus

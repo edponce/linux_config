@@ -1,0 +1,17 @@
+#  ----------
+#  |  |  |  |
+#  |  |  |  |
+#  |  |  |  |
+#  |  |  |  |
+#  |  |  |  |
+#  ----------
+# 3
+layout new v3
+select 0
+split -v
+split -v
+focus
+select 1
+focus
+select 2
+focus

@@ -1,0 +1,17 @@
+#  -----------
+#  |         |
+#  -----------
+#  |         |
+#  -----------
+#  |         |
+#  -----------
+# 7
+layout new h3
+select 0
+split
+split
+focus
+select 1
+focus
+select 2
+focus

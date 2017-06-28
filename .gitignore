@@ -16,6 +16,7 @@
 .config/byobu/.ssh-agent
 .config/dconf/
 .config/gpicview/
+.config/gtk-*/
 .config/libreoffice/
 .config/pulse/
 .config/xpad/
