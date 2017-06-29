@@ -124,8 +124,10 @@ else
 
         # Check if current dir has a .git repo, but hide $HOME git repo
         git_branch=
-        if [ "$PWD" != "$HOME" ] && [ $(ls -A | grep '^.git$') ]; then
-            git_branch="${cyan_c}$(git branch | grep '\*' | awk '{ print $NF }')${off_c}:"
+        if [[ "$PWD" != "$HOME" ]]; then
+            if [ ! -z "$(ls -A | grep '^.git$')" ]; then
+                git_branch="${cyan_c}$(git branch | grep '\*' | awk '{ print $NF }')${off_c}:"
+            fi
         fi
 
         # Check if error occurred from last command
@@ -141,8 +143,8 @@ else
             prompt_symbol="${yellow_c}\$${off_c}" # screen
         fi
 
-        # Set prompt
-        PS1="${debian_chroot:+($debian_chroot)}${history_curr}${err_cmd} ${git_branch}\W${prompt_symbol} " # default interactive prompt
+        # Set default interactive prompt
+        PS1="${debian_chroot:+($debian_chroot)}${history_curr}${err_cmd} ${git_branch}\W${prompt_symbol} "
     }
     
     prompt_234_command() {

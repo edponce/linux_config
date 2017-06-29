@@ -16,6 +16,7 @@
 #.config/
 .config/byobu/.ssh-agent
 .config/dconf/
+.config/evince/accels
 .config/gpicview/
 .config/gtk-*/
 .config/libreoffice/

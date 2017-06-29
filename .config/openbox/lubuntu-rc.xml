@@ -155,7 +155,7 @@
      cases. -->
   <margins>
     <top>0</top>
-    <!-- Eduardo custom: bottom=14 allows lxterminal extend low enough -->
+    <!-- bottom=14 allows lxterminal to extend low enough -->
     <bottom>14</bottom>
     <left>0</left>
     <right>0</right>
@@ -181,54 +181,6 @@
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
     <!-- Keybindings for desktop switching -->
-    <keybind key="C-A-Left">
-      <action name="GoToDesktop">
-        <to>left</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Right">
-      <action name="GoToDesktop">
-        <to>right</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Up">
-      <action name="GoToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Down">
-      <action name="GoToDesktop">
-        <to>down</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="A-S-Left">
-      <action name="SendToDesktop">
-        <to>left</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="A-S-Right">
-      <action name="SendToDesktop">
-        <to>right</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="A-S-Up">
-      <action name="SendToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="A-S-Down">
-      <action name="SendToDesktop">
-        <to>down</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
     <keybind key="W-F1">
       <action name="GoToDesktop">
         <to>1</to>
@@ -244,88 +196,7 @@
         <to>3</to>
       </action>
     </keybind>
-    <keybind key="W-D">
-      <action name="ToggleShowDesktop"/>
-    </keybind>
-    <!-- Keybindings for windows -->
-    <keybind key="A-F4">
-      <action name="Close"/>
-    </keybind>
-    <keybind key="A-Escape">
-      <action name="Lower"/>
-      <action name="FocusToBottom"/>
-      <action name="Unfocus"/>
-    </keybind>
-    <keybind key="A-space">
-      <action name="ShowMenu">
-        <menu>client-menu</menu>
-      </action>
-    </keybind>
-    <!-- Eduardo custom: Keybindings for keyboard mouse events -->
-    <keybind key="C-Left">
-      <action name="Execute">
-        <command>mouse_teleport -r 15 -d 0</command>
-      </action>
-    </keybind> 
-    <keybind key="C-Right">
-      <action name="Execute">
-        <command>mouse_teleport -r 15 -d 2</command>
-      </action>
-    </keybind> 
-    <keybind key="C-Up">
-      <action name="Execute">
-        <command>mouse_teleport -r 15 -d 1</command>
-      </action>
-    </keybind> 
-    <keybind key="C-Down">
-      <action name="Execute">
-        <command>mouse_teleport -r 15 -d 3</command>
-      </action>
-    </keybind> 
-    <keybind key="C-S-Left">
-      <action name="Execute">
-        <command>mouse_teleport -d 0</command>
-      </action>
-    </keybind> 
-    <keybind key="C-S-Right">
-      <action name="Execute">
-        <command>mouse_teleport -d 2</command>
-      </action>
-    </keybind> 
-    <keybind key="C-S-Up">
-      <action name="Execute">
-        <command>mouse_teleport -d 1</command>
-      </action>
-    </keybind> 
-    <keybind key="C-S-Down">
-      <action name="Execute">
-        <command>mouse_teleport -d 3</command>
-      </action>
-    </keybind> 
-    <keybind key="C-space">
-      <action name="Execute">
-        <command>xdotool click 1</command>
-      </action>
-    </keybind> 
-    <keybind key="C-S-space">
-      <action name="Execute">
-        <command>xdotool click 3</command>
-      </action>
-    </keybind> 
-    <!-- Eduardo custom: Keybindings for windows -->
-    <keybind key="A-M">
-      <action name="ToggleMaximize"/>
-    </keybind>
-    <keybind key="A-I">
-      <action name="Iconify"/>
-    </keybind>
-    <!-- Take a screenshot of the current window with scrot when Alt+Print are pressed -->
-    <keybind key="A-Print">
-      <action name="Execute">
-        <command>scrot -u</command>
-      </action>
-    </keybind>
-    <!-- Keybindings for window switching -->
+    <!-- Keybindings for windows, switching, tiling, and placement -->
     <keybind key="A-Tab">
       <action name="NextWindow">
         <dialog>icons</dialog>
@@ -345,71 +216,107 @@
         </finalactions>
       </action>
     </keybind>
-    <!-- Keybindings for window switching with the arrow keys -->
-    <keybind key="W-Left">
+    <keybind key="A-H">
       <action name="DirectionalCycleWindows">
         <direction>left</direction>
       </action>
     </keybind>
-    <keybind key="W-Right">
+    <keybind key="A-L">
       <action name="DirectionalCycleWindows">
         <direction>right</direction>
       </action>
     </keybind>
-    <keybind key="W-Up">
+    <keybind key="A-K">
       <action name="DirectionalCycleWindows">
         <direction>up</direction>
       </action>
     </keybind>
-    <keybind key="W-Down">
+    <keybind key="A-J">
       <action name="DirectionalCycleWindows">
         <direction>down</direction>
       </action>
     </keybind>
-    <!-- Keybindings for window tiling -->
-    <keybind key="A-Left">        # HalfLeftScreen
+    <keybind key="W-H">        # HalfLeftScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>50%</width></action>
     </keybind>
-    <keybind key="A-Right">        # HalfRightScreen
+    <keybind key="W-L">        # HalfRightScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>-0</x><y>0</y><height>100%</height><width>50%</width></action>
     </keybind>
-    <keybind key="A-Up">        # HalfUpperScreen
+    <keybind key="W-K">        # HalfUpperScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>0</y><width>100%</width><height>50%</height></action>
     </keybind>
-    <keybind key="A-Down">        # HalfLowerScreen
+    <keybind key="W-J">        # HalfLowerScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>-0</y><width>100%</width><height>50%</height></action>
     </keybind>
-    <!-- Eduardo custom: Keybindings for window tiling -->
-    <keybind key="A-space">        # FullCenterScreen
-      <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>center</x><y>0</y><height>100%</height><width>50%</width></action>
-    </keybind>
-    <keybind key="W-A-Left">        # HalfLowerLeftScreen
+    <keybind key="W-A-H">        # HalfLowerLeftScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>-0</y><height>50%</height><width>50%</width></action>
     </keybind>
-    <keybind key="W-A-Right">        # HalfUpperRightScreen
-      <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>-0</x><y>0</y><height>50%</height><width>50%</width></action>
-    </keybind>
-    <keybind key="W-A-Up">        # HalfUpperLeftScreen
-      <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>50%</height></action>
-    </keybind>
-    <keybind key="W-A-Down">        # HalfLowerRightScreen
+    <keybind key="W-A-L">        # HalfLowerRightScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>-0</x><y>-0</y><width>50%</width><height>50%</height></action>
     </keybind>
-    <!-- Eduardo custom: Keybindings for window monitor placement -->
-    <keybind key="W-S-Left">        # SendToPrevMonitor
+    <keybind key="W-A-J">        # HalfUpperLeftScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-A-K">        # HalfUpperRightScreen
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><height>50%</height><width>50%</width></action>
+    </keybind>
+    <keybind key="W-Left">        # SendToPrevMonitor
       <action name="MoveResizeTo"><monitor>prev</monitor></action>
     </keybind>
-    <keybind key="W-S-Right">        # SendToNextMonitor
+    <keybind key="W-Right">        # SendToNextMonitor
       <action name="MoveResizeTo"><monitor>next</monitor></action>
+    </keybind>
+    <keybind key="W-A-Left">
+      <action name="SendToDesktop">
+        <to>left</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    <keybind key="W-A-Right">
+      <action name="SendToDesktop">
+        <to>right</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    <keybind key="W-A-Up">
+      <action name="SendToDesktop">
+        <to>up</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    <keybind key="W-A-Down">
+      <action name="SendToDesktop">
+        <to>down</to>
+        <wrap>no</wrap>
+      </action>
+    </keybind>
+    <keybind key="W-D">
+      <action name="ToggleShowDesktop"/>
+    </keybind>
+    <keybind key="W-F">
+      <action name="ToggleFullscreen"/>
+    </keybind>
+    <keybind key="W-M">
+      <action name="ToggleMaximize"/>
+    </keybind>
+    <keybind key="W-I">
+      <action name="Iconify"/>
+    </keybind>
+    <keybind key="A-F4">
+      <action name="Close"/>
+    </keybind>
+    <keybind key="W-Escape">
+      <action name="ShowMenu">
+        <menu>client-menu</menu>
+      </action>
     </keybind>
     <!-- Keybindings for running applications on Home + E -->
     <keybind key="W-E">
@@ -432,10 +339,6 @@
         <command>lxpanelctl menu</command>
       </action>
     </keybind>
-    <!-- Keybindings to toggle fullscreen -->
-    <keybind key="F11">
-      <action name="ToggleFullscreen"/>
-    </keybind>
     <!-- Launch task manager on Ctrl + Alt + Del -->
     <keybind key="C-A-Delete">
       <action name="Execute">
@@ -446,7 +349,7 @@
         <command>lxtask</command>
       </action>
     </keybind>
-    <!-- Launch a terminal on Ctrl + Alt + T -->
+    <!-- Launch terminal on Ctrl + Alt + T -->
     <keybind key="C-A-T">
       <action name="Execute">
         <startupnotify>
@@ -456,7 +359,7 @@
         <command>lxterminal</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Launch default browser on Ctrl + Alt + S -->
+    <!-- Launch screen in terminal on Ctrl + Alt + S -->
     <keybind key="C-A-S">
       <action name="ToggleMaximize"/>
       <action name="Execute">
@@ -467,7 +370,7 @@
         <command>lxterminal -e screen</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Launch default browser on Ctrl + Alt + B -->
+    <!-- Launch browser on Ctrl + Alt + B -->
     <keybind key="C-A-B">
       <action name="Execute">
         <startupnotify>
@@ -477,7 +380,7 @@
         <command>firefox</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Launch MATLAB on Ctrl + Alt + M -->
+    <!-- Launch MATLAB on Ctrl + Alt + M -->
     <keybind key="C-A-M">
       <action name="Execute">
         <startupnotify>
@@ -487,7 +390,7 @@
         <command>matlab -desktop</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Launch gedit on Ctrl + Alt + E -->
+    <!-- Launch editor on Ctrl + Alt + E -->
     <keybind key="C-A-E">
       <action name="Execute">
         <startupnotify>
@@ -497,7 +400,7 @@
         <command>gedit</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Launch galculator on Ctrl + Alt + G -->
+    <!-- Launch calculator on Ctrl + Alt + G -->
     <keybind key="C-A-G">
       <action name="Execute">
         <startupnotify>
@@ -507,7 +410,7 @@
         <command>galculator</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Toggle Xpad notes on Ctrl + Alt + N -->
+    <!-- Toggle notes on Ctrl + Alt + N -->
     <keybind key="C-A-N">
       <action name="Execute">
         <command>click_applet -c 1 -a "Xpad"</command>
@@ -516,10 +419,10 @@
     <!-- Lock the screen on Ctrl + Alt + L -->
     <keybind key="C-A-L">
       <action name="Execute">
-        <command>lxlock</command>
+        <command>lxsession-default lock</command>
       </action>
     </keybind>
-    <!-- Keybinding for Volume management -->
+    <!-- Keybinding for volume management -->
     <keybind key="XF86AudioRaiseVolume">
       <action name="Execute">
         <command>amixer -q sset Master 3%+ unmute</command>
@@ -535,46 +438,22 @@
         <command>amixer -q -D pulse sset Master toggle</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Increase volume on Alt + S + V -->
-    <keybind key="C-S-V">
+    <keybind key="W-Up">
       <action name="Execute">
         <command>amixer -q sset Master 3%+ unmute</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Decrease volume on Alt + V -->
-    <keybind key="C-V">
+    <keybind key="W-Down">
       <action name="Execute">
         <command>amixer -q sset Master 3%- unmute</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Mute volume on Home + V -->
     <keybind key="W-V">
       <action name="Execute">
         <command>amixer -q -D pulse sset Master toggle</command>
       </action>
     </keybind>
-    <!-- Eduardo custom: Change wallpaper on Ctrl + Alt + # -->
-    <keybind key="C-A-0">
-      <action name="Execute">
-        <command>wallpaper_change -w 0</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-1">
-      <action name="Execute">
-        <command>wallpaper_change -w 1</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-2">
-      <action name="Execute">
-        <command>wallpaper_change -w 2</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-3">
-      <action name="Execute">
-        <command>wallpaper_change -w 3</command>
-      </action>
-    </keybind>
-    <!-- Keybinding for terminal button -->
+    <!-- Keybinding for browser button -->
     <keybind key="XF86WWW">
       <action name="Execute">
         <startupnotify>
@@ -584,6 +463,7 @@
         <command>firefox</command>
       </action>
     </keybind>
+    <!-- Keybinding for terminal button -->
     <keybind key="XF86Terminal">
       <action name="Execute">
         <startupnotify>
@@ -613,6 +493,38 @@
         <command>pcmanfm</command>
       </action>
     </keybind>
+    <!-- Take screenshot with scrot -->
+    <keybind key="Print">
+      <action name="Execute">
+        <command>scrot</command>
+      </action>
+    </keybind>
+    <keybind key="A-Print">
+      <action name="Execute">
+        <command>scrot -u</command>
+      </action>
+    </keybind>
+    <!-- Change wallpaper on Ctrl + Alt + # -->
+    <keybind key="C-A-0">
+      <action name="Execute">
+        <command>wallpaper_change -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-1">
+      <action name="Execute">
+        <command>wallpaper_change -w 1</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-2">
+      <action name="Execute">
+        <command>wallpaper_change -w 2</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-3">
+      <action name="Execute">
+        <command>wallpaper_change -w 3</command>
+      </action>
+    </keybind>
     <!-- Keybindings for Multimedia Keys and LCD Backlight (alternative when not using gnome-power-manager or xfce4-volumed) -->
     <keybind key="C-F7">
       <action name="Execute">
@@ -629,18 +541,63 @@
         <command>xbacklight -inc 10</command>
       </action>
     </keybind>
-    <!-- Launch scrot when Print is pressed -->
-    <keybind key="Print">
-      <action name="Execute">
-        <command>scrot</command>
-      </action>
-    </keybind>
     <!-- Launch logout when push on the shutdown button -->
     <keybind key="XF86PowerOff">
       <action name="Execute">
         <command>lxsession-default quit</command>
       </action>
     </keybind>
+    <!-- Keybindings for keyboard mouse events -->
+    <keybind key="A-Left">
+      <action name="Execute">
+        <command>mouse_teleport -r 15 -d 0</command>
+      </action>
+    </keybind> 
+    <keybind key="A-Right">
+      <action name="Execute">
+        <command>mouse_teleport -r 15 -d 2</command>
+      </action>
+    </keybind> 
+    <keybind key="A-Up">
+      <action name="Execute">
+        <command>mouse_teleport -r 15 -d 1</command>
+      </action>
+    </keybind> 
+    <keybind key="A-Down">
+      <action name="Execute">
+        <command>mouse_teleport -r 15 -d 3</command>
+      </action>
+    </keybind> 
+    <keybind key="A-S-Left">
+      <action name="Execute">
+        <command>mouse_teleport -d 0</command>
+      </action>
+    </keybind> 
+    <keybind key="A-S-Right">
+      <action name="Execute">
+        <command>mouse_teleport -d 2</command>
+      </action>
+    </keybind> 
+    <keybind key="A-S-Up">
+      <action name="Execute">
+        <command>mouse_teleport -d 1</command>
+      </action>
+    </keybind> 
+    <keybind key="A-S-Down">
+      <action name="Execute">
+        <command>mouse_teleport -d 3</command>
+      </action>
+    </keybind> 
+    <keybind key="A-space">
+      <action name="Execute">
+        <command>xdotool click 1</command>
+      </action>
+    </keybind> 
+    <keybind key="A-S-space">
+      <action name="Execute">
+        <command>xdotool click 3</command>
+      </action>
+    </keybind> 
   </keyboard>
   <mouse>
     <dragThreshold>8</dragThreshold>
@@ -995,14 +952,14 @@
     <!-- show icons on the menu -->
   </menu>
   <applications>
-    <!-- Eduardo custom: focus new windows for all apps -->
+    <!-- all apps: focus new windows -->
     <application class="*">
       <focus>yes</focus>
       <maximized>false</maximized>
       <fullscreen>no</fullscreen>
       <iconic>no</iconic>
     </application>
-    <!-- Eduardo custom: lxterminal -->
+    <!-- lxterminal -->
     <application name="*terminal*">
       <decor>no</decor>
       <position force="no">
@@ -1014,7 +971,7 @@
         <height>100%</height>
       </size>
     </application>
-    <!-- Eduardo custom: xterm -->
+    <!-- xterm -->
     <application name="xterm">
       <position force="no">
         <x>0</x>
@@ -1025,7 +982,7 @@
         <height>100%</height>
       </size>
     </application>
-    <!-- Eduardo custom: evince -->
+    <!-- evince -->
     <application name="evince">
       <position force="no">
         <x>-0</x>
@@ -1036,7 +993,7 @@
         <height>100%</height>
       </size>
     </application>
-    <!-- Eduardo custom: gedit -->
+    <!-- gedit -->
     <application name="gedit">
       <position force="no">
         <x>-0</x>
@@ -1047,7 +1004,7 @@
         <height>100%</height>
       </size>
     </application>
-    <!-- Eduardo custom: Firefox -->
+    <!-- Firefox -->
     <!-- application role="browser" -->
     <application name="Navigator">
       <position force="no">

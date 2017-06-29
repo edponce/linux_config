@@ -1,0 +1,163 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Report Template by Eduardo Ponce %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%  PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+% Document styles
+\documentclass[letterpaper,12pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[hmargin=0.5in, vmargin=1.0in]{geometry}  % Document margins
+\usepackage{array}  % Row and column types
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{amsmath}  % Math
+\usepackage{booktabs}  % Rule lines
+
+% Custom automatic indentation
+\setlength\parindent{0pt}
+%----------------------------------------------------------------------------------------
+
+
+\begin{document}
+
+{\centering\textbf{\Large EPM OpenBox Keybindings} \par}
+
+\section*{Desktops management}
+\begin{table}[ht]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt Win + F1} & Go to desktop 1 \\
+    {\tt Win + F2} & Go to desktop 2 \\
+    {\tt Win + F3} & Go to desktop 3 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section*{Windows management}
+\begin{table}[ht]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt Alt + Tab} & Focus next window \\
+    {\tt Alt + Shft + Tab} & Focus previous window \\
+    {\tt Alt + H} & Focus left window \\
+    {\tt Alt + L} & Focus right window \\
+    {\tt Alt + K} & Focus up window \\
+    {\tt Alt + J} & Focus down window \\
+    \hline
+    {\tt Win + H} & Tile active window in monitor (half-left) \\
+    {\tt Win + L} & Tile active window in monitor (half-right) \\
+    {\tt Win + K} & Tile active window in monitor (half-upper) \\
+    {\tt Win + J} & Tile active window in monitor (half-lower) \\
+    {\tt Win + Alt + H} & Tile active window in monitor (half-lower-left) \\
+    {\tt Win + Alt + L} & Tile active window in monitor (half-lower-right) \\
+    {\tt Win + Alt + J} & Tile active window in monitor (half-upper-left) \\
+    {\tt Win + Alt + K} & Tile active window in monitor (half-upper-right) \\
+    \hline
+    {\tt Win + $\leftarrow$} & Send active window to next monitor \\
+    {\tt Win + $\rightarrow$} & Send active window to previous monitor \\
+    \hline
+    {\tt Win + Alt + $\leftarrow$} & Send active window to next desktop (left) \\
+    {\tt Win + Alt + $\rightarrow$} & Send active window to next desktop (right) \\
+    {\tt Win + Alt + $\uparrow$} & Send active window to next desktop (up) \\
+    {\tt Win + Alt + $\downarrow$} & Send active window to next desktop (down) \\
+    \hline
+    {\tt Win + D} & Toggle show desktop \\
+    {\tt Win + F} & Toggle fullscreen of active window \\
+    {\tt Win + M} & Toggle maximize of active window \\
+    {\tt Win + I} & Iconify active window \\
+    {\tt Alt + F4} & Close active window \\
+    {\tt Win + Esc} & Show active window client-menu \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section*{Applications}
+\begin{table}[ht]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt Ctrl + Alt + T} & LXTerminal \\
+    {\tt Ctrl + Alt + S} & Screen in LXTerminal \\
+    {\tt Ctrl + Alt + B} & Firefox \\
+    {\tt Ctrl + Alt + M} & MATLAB \\
+    {\tt Ctrl + Alt + E} & gedit \\
+    {\tt Ctrl + Alt + G} & Galculator \\
+    {\tt Ctrl + Alt + N} & Toggle show/hide Xpad notes \\
+    {\tt Ctrl + Alt + L} & Lock screen \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section*{Sound management}
+\begin{table}[ht]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt Win + $\uparrow$} & Increase volume \\ 
+    {\tt Win + $\downarrow$} & Decrease volume \\ 
+    {\tt Win + V} & Toggle mute/unmute volume \\ 
+    \hline
+  \end{tabular}
+\end{table}
+
+\section*{Extras}
+\begin{table}[ht]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt C-g} & Openbox chain quit key \\
+    \hline
+    {\tt Win + E} & Open file manager \\ 
+    {\tt Win + R} & LXPanel run menu \\ 
+    {\tt Ctrl + Esc} & LXPanel main menu \\
+    {\tt Ctrl + Alt + Del} & Task manager \\
+    {\tt PrntScr} & Take screenshot of active desktop \\
+    {\tt Alt + PrntScr} & Take screenshot of active window \\
+    {\tt Ctrl + Alt + 1} & Change wallpaper \\
+    {\tt Ctrl + Alt + 2} & Change wallpaper \\
+    {\tt Ctrl + Alt + 3} & Change wallpaper \\
+    {\tt Ctrl + F7} & Turn off monitor \\
+    {\tt Ctrl + F10} & Decrease monitor backlight \\
+    {\tt Ctrl + F11} & Increase monitor backlight \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section*{Mouse (keyboard)}
+\begin{table}[ht]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt Alt + $\leftarrow$} & Move mouse (left) \\
+    {\tt Alt + $\rightarrow$} & Move mouse (right) \\
+    {\tt Alt + $\uparrow$} & Move mouse (left) \\
+    {\tt Alt + $\downarrow$} & Move mouse (down) \\
+    \hline
+    {\tt Alt + Shft + $\leftarrow$} & Move mouse to side of monitor (left-center) \\
+    {\tt Alt + Shft + $\rightarrow$} & Move mouse to side of monitor (right-center) \\
+    {\tt Alt + Shft + $\uparrow$} & Move mouse to side of monitor (up-center) \\
+    {\tt Alt + Shft + $\downarrow$} & Move mouse to side of monitor (down-center) \\
+    \hline
+    {\tt Alt + Space} & Emulate mouse click (left-button) \\
+    {\tt Alt + Shft + Space} & Emulate mouse click (right-button) \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\end{document}  
+
