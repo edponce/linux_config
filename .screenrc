@@ -11,8 +11,8 @@ deflogin on # login mode
 startup_message off # startup message
 vbell off # visual bell
 vbell_msg ""
-bell off # sound bell
-bell_msg ""
+#bell off # sound bell
+#bell_msg ""
 defscrollback 2048 # set size for scrollback buffer
 defwrap on # line-wrap
 mousetrack on # mouse support for selecting regions
@@ -53,6 +53,7 @@ bind q only # retain only current region, remove others
 bind ; colon # change colon (literal command) symbol to a semi-colon
 
 # Switch layouts using Shift+[0-9]
+bind ^W layout show
 bind y layout prev
 bind u layout next 
 bind ) eval "layout remove one" "source ~/.screen/one"
@@ -110,7 +111,7 @@ termcapinfo xterm*|linux*|rxvt*|Eterm* OP
 
 # Change the xterm initialization string from is2=\E[!p\E[?3;4l\E[4l\E>
 # (Fixes the "Aborted because of window size change" konsole symptoms, bug #134198)
-termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+termcapinfo xterm "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
 
 # To get screen to add lines to xterm's scrollback buffer, uncomment the
 # following termcapinfo line which tells xterm to use the normal screen buffer
@@ -125,15 +126,19 @@ screen -t shell_main 0 bash
 screen -t shell_extra 1 bash
 #screen -t mail 7 mutt
 #screen -t matlab 5 matlab_cli -j
-#screen -t logs 8 bash -c "tail -f /var/log/syslog | grep -E -i 'error|warn'"
+bind ^E eval "remove logs" "screen -t logs 8 bash -c \"tail -f /var/log/syslog | grep -E -i 'error|warn'\""
 screen -t top 9 top
 
 
 # ------------------------------------------------------------------------------
 # SCREEN LAYOUTS
 # ------------------------------------------------------------------------------
+layout remove one
 source ~/.screen/one
 layout attach one # default layout when attaching
-source ~/.screen/v2h1 # default layout
-#layout select v2h1 # default layout
+
+# Default layout
+layout remove v2h1
+source ~/.screen/v2h1
+#layout select v2h1
 
