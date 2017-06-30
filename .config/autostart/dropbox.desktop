@@ -2,7 +2,6 @@
 Name=Dropbox
 GenericName=File Synchronizer
 Comment=Sync your files across computers and to the web
-TryExec=dropbox
 Exec=dbus-launch dropbox start -i
 Terminal=false
 Type=Application

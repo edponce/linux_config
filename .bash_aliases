@@ -21,20 +21,17 @@ alias dropbox_start='dbus-launch dropbox start'
 alias iotop='sudo iotop'
 alias powertop='sudo powertop'
 alias imagemagick='display-im6'
-alias screen='cmd_clear screen'
+alias screen='clear_after screen'
 
 # NVIDIA, settings and visual profiler
 alias nvidia-settingsx='optirun nvidia-settings -c :8' 
 alias nvvpx='optirun nvvp'
 
 # Session control
-# Move to openbox config, https://wiki.archlinux.org/index.php/openbox 
 alias goodbye='sudo systemctl poweroff'
 alias restart='sudo systemctl reboot'
 alias powernap='sudo systemctl suspend'
 alias hibernate='sudo systemctl hibernate'
-alias lockscreen='lxsession-default lock'
-alias logout='lxsession-default quit'
 
 #alias battery='upower -i `upower -e | grep battery` | grep -E "state|percentage"'
 alias battery='acpi -b -i'

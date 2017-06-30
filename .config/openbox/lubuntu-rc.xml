@@ -416,10 +416,16 @@
         <command>click_applet -c 1 -a "Xpad"</command>
       </action>
     </keybind>
-    <!-- Lock the screen on Ctrl + Alt + L -->
+    <!-- Lock session on Ctrl + Alt + L -->
     <keybind key="C-A-L">
       <action name="Execute">
         <command>lxsession-default lock</command>
+      </action>
+    </keybind>
+    <!-- Quit session on Ctrl + Alt + Q -->
+    <keybind key="C-A-Q">
+      <action name="Execute">
+        <command>lxsession-default quit</command>
       </action>
     </keybind>
     <!-- Keybinding for volume management -->

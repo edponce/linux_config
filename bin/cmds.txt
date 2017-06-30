@@ -385,3 +385,9 @@ notify-send 'Hello, world!' 'This is an example notify.' --icon=dialog-informati
 # Get C and library flags required for gcc/g++ compiler
 pkg-config --cflags --libs libnotify
 
+# Printing
+lpstat -d # list current default printer
+lpstat -t # show all printers info
+# Print 1 copy
+lp -n 1 -d Desktjet_3510 file.txt
+
