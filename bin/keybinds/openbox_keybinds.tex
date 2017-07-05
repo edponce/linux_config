@@ -19,6 +19,7 @@
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash\hspace{0pt}}m{#1}}
 \usepackage{amsmath}  % Math
 \usepackage{booktabs}  % Rule lines
+\usepackage{float}  % Options for floating objects
 
 % Custom automatic indentation
 \setlength\parindent{0pt}
@@ -27,10 +28,10 @@
 
 \begin{document}
 
-{\centering\textbf{\Large EPM OpenBox Keybindings} \par}
+{\centering\textbf{\Large OpenBox Keybindings} \par}
 
 \section*{Desktops management}
-\begin{table}[ht]
+\begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
     \textbf{Keybind} & \textbf{Description} \\
@@ -43,7 +44,7 @@
 \end{table}
 
 \section*{Windows management}
-\begin{table}[ht]
+\begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
     \textbf{Keybind} & \textbf{Description} \\
@@ -64,13 +65,14 @@
     {\tt Win + Alt + J} & Tile active window in monitor (half-upper-left) \\
     {\tt Win + Alt + K} & Tile active window in monitor (half-upper-right) \\
     \hline
-    {\tt Win + $\leftarrow$} & Send active window to next monitor \\
-    {\tt Win + $\rightarrow$} & Send active window to previous monitor \\
+    {\tt Ctrl + Win + 0} & Change monitor to LVDS1 only \\
+    {\tt Ctrl + Win + 1} & Extend monitor to VGA (left) \\
+    {\tt Ctrl + Win + 2} & Extend monitor to HDMI (left) \\
+    {\tt Ctrl + Win + H} & Send active window to next monitor \\
+    {\tt Ctrl + Win + L} & Send active window to previous monitor \\
     \hline
     {\tt Win + Alt + $\leftarrow$} & Send active window to next desktop (left) \\
     {\tt Win + Alt + $\rightarrow$} & Send active window to next desktop (right) \\
-    {\tt Win + Alt + $\uparrow$} & Send active window to next desktop (up) \\
-    {\tt Win + Alt + $\downarrow$} & Send active window to next desktop (down) \\
     \hline
     {\tt Win + D} & Toggle show desktop \\
     {\tt Win + F} & Toggle fullscreen of active window \\
@@ -82,12 +84,25 @@
   \end{tabular}
 \end{table}
 
-\section*{Applications}
-\begin{table}[ht]
+\section*{Session management}
+\begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
     \textbf{Keybind} & \textbf{Description} \\
     \hline
+    {\tt Ctrl + Alt + F1-F6} & Go to terminal text mode tty1-tty6 \\
+    {\tt Ctrl + Alt + F7} & Go to terminal GUI mode, tty7 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section*{Applications}
+\begin{table}[H]
+  \begin{tabular}{|C{5cm}|L{10cm}|}
+    \hline
+    \textbf{Keybind} & \textbf{Description} \\
+    \hline
+    {\tt Ctrl + Alt + Del} & Task manager \\
     {\tt Ctrl + Alt + T} & LXTerminal \\
     {\tt Ctrl + Alt + S} & Screen in LXTerminal \\
     {\tt Ctrl + Alt + B} & Firefox \\
@@ -97,12 +112,16 @@
     {\tt Ctrl + Alt + N} & Toggle show/hide Xpad notes \\
     {\tt Ctrl + Alt + L} & Lock session \\
     {\tt Ctrl + Alt + Q} & Quit session \\
+    {\tt Ctrl + Alt + 0} & Default wallpaper \\
+    {\tt Ctrl + Alt + 1} & Wallpaper style 1 \\
+    {\tt Ctrl + Alt + 2} & Wallpaper style 2 \\
+    {\tt Ctrl + Alt + 3} & Wallpaper style 3 \\
     \hline
   \end{tabular}
 \end{table}
 
 \section*{Sound management}
-\begin{table}[ht]
+\begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
     \textbf{Keybind} & \textbf{Description} \\
@@ -115,22 +134,18 @@
 \end{table}
 
 \section*{Extras}
-\begin{table}[ht]
+\begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
     \textbf{Keybind} & \textbf{Description} \\
     \hline
     {\tt C-g} & Openbox chain quit key \\
     \hline
+    {\tt PrntScr} & Take screenshot of active desktop \\
+    {\tt Alt + PrntScr} & Take screenshot of active window \\
     {\tt Win + E} & Open file manager \\ 
     {\tt Win + R} & LXPanel run menu \\ 
     {\tt Ctrl + Esc} & LXPanel main menu \\
-    {\tt Ctrl + Alt + Del} & Task manager \\
-    {\tt PrntScr} & Take screenshot of active desktop \\
-    {\tt Alt + PrntScr} & Take screenshot of active window \\
-    {\tt Ctrl + Alt + 1} & Change wallpaper \\
-    {\tt Ctrl + Alt + 2} & Change wallpaper \\
-    {\tt Ctrl + Alt + 3} & Change wallpaper \\
     {\tt Ctrl + F7} & Turn off monitor \\
     {\tt Ctrl + F10} & Decrease monitor backlight \\
     {\tt Ctrl + F11} & Increase monitor backlight \\
@@ -139,7 +154,7 @@
 \end{table}
 
 \section*{Mouse (keyboard)}
-\begin{table}[ht]
+\begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
     \textbf{Keybind} & \textbf{Description} \\

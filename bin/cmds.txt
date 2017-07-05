@@ -386,6 +386,7 @@ notify-send 'Hello, world!' 'This is an example notify.' --icon=dialog-informati
 pkg-config --cflags --libs libnotify
 
 # Printing
+lpstat -r # check that CUPS is running
 lpstat -d # list current default printer
 lpstat -t # show all printers info
 # Print 1 copy

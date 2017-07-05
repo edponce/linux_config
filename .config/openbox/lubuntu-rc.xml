@@ -268,10 +268,25 @@
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>-0</x><y>0</y><height>50%</height><width>50%</width></action>
     </keybind>
-    <keybind key="W-Left">        # SendToPrevMonitor
+    <keybind key="C-W-0">
+      <action name="Execute">
+        <command>monitor_change -p 0</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-1">
+      <action name="Execute">
+        <command>monitor_change -p 1</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-2">
+      <action name="Execute">
+        <command>monitor_change -p 2</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-H">        # SendToPrevMonitor
       <action name="MoveResizeTo"><monitor>prev</monitor></action>
     </keybind>
-    <keybind key="W-Right">        # SendToNextMonitor
+    <keybind key="C-W-L">        # SendToNextMonitor
       <action name="MoveResizeTo"><monitor>next</monitor></action>
     </keybind>
     <keybind key="W-A-Left">
@@ -283,18 +298,6 @@
     <keybind key="W-A-Right">
       <action name="SendToDesktop">
         <to>right</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="W-A-Up">
-      <action name="SendToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="W-A-Down">
-      <action name="SendToDesktop">
-        <to>down</to>
         <wrap>no</wrap>
       </action>
     </keybind>
@@ -428,6 +431,27 @@
         <command>lxsession-default quit</command>
       </action>
     </keybind>
+    <!-- Change wallpaper on Ctrl + Alt + # -->
+    <keybind key="C-A-0">
+      <action name="Execute">
+        <command>wallpaper_change -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-1">
+      <action name="Execute">
+        <command>wallpaper_change -w 1</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-2">
+      <action name="Execute">
+        <command>wallpaper_change -w 2</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-3">
+      <action name="Execute">
+        <command>wallpaper_change -w 3</command>
+      </action>
+    </keybind>
     <!-- Keybinding for volume management -->
     <keybind key="XF86AudioRaiseVolume">
       <action name="Execute">
@@ -508,27 +532,6 @@
     <keybind key="A-Print">
       <action name="Execute">
         <command>scrot -u</command>
-      </action>
-    </keybind>
-    <!-- Change wallpaper on Ctrl + Alt + # -->
-    <keybind key="C-A-0">
-      <action name="Execute">
-        <command>wallpaper_change -w 0</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-1">
-      <action name="Execute">
-        <command>wallpaper_change -w 1</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-2">
-      <action name="Execute">
-        <command>wallpaper_change -w 2</command>
-      </action>
-    </keybind>
-    <keybind key="C-A-3">
-      <action name="Execute">
-        <command>wallpaper_change -w 3</command>
       </action>
     </keybind>
     <!-- Keybindings for Multimedia Keys and LCD Backlight (alternative when not using gnome-power-manager or xfce4-volumed) -->
