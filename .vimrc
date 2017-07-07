@@ -48,6 +48,9 @@ nnoremap ; :
 " Prevent stupid window from popping up
 nnoremap q: :q
 
+" Clear terminal 
+nnoremap <silent> <F4> :!clear<CR><CR>
+
 " Search and replace shortcut
 nnoremap <silent> <F5> :%s//gc<Left><Left><Left>
 

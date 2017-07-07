@@ -139,9 +139,11 @@ sudo echo "manual" >> /etc/init/SERVICE.conf
 # To disable services permanently
 sudo mv /etc/init/SERVICE.conf /etc/init/SERVICE.conf.disabled
 
-# View tasks and memory usage
-top
+# View tasks, memory, and network usage
+top # tasks
 htop
+sudo iotop # memory
+sudo ntop -u ntop # network, http://localhost:3000, admin (e8l!)
 
 # Convert/transform/resize image
 # Use larger dimension, keep aspect ratio
@@ -391,4 +393,21 @@ lpstat -d # list current default printer
 lpstat -t # show all printers info
 # Print 1 copy
 lp -n 1 -d Desktjet_3510 file.txt
+
+# Update locale, language (/etc/default/locale)
+locale # show current settings
+locale -a # show available locales 
+locale -a -v # show available locales 
+update-locale LANG=en_US.UTF-8
+update-locale LANG=es_PR.UTF-8
+
+# Setup autologin in LightDM
+# user must be part of 'autologin' group
+groupadd -r autologin
+gpasswd -a edponce autologin
+# In /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf, add
+#pam-service=lightdm
+#pam-autologin-service=lightdm-autologin
+autologin-user=edponce
+autologin-user-timeout=0
 

@@ -19,6 +19,7 @@
 .config/evince/accels
 .config/gpicview/
 .config/gtk-*/
+.config/ibus/
 .config/libreoffice/
 .config/pulse/
 .config/xpad/

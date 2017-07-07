@@ -112,7 +112,7 @@ Plugin {
 Plugin {
   type=dclock
   Config {
-    ClockFmt=%a %b %d, %I:%M %p
+    ClockFmt=%a %b-%d-%Y %I:%M %p
     TooltipFmt=%A %x
     BoldFont=0
     IconOnly=0

@@ -364,7 +364,6 @@
     </keybind>
     <!-- Launch screen in terminal on Ctrl + Alt + S -->
     <keybind key="C-A-S">
-      <action name="ToggleMaximize"/>
       <action name="Execute">
         <startupnotify>
           <enabled>true</enabled>
@@ -381,6 +380,12 @@
           <name>Firefox</name>
         </startupnotify>
         <command>firefox</command>
+      </action>
+    </keybind>
+    <!-- Launch browser on Ctrl + Alt + O -->
+    <keybind key="C-A-O">
+      <action name="Execute">
+        <command>torbrowser-launcher</command>
       </action>
     </keybind>
     <!-- Launch MATLAB on Ctrl + Alt + M -->
@@ -963,25 +968,30 @@
   <applications>
     <!-- all apps: focus new windows -->
     <application class="*">
+      <decor>yes</decor>
       <focus>yes</focus>
       <maximized>false</maximized>
+      <position force="no">
+        <x>0</x>
+        <y>0</y>
+      </position>
       <fullscreen>no</fullscreen>
       <iconic>no</iconic>
     </application>
     <!-- lxterminal -->
-    <application name="*terminal*">
+    <application name="lxterminal">
       <decor>no</decor>
       <position force="no">
         <x>0</x>
         <y>0</y>
       </position>
       <size>
-        <width>50%</width>
+        <width>90%</width>
         <height>100%</height>
       </size>
     </application>
-    <!-- xterm -->
-    <application name="xterm">
+    <!-- xterm, lxterm -->
+    <application name="*xterm">
       <position force="no">
         <x>0</x>
         <y>0</y>
