@@ -513,6 +513,11 @@
         <command>amixer -q -D pulse sset Master toggle</command>
       </action>
     </keybind>
+    <keybind key="W-V">
+      <action name="Execute">
+        <command>amixer -q -D pulse sset Master toggle</command>
+      </action>
+    </keybind>
     <keybind key="W-Up">
       <action name="Execute">
         <command>amixer -q sset Master 3%+ unmute</command>
@@ -523,9 +528,14 @@
         <command>amixer -q sset Master 3%- unmute</command>
       </action>
     </keybind>
-    <keybind key="W-V">
+    <keybind key="W-Left">
       <action name="Execute">
-        <command>amixer -q -D pulse sset Master toggle</command>
+        <command>sound_change -p 1</command>
+      </action>
+    </keybind>
+    <keybind key="W-Right">
+      <action name="Execute">
+        <command>sound_change -p 2</command>
       </action>
     </keybind>
     <!-- Keybinding for browser button -->
@@ -649,12 +659,12 @@
     </keybind> 
     <keybind key="W-A-Left">
       <action name="Execute">
-        <command>xdotool click 1</command>
+        <command>mouse_teleport -c 0</command>
       </action>
     </keybind> 
     <keybind key="W-A-Right">
       <action name="Execute">
-        <command>xdotool click 3</command>
+        <command>mouse_teleport -c 1</command>
       </action>
     </keybind> 
     <keybind key="W-A-Up">
@@ -681,6 +691,7 @@
     <!-- Set this to TRUE to move the mouse pointer across the desktop when
        switching due to hitting the edge of the screen -->
     <context name="Frame">
+    <!--
       <mousebind button="A-Left" action="Press">
         <action name="Focus"/>
         <action name="Raise"/>
@@ -734,6 +745,7 @@
           <to>next</to>
         </action>
       </mousebind>
+    -->
     </context>
     <context name="Titlebar">
       <mousebind button="Left" action="Drag">
@@ -927,6 +939,7 @@
       </mousebind>
     </context>
     <context name="Desktop">
+    <!--
       <mousebind button="A-Up" action="Click">
         <action name="GoToDesktop">
           <to>previous</to>
@@ -947,6 +960,7 @@
           <to>next</to>
         </action>
       </mousebind>
+    -->
       <mousebind button="Left" action="Press">
         <action name="Focus"/>
         <action name="Raise"/>
@@ -980,6 +994,7 @@
           <to>next</to>
         </action>
       </mousebind>
+    <!--
       <mousebind button="A-Up" action="Click">
         <action name="GoToDesktop">
           <to>previous</to>
@@ -990,6 +1005,7 @@
           <to>next</to>
         </action>
       </mousebind>
+    -->
     </context>
   </mouse>
   <menu>
@@ -1023,8 +1039,11 @@
   <applications>
     <!-- default settings for all applications -->
     <application class="*">
+      <layer>normal</layer>
       <decor>yes</decor>
       <shade>no</shade>
+      <skip_taskbar>no</skip_taskbar>
+      <skip_pager>no</skip_pager>
       <maximized>false</maximized>
       <fullscreen>no</fullscreen>
       <iconic>no</iconic>
@@ -1082,6 +1101,10 @@
         <width>50%</width>
         <height>100%</height>
       </size>
+    </application>
+    <!-- Xpad -->
+    <application name="xpad">
+      <skip_taskbar>yes</skip_taskbar>
     </application>
     <!--
   # this is an example with comments through out. use these to make your

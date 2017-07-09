@@ -3,10 +3,11 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID]"
+    echo "Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID] [--click CLICK_ID]"
     echo
     echo "Moves mouse in the specified direction using preset or relative screen positions." 
     echo "In dual extended screens, a screen number can be provided (w/o relative flag)."
+    echo "Also, left and right mouse clicks can be simulated (all other options are ignored)."
     echo
     echo "Screen IDs:"
     echo " 0 -> current (default)"
@@ -20,6 +21,9 @@ usage()
     echo " 3 -> down"
     echo " 4 -> center (w/o relative flag)"
     echo
+    echo "Click IDs:"
+    echo " 0 -> left (default)"
+    echo " 1 -> right"
 }
 
 # Default options 
@@ -28,6 +32,7 @@ movement="mousemove"
 rel_dist=10
 direction_id=0
 edge_dist=60
+mouse_click=-1
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -47,6 +52,10 @@ while [ "$1" ]; do
         ;;
         -d | --direction)
         direction_id=$2
+        shift 2
+        ;;
+        -c | --click)
+        mouse_click=$2
         shift 2
         ;;
         *)
@@ -73,76 +82,96 @@ if [ $direction_id -lt 0 ] || [ $direction_id -gt 4 ]; then
     exit 1 
 fi
 
-# Move mouse pointer
-if [ "$movement" = "mousemove" ]; then
-    . custom_utils
-
-    # Find screen of current mouse position
-    if [ $screen_id -eq 0 ]; then
-        # Get position of lower-left screen
-        screen_position 1 
-
-        # Outputs: X, Y, SCREEN, WINDOW 
-        eval $(xdotool getmouselocation --shell) 
-        if [ $X -le ${screen_dims[0]} ]; then
-            screen_id=1
-        else
-            screen_id=2
-        fi
-        unset X Y SCREEN WINDOW 
-    fi
-
-    # Get position of selected screen
-    screen_position $((screen_id))
-
-    # Move mouse to preset position 
-    if [ $direction_id -eq 0 ]; then
-        # left
-        x=$edge_dist
-        y=$((screen_dims[1] / 2))
-    elif [ $direction_id -eq 1 ]; then
-        # up
-        x=$((screen_dims[0] / 2))
-        y=$edge_dist
-    elif [ $direction_id -eq 2 ]; then
-        # right 
-        x=$((screen_dims[0] - edge_dist))
-        y=$((screen_dims[1] / 2))
-    elif [ $direction_id -eq 3 ]; then
-        # down 
-        x=$((screen_dims[0] / 2))
-        if [ $screen_id -eq 1 ]; then
-            # Show desktop panel
-            y=${screen_dims[1]}
-        else
-            y=$((screen_dims[1] - edge_dist))
-        fi
-    elif [ $direction_id -eq 4 ]; then
-        # center 
-        x=$((screen_dims[0] / 2))
-        y=$((screen_dims[1] / 2))
-    fi
-    x=$((screen_offs[0] + x))
-    y=$((screen_offs[1] + y))
-    unset screen_dims screen_offs
-elif [ "$movement" = "mousemove_relative" ]; then
-    # Move mouse to relative position 
-    x=0
-    y=0
-    if [ $direction_id -eq 0 ]; then
-        x=-$rel_dist
-    elif [ $direction_id -eq 1 ]; then
-        y=-$rel_dist
-    elif [ $direction_id -eq 2 ]; then
-        x=$rel_dist
-    elif [ $direction_id -eq 3 ]; then
-        y=$rel_dist
-    fi
+if [ $mouse_click -lt -1 ] || [ $mouse_click -gt 1 ]; then
+    echo "Error: invalid mouse click value."
+    exit 1 
 fi
 
-# Run
-cmd="xdotool $movement --sync -- $x $y"
-eval "$cmd"
+# Click window located at current mouse position
+if [ $mouse_click -ne -1 ]; then
+    # Outputs: X, Y, SCREEN, WINDOW 
+    eval $(xdotool getmouselocation --shell)
+    eval $(xdotool windowactivate $WINDOW)
+    
+    if [ $mouse_click -eq 0 ]; then
+        # left click
+        eval $(xdotool click 1)
+    elif [ $mouse_click -eq 1 ]; then
+        # right click
+        eval $(xdotool click 3)
+    fi
+    unset X Y SCREEN WINDOW 
+else
+    # Move mouse pointer
+    if [ "$movement" = "mousemove" ]; then
+        . custom_utils
 
-unset movement direction_id screen_id edge_dist rel_dist x y cmd 
+        # Find screen of current mouse position
+        if [ $screen_id -eq 0 ]; then
+            # Get position of lower-left screen
+            screen_position 1 
+
+            # Outputs: X, Y, SCREEN, WINDOW 
+            eval $(xdotool getmouselocation --shell) 
+            if [ $X -le ${screen_dims[0]} ]; then
+                screen_id=1
+            else
+                screen_id=2
+            fi
+            unset X Y SCREEN WINDOW 
+        fi
+
+        # Get position of selected screen
+        screen_position $((screen_id))
+
+        # Move mouse to preset position 
+        if [ $direction_id -eq 0 ]; then
+            # left
+            x=$edge_dist
+            y=$((screen_dims[1] / 2))
+        elif [ $direction_id -eq 1 ]; then
+            # up
+            x=$((screen_dims[0] / 2))
+            y=$edge_dist
+        elif [ $direction_id -eq 2 ]; then
+            # right 
+            x=$((screen_dims[0] - edge_dist))
+            y=$((screen_dims[1] / 2))
+        elif [ $direction_id -eq 3 ]; then
+            # down 
+            x=$((screen_dims[0] / 2))
+            if [ $screen_id -eq 1 ]; then
+                # Show desktop panel
+                y=${screen_dims[1]}
+            else
+                y=$((screen_dims[1] - edge_dist))
+            fi
+        elif [ $direction_id -eq 4 ]; then
+            # center 
+            x=$((screen_dims[0] / 2))
+            y=$((screen_dims[1] / 2))
+        fi
+        x=$((screen_offs[0] + x))
+        y=$((screen_offs[1] + y))
+        unset screen_dims screen_offs
+    elif [ "$movement" = "mousemove_relative" ]; then
+        # Move mouse to relative position 
+        x=0
+        y=0
+        if [ $direction_id -eq 0 ]; then
+            x=-$rel_dist
+        elif [ $direction_id -eq 1 ]; then
+            y=-$rel_dist
+        elif [ $direction_id -eq 2 ]; then
+            x=$rel_dist
+        elif [ $direction_id -eq 3 ]; then
+            y=$rel_dist
+        fi
+    fi
+
+    # Run
+    eval $(xdotool $movement --sync -- $x $y)
+fi
+
+unset movement direction_id screen_id mouse_click edge_dist rel_dist x y
 
