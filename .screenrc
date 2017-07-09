@@ -29,10 +29,10 @@ bind ^k
 bind ^\
 
 # Unbind keys to support custom settings
-bind f
 
+bind / help # help menu
 escape `` # set escape key to '`' instead of 'Ctrl+a'
-bind \\ quit
+bind Q quit # quit screen
 bind K kill
 bind I login on
 bind O login off
@@ -48,6 +48,8 @@ bind j focus down
 bind k focus up 
 bind l focus right 
 
+bind f fit # fit window to region
+bind t title # set title of window
 bind x remove # set remove region to 'x' instead of 'X'
 bind q only # retain only current region, remove others
 bind ; colon # change colon (literal command) symbol to a semi-colon
@@ -67,6 +69,7 @@ bind & eval "layout remove h3" "source ~/.screen/h3"
 bind * eval "layout remove four" "source ~/.screen/four"
 
 bind s split # horizontal split
+bind \\ split -v # vertical split
 bind r eval "command -c rsz" # enter resize mode
 
 # In resize mode, resize regions using hjkl keys
@@ -89,14 +92,13 @@ bind -c rsz -k kr eval "focus right" "command -c rsz"
 # ------------------------------------------------------------------------------
 # Show number and name for each region
 caption always "%{= WB}%{+b B}%=%?%F%{+b bW}%?%n%f %t%?%F%{-}%?%= %?(%u)%?%{-}"
-#caption always "%{= dB}%{+b B}%=%?%F%{+b bW}%?%n%f %t%?%F%{-}%?%= %?(%u)%?%{-}"
 
 # Hardstatus to display a bar at the bottom with current window highlighted
 #hardstatus off # hardstatus bar
 hardstatus on # hardstatus bar
 hardstatus alwayslastline
-hardstatus string "%{= dW}%{+b W}%{+b dG}[%H]%{-} %{+b dY}[Load: %l]%{-} %=[%-w%{+b bW}%n%f %t%{-}%+w]%= %{+b dC}[%D %M-%d-%Y%{-} %{+b dC}%C %A]%{-}%{-}"
-#hardstatus string "%{= dW}%{+b W}%{+b dG}%H%{-} %{+b dY}[Load: %l]%{-} %=%-w%{+b bW}%n%f %t%{-}%+w%= %{+b dC}%D %M-%d-%Y%{-} %{+b dC}%C %A%{-}%{-}"
+#hardstatus string "%{= dW}%{+b W}%{+b dG}[%H]%{-} %{+b dY}[Load: %l]%{-} %=[%-w%{+b bW}%n%f %t%{-}%+w]%= %{+b dC}[%D %M-%d-%Y%{-} %{+b dC}%C %A]%{-}%{-}"
+hardstatus string "%{= dW}%{+b W}%{+b dG}[%H]%{-} %=[%-w%{+b bW}%n%f %t%{-}%+w]%= %{+b dC}[%D %M-%d-%Y%{-} %{+b dC}%C %A]%{-}%{-}"
 
 # An alternative hardstatus to display a bar at the bottom listing the
 # windownames and highlighting the current windowname in blue.
@@ -125,10 +127,9 @@ termcapinfo xterm ti@:te@
 # ------------------------------------------------------------------------------
 # STARTUP SCREENS
 # ------------------------------------------------------------------------------
-screen -t shell_main 0 bash
-screen -t shell_extra 1 bash
+screen -t main_shell 0 bash
+screen -t extra_shell 1 bash
 #screen -t mail 7 mutt
-#screen -t matlab 5 matlab_cli -j
 #bind ^E eval "remove logs" "screen -t logs 8 bash -c \"tail -f /var/log/syslog | grep -E -i 'error|warn'\""
 #screen -t top 9 top
 
@@ -137,7 +138,6 @@ screen -t shell_extra 1 bash
 # SCREEN LAYOUTS
 # ------------------------------------------------------------------------------
 # Layout in ~/.screen: one, v2, h2, v3, h3, v2h1, v4, four, six
-source ~/.screen/v2
-#layout select one
-#layout attach one
+layout remove h2
+source ~/.screen/h2
 

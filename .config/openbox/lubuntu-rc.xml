@@ -268,6 +268,22 @@
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>-0</x><y>0</y><height>50%</height><width>50%</width></action>
     </keybind>
+    <keybind key="W-S-H">        # HalfLeftScreen shifted
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>45%</width></action>
+    </keybind>
+    <keybind key="W-S-L">        # HalfRightScreen shifted
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-10%</x><y>0</y><height>100%</height><width>45%</width></action>
+    </keybind>
+    <keybind key="W-S-K">        # HalfUpperScreen shifted
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>90%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-S-J">        # HalfLowerScreen shifted
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>90%</width><height>50%</height></action>
+    </keybind>
     <keybind key="C-W-0">
       <action name="Execute">
         <command>monitor_change -p 0</command>
@@ -275,12 +291,32 @@
     </keybind>
     <keybind key="C-W-1">
       <action name="Execute">
-        <command>monitor_change -p 1</command>
+        <command>monitor_change -p 1 -d 0</command>
       </action>
     </keybind>
     <keybind key="C-W-2">
       <action name="Execute">
-        <command>monitor_change -p 2</command>
+        <command>monitor_change -p 1 -d 2</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-3">
+      <action name="Execute">
+        <command>monitor_change -p 1 -m</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-4">
+      <action name="Execute">
+        <command>monitor_change -p 2 -d 0</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-5">
+      <action name="Execute">
+        <command>monitor_change -p 2 -d 2</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-6">
+      <action name="Execute">
+        <command>monitor_change -p 2 -m</command>
       </action>
     </keybind>
     <keybind key="C-W-H">        # SendToPrevMonitor
@@ -289,13 +325,13 @@
     <keybind key="C-W-L">        # SendToNextMonitor
       <action name="MoveResizeTo"><monitor>next</monitor></action>
     </keybind>
-    <keybind key="W-A-Left">
+    <keybind key="C-W-Left">
       <action name="SendToDesktop">
         <to>left</to>
         <wrap>no</wrap>
       </action>
     </keybind>
-    <keybind key="W-A-Right">
+    <keybind key="C-W-Right">
       <action name="SendToDesktop">
         <to>right</to>
         <wrap>no</wrap>
@@ -310,6 +346,10 @@
     <keybind key="W-M">
       <action name="ToggleMaximize"/>
     </keybind>
+    <keybind key="W-S-M">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>90%</width></action>
+    </keybind>
     <keybind key="W-I">
       <action name="Iconify"/>
     </keybind>
@@ -321,7 +361,7 @@
         <menu>client-menu</menu>
       </action>
     </keybind>
-    <!-- Keybindings for running applications on Home + E -->
+    <!-- Launch file manager -->
     <keybind key="W-E">
       <action name="Execute">
         <startupnotify>
@@ -331,7 +371,7 @@
         <command>pcmanfm</command>
       </action>
     </keybind>
-    <!-- Keybindings for running Run menu from Lxpanel on Home + R -->
+    <!-- Launch Run menu -->
     <keybind key="W-R">
       <action name="Execute">
         <command>lxpanelctl run</command>
@@ -342,7 +382,7 @@
         <command>lxpanelctl menu</command>
       </action>
     </keybind>
-    <!-- Launch task manager on Ctrl + Alt + Del -->
+    <!-- Launch task manager -->
     <keybind key="C-A-Delete">
       <action name="Execute">
         <startupnotify>
@@ -352,7 +392,7 @@
         <command>lxtask</command>
       </action>
     </keybind>
-    <!-- Launch terminal on Ctrl + Alt + T -->
+    <!-- Launch terminal -->
     <keybind key="C-A-T">
       <action name="Execute">
         <startupnotify>
@@ -362,7 +402,7 @@
         <command>lxterminal</command>
       </action>
     </keybind>
-    <!-- Launch screen in terminal on Ctrl + Alt + S -->
+    <!-- Launch screen in terminal -->
     <keybind key="C-A-S">
       <action name="Execute">
         <startupnotify>
@@ -372,7 +412,7 @@
         <command>lxterminal -e screen</command>
       </action>
     </keybind>
-    <!-- Launch browser on Ctrl + Alt + B -->
+    <!-- Launch browser -->
     <keybind key="C-A-B">
       <action name="Execute">
         <startupnotify>
@@ -382,13 +422,13 @@
         <command>firefox</command>
       </action>
     </keybind>
-    <!-- Launch browser on Ctrl + Alt + O -->
+    <!-- Launch TOR browser -->
     <keybind key="C-A-O">
       <action name="Execute">
         <command>torbrowser-launcher</command>
       </action>
     </keybind>
-    <!-- Launch MATLAB on Ctrl + Alt + M -->
+    <!-- Launch MATLAB -->
     <keybind key="C-A-M">
       <action name="Execute">
         <startupnotify>
@@ -398,7 +438,7 @@
         <command>matlab -desktop</command>
       </action>
     </keybind>
-    <!-- Launch editor on Ctrl + Alt + E -->
+    <!-- Launch GUI text editor -->
     <keybind key="C-A-E">
       <action name="Execute">
         <startupnotify>
@@ -408,7 +448,7 @@
         <command>gedit</command>
       </action>
     </keybind>
-    <!-- Launch calculator on Ctrl + Alt + G -->
+    <!-- Launch calculator -->
     <keybind key="C-A-G">
       <action name="Execute">
         <startupnotify>
@@ -418,25 +458,25 @@
         <command>galculator</command>
       </action>
     </keybind>
-    <!-- Toggle notes on Ctrl + Alt + N -->
+    <!-- Toggle Xpad notes -->
     <keybind key="C-A-N">
       <action name="Execute">
         <command>click_applet -c 1 -a "Xpad"</command>
       </action>
     </keybind>
-    <!-- Lock session on Ctrl + Alt + L -->
+    <!-- Lock session -->
     <keybind key="C-A-L">
       <action name="Execute">
         <command>lxsession-default lock</command>
       </action>
     </keybind>
-    <!-- Quit session on Ctrl + Alt + Q -->
+    <!-- Quit session -->
     <keybind key="C-A-Q">
       <action name="Execute">
         <command>lxsession-default quit</command>
       </action>
     </keybind>
-    <!-- Change wallpaper on Ctrl + Alt + # -->
+    <!-- Change wallpaper -->
     <keybind key="C-A-0">
       <action name="Execute">
         <command>wallpaper_change -w 0</command>
@@ -457,7 +497,7 @@
         <command>wallpaper_change -w 3</command>
       </action>
     </keybind>
-    <!-- Keybinding for volume management -->
+    <!-- Keybindings for volume management -->
     <keybind key="XF86AudioRaiseVolume">
       <action name="Execute">
         <command>amixer -q sset Master 3%+ unmute</command>
@@ -602,14 +642,29 @@
         <command>mouse_teleport -d 3</command>
       </action>
     </keybind> 
-    <keybind key="A-space">
+    <keybind key="A-S-space">
+      <action name="Execute">
+        <command>mouse_teleport -d 4</command>
+      </action>
+    </keybind> 
+    <keybind key="W-A-Left">
       <action name="Execute">
         <command>xdotool click 1</command>
       </action>
     </keybind> 
-    <keybind key="A-S-space">
+    <keybind key="W-A-Right">
       <action name="Execute">
         <command>xdotool click 3</command>
+      </action>
+    </keybind> 
+    <keybind key="W-A-Up">
+      <action name="Execute">
+        <command>xdotool click 4</command>
+      </action>
+    </keybind> 
+    <keybind key="W-A-Down">
+      <action name="Execute">
+        <command>xdotool click 5</command>
       </action>
     </keybind> 
   </keyboard>
@@ -966,36 +1021,29 @@
     <!-- show icons on the menu -->
   </menu>
   <applications>
-    <!-- all apps: focus new windows -->
+    <!-- default settings for all applications -->
     <application class="*">
       <decor>yes</decor>
-      <focus>yes</focus>
+      <shade>no</shade>
       <maximized>false</maximized>
+      <fullscreen>no</fullscreen>
+      <iconic>no</iconic>
+      <focus>yes</focus>
       <position force="no">
         <x>0</x>
         <y>0</y>
       </position>
-      <fullscreen>no</fullscreen>
-      <iconic>no</iconic>
     </application>
     <!-- lxterminal -->
     <application name="lxterminal">
       <decor>no</decor>
-      <position force="no">
-        <x>0</x>
-        <y>0</y>
-      </position>
       <size>
         <width>90%</width>
         <height>100%</height>
       </size>
     </application>
-    <!-- xterm, lxterm -->
+    <!-- xterm, lxterm, uxterm -->
     <application name="*xterm">
-      <position force="no">
-        <x>0</x>
-        <y>0</y>
-      </position>
       <size>
         <width>50%</width>
         <height>100%</height>

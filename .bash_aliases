@@ -3,7 +3,6 @@ alias down='cd ~/Downloads'
 
 # Work directories 
 alias dissertation='cd ~/Documents/utk/dissertation/thesis_template'
-alias intro='cd ~/Documents/utk/sp17/cosc505'
 alias evidence='cd ~/Documents/utk/sp17/cosc690'
 alias masprng='cd ~/Documents/utk/sprng/masprng'
 alias mcg='cd ~/Documents/utk/modified_cg'

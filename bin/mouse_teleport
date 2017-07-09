@@ -6,17 +6,19 @@ usage()
     echo "Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID]"
     echo
     echo "Moves mouse in the specified direction using preset or relative screen positions." 
-    echo "In dual extended screens, a screen number is used to select one."
+    echo "In dual extended screens, a screen number can be provided (w/o relative flag)."
     echo
     echo "Screen IDs:"
-    echo " 0 -> lower-left (default)"
-    echo " 1 -> second"
+    echo " 0 -> current (default)"
+    echo " 1 -> lower-left"
+    echo " 2 -> second"
     echo
     echo "Direction IDs:"
     echo " 0 -> left (default)"
     echo " 1 -> up"
     echo " 2 -> right"
     echo " 3 -> down"
+    echo " 4 -> center (w/o relative flag)"
     echo
 }
 
@@ -61,12 +63,12 @@ if [ $rel_dist -lt 0 ]; then
     exit 1 
 fi
 
-if [ $screen_id -lt 0 ] || [ $screen_id -gt 1 ]; then
+if [ $screen_id -lt 0 ] || [ $screen_id -gt 2 ]; then
     echo "Error: invalid screen value."
     exit 1 
 fi
 
-if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
+if [ $direction_id -lt 0 ] || [ $direction_id -gt 4 ]; then
     echo "Error: invalid direction value."
     exit 1 
 fi
@@ -74,21 +76,51 @@ fi
 # Move mouse pointer
 if [ "$movement" = "mousemove" ]; then
     . custom_utils
-    screen_position $((screen_id + 1))
+
+    # Find screen of current mouse position
+    if [ $screen_id -eq 0 ]; then
+        # Get position of lower-left screen
+        screen_position 1 
+
+        # Outputs: X, Y, SCREEN, WINDOW 
+        eval $(xdotool getmouselocation --shell) 
+        if [ $X -le ${screen_dims[0]} ]; then
+            screen_id=1
+        else
+            screen_id=2
+        fi
+        unset X Y SCREEN WINDOW 
+    fi
+
+    # Get position of selected screen
+    screen_position $((screen_id))
 
     # Move mouse to preset position 
     if [ $direction_id -eq 0 ]; then
+        # left
         x=$edge_dist
         y=$((screen_dims[1] / 2))
     elif [ $direction_id -eq 1 ]; then
+        # up
         x=$((screen_dims[0] / 2))
         y=$edge_dist
     elif [ $direction_id -eq 2 ]; then
+        # right 
         x=$((screen_dims[0] - edge_dist))
         y=$((screen_dims[1] / 2))
     elif [ $direction_id -eq 3 ]; then
+        # down 
         x=$((screen_dims[0] / 2))
-        y=${screen_dims[1]}
+        if [ $screen_id -eq 1 ]; then
+            # Show desktop panel
+            y=${screen_dims[1]}
+        else
+            y=$((screen_dims[1] - edge_dist))
+        fi
+    elif [ $direction_id -eq 4 ]; then
+        # center 
+        x=$((screen_dims[0] / 2))
+        y=$((screen_dims[1] / 2))
     fi
     x=$((screen_offs[0] + x))
     y=$((screen_offs[1] + y))
