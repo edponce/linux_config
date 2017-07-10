@@ -1,0 +1,119 @@
+#!/bin/bash
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--shift] [--layout LAYOUT_ID]"
+    echo
+    echo "Layouts for arranging windows in X."
+    echo "The shift option allows space for Xpad notes."
+    echo
+    echo "Layout IDs:"
+    echo " 1 -> Dual vertical split (default)"
+    echo " 2 -> Dual horizontal split"
+    echo " 3 -> Triple vertical split"
+    echo " 4 -> Four-way split"
+    echo " 5 -> Dual vertical split with shift"
+    echo " 6 -> Dual horizontal split with shift"
+    echo " 7 -> Triple vertical split with shift"
+    echo " 8 -> Four-way split with shift"
+    echo
+}
+
+# Default options 
+shifted=0
+layout_id=1
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -s | --shift)
+        shifted=1
+        shift 1
+        ;;
+        -l | --layout)
+        layout_id=$2
+        shift 2
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate
+if [ $layout_id -lt 1 ] || [ $layout_id -gt 8 ]; then
+    echo "Error: invalid layout value."
+    exit 1 
+fi
+
+# Get list of all active windows
+declare -ar all_win_ids=($(wmctrl -l | awk '{ print $1 }'))
+
+# Filter list of active windows
+win_ids=()
+for wid in "${all_win_ids[@]}"; do
+    # Give generic name to window, since it fails switch-case condition
+    win_name="$(xdotool getwindowname $wid)"
+    if [ -z "$win_name" ]; then
+        win_name="generic-window"
+    fi
+
+    case "$win_name" in 
+        pcmanfm | xpad)
+        # skip/ignore these windows
+        ;;
+        *)
+        win_ids+=($wid)
+        ;;
+    esac
+done
+
+# Find screen of current mouse position
+. custom_utils
+screen_position 1 
+
+# Outputs: X, Y, SCREEN, WINDOW 
+eval $(xdotool getmouselocation --shell) 
+if [ $X -le ${screen_dims[0]} ]; then
+    screen_id=1
+else
+    screen_id=2
+fi
+unset X Y SCREEN WINDOW 
+
+# Create layouts
+# ...missing...
+
+# Arrange window based on layouts
+cnt=0
+for wid in "${win_ids[@]}"; do
+    # Dual vertical split
+    x=$((screen_dims[0] / 2))
+    y=$((screen_dims[1]))
+
+    case "$cnt" in 
+        0)
+        x_offs=${screen_offs[0]}
+        y_offs=${screen_offs[1]}
+        ;;
+        1)
+        x_offs=$((screen_offs[0] + x))
+        y_offs=${screen_offs[1]}
+        ;;
+    esac
+
+    # Run
+    eval $(wmctrl -i -r $wid -e 0,$x_offs,$y_offs,$x,$y)
+    cnt=$((cnt + 1))
+done
+
+unset screen_dims screen_offs
+unset shifted layout_id win_ids win_name screen_id x y x_offs y_offs
+

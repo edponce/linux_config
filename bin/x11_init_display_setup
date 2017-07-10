@@ -4,17 +4,17 @@
 # Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
 
 # Set display to main monitor only
-if [ $(xrandr --listactivemonitors | grep 'Monitors' | awk -F':' '{ print $NF }') -gt 1 ]; then
+if [ $(xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }') -gt 1 ]; then
     xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 --off --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 --off 
 fi
 
 # Enable horizontal two finger scroll for Synaptic touchpad
-if [ $(synclient -l | grep 'HorizTwoFingerScroll' | awk -F'=' '{ print $NF }') -eq 0 ]; then
+if [ $(synclient -l | awk -F'=' '/HorizTwoFingerScroll/ { print $2 }') -eq 0 ]; then
     synclient HorizTwoFingerScroll=1
 fi
 
 # Enable numlock
-if [ "$(numlockx status | awk '{ print $NF }')" = "off" ]; then
+if [ "$(numlockx status | grep 'off')" ]; then
     numlockx on
 fi
 

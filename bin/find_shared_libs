@@ -29,7 +29,6 @@ if [ ! -z "$SHLIBS" ]; then
 fi
 
 # Accumulate count of library references
-#SHLIBS_TREFS=`echo "$SHLIBS" | awk '{ print $1 }' | perl -e 'my $n = 0; while(<>) { $n+=$_; } print $n;'`
 SHLIBS_TREFS=$(echo "$SHLIBS" | perl -e
     '
     my $n = 0;
@@ -41,7 +40,9 @@ SHLIBS_TREFS=$(echo "$SHLIBS" | perl -e
     ') 
 
 # Print info
-[ ! -z "$SHLIBS" ] && echo "$SHLIBS"
+if [ ! -z "$SHLIBS" ]; then
+    echo "$SHLIBS"
+fi
 echo "Total shared libs: $SHLIBS_CNT"
 echo "Total lib references: $SHLIBS_TREFS"
 echo "Path used: $DIR"

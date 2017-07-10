@@ -69,7 +69,8 @@ if [ -z "$app" ]; then
     exit 1
 fi
 
-which $(echo "$app" | cut -d' ' -f1 -) > /dev/null
+# app [args]
+which $(echo "$app" | awk '{ print $1 }') > /dev/null
 if [ $? -ne 0 ]; then
     echo "Error: application '$app' was not found."
     exit 1

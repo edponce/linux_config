@@ -32,7 +32,8 @@ if [ -z "$cmd" ]; then
     exit 1
 fi
 
-which $(echo "$cmd" | cut -d' ' -f1 -) > /dev/null
+# app [args] 
+which $(echo "$cmd" | awk '{ print $1}') > /dev/null
 if [ $? -ne 0 ]; then
     echo "Error: command '$cmd' was not found."
     exit 1
@@ -40,7 +41,7 @@ fi
 
 # Run 
 eval "$cmd"
-clear
+tput clear
 
 unset cmd 
 

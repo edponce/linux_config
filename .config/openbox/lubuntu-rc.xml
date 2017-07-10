@@ -270,19 +270,24 @@
     </keybind>
     <keybind key="W-S-H">        # HalfLeftScreen shifted
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>45%</width></action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>42%</width></action>
     </keybind>
     <keybind key="W-S-L">        # HalfRightScreen shifted
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>-10%</x><y>0</y><height>100%</height><width>45%</width></action>
+      <action name="MoveResizeTo"><x>-15%</x><y>0</y><height>100%</height><width>43%</width></action>
     </keybind>
     <keybind key="W-S-K">        # HalfUpperScreen shifted
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>0</y><width>90%</width><height>50%</height></action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>85%</width><height>50%</height></action>
     </keybind>
     <keybind key="W-S-J">        # HalfLowerScreen shifted
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>90%</width><height>50%</height></action>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><width>85%</width><height>50%</height></action>
+    </keybind>
+    <keybind key="W-A-1">
+      <action name="Execute">
+        <command>screenx -l 1</command>
+      </action>
     </keybind>
     <keybind key="C-W-0">
       <action name="Execute">
@@ -348,7 +353,13 @@
     </keybind>
     <keybind key="W-S-M">
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>90%</width></action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>85%</width></action>
+    </keybind>
+    <!-- Toggle Xpad notes -->
+    <keybind key="W-N">
+      <action name="Execute">
+        <command>click_applet -c 1 -a "Xpad"</command>
+      </action>
     </keybind>
     <keybind key="W-I">
       <action name="Iconify"/>
@@ -458,10 +469,10 @@
         <command>galculator</command>
       </action>
     </keybind>
-    <!-- Toggle Xpad notes -->
+    <!-- Launch xpad -->
     <keybind key="C-A-N">
       <action name="Execute">
-        <command>click_applet -c 1 -a "Xpad"</command>
+        <command>xpad -n</command>
       </action>
     </keybind>
     <!-- Lock session -->
@@ -1039,7 +1050,7 @@
   <applications>
     <!-- default settings for all applications -->
     <application class="*">
-      <layer>normal</layer>
+      <layer>above</layer>
       <decor>yes</decor>
       <shade>no</shade>
       <skip_taskbar>no</skip_taskbar>
@@ -1057,7 +1068,7 @@
     <application name="lxterminal">
       <decor>no</decor>
       <size>
-        <width>90%</width>
+        <width>85%</width>
         <height>100%</height>
       </size>
     </application>
@@ -1104,7 +1115,15 @@
     </application>
     <!-- Xpad -->
     <application name="xpad">
+      <desktop>all</desktop>
       <skip_taskbar>yes</skip_taskbar>
+      <position force="no">
+        <x>-0</x>
+        <y>0</y>
+      </position>
+      <size>
+        <width>15%</width>
+      </size>
     </application>
     <!--
   # this is an example with comments through out. use these to make your

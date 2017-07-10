@@ -32,7 +32,7 @@ movement="mousemove"
 rel_dist=10
 direction_id=0
 edge_dist=60
-mouse_click=-1
+mouse_click=
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -82,13 +82,13 @@ if [ $direction_id -lt 0 ] || [ $direction_id -gt 4 ]; then
     exit 1 
 fi
 
-if [ $mouse_click -lt -1 ] || [ $mouse_click -gt 1 ]; then
-    echo "Error: invalid mouse click value."
-    exit 1 
-fi
-
 # Click window located at current mouse position
-if [ $mouse_click -ne -1 ]; then
+if [ ! -z $mouse_click ]; then
+    if [ $mouse_click -lt 0 ] || [ $mouse_click -gt 1 ]; then
+        echo "Error: invalid mouse click value."
+        exit 1 
+    fi
+
     # Outputs: X, Y, SCREEN, WINDOW 
     eval $(xdotool getmouselocation --shell)
     eval $(xdotool windowactivate $WINDOW)
