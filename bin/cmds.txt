@@ -106,6 +106,7 @@ sudo iptables -L
 
 # List all running processes
 ps -A
+pstree -p
 sudo pkill PROC_NAME
 
 # TeX manager

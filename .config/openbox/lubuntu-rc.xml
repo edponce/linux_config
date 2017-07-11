@@ -1059,14 +1059,14 @@
       <fullscreen>no</fullscreen>
       <iconic>no</iconic>
       <focus>yes</focus>
-      <position force="no">
-        <x>0</x>
-        <y>0</y>
-      </position>
     </application>
     <!-- lxterminal -->
     <application name="lxterminal">
       <decor>no</decor>
+      <position force="no">
+        <x>0</x>
+        <y>0</y>
+      </position>
       <size>
         <width>85%</width>
         <height>100%</height>
@@ -1074,6 +1074,10 @@
     </application>
     <!-- xterm, lxterm, uxterm -->
     <application name="*xterm">
+      <position force="no">
+        <x>0</x>
+        <y>0</y>
+      </position>
       <size>
         <width>50%</width>
         <height>100%</height>

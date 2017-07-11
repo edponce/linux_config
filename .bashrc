@@ -138,9 +138,11 @@ else
 
         # Set prompt symbol depending on terminal
         if [ -z "$STY" ]; then
-            prompt_symbol="${green_c}\$${off_c}" # lxterminal
+            # LXTerminal
+            prompt_symbol="${green_c}\$${off_c}"
         else
-            prompt_symbol="${yellow_c}\$${off_c}" # screen
+            # GNU Screen
+            prompt_symbol="${yellow_c}\$${off_c}"
         fi
 
         # Set default interactive prompt

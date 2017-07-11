@@ -4,6 +4,7 @@
 #  0 -> primary, LVDS1 
 #  1 -> lower-left (default)
 #  2 -> second screen
+# Inputs: screen ID (optional)
 # Outputs: screen_dims, screen_offs
 screen_position()
 {
@@ -38,6 +39,7 @@ screen_position()
 }
 
 # Get dimensions and offsets of selected window
+# Inputs: window ID (optional)
 # Outputs: win_dims, win_offs
 window_position()
 {
@@ -57,6 +59,7 @@ window_position()
 }
 
 # Restore windows relative positions when disconnected from external monitor
+# Inputs: N/A
 # Outputs: N/A
 window_restore()
 {
@@ -103,6 +106,7 @@ window_restore()
 }
 
 # Get current cursor row in terminal window
+# Inputs: N/A
 # Outputs: "cursor_row cursor_col"
 get_cursor_pos()
 {

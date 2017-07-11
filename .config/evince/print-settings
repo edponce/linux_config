@@ -16,7 +16,7 @@ cups-OutputMode=Normal
 evince-print-setting-page-autorotate=true
 evince-print-setting-page-scale=1
 cover-before=none
-printer=Deskjet_3510
+printer=HP-LaserJet-p2055dn
 cups-number-up=1
 
 cups-ColorModel=RGB
