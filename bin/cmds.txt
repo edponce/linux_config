@@ -286,7 +286,7 @@ xvinfo
 
 # Send keyboard events to window
 xdotool
-xdotool key --window 33554448 F11
+xdotool key --clearmodifiers --window 33554448 F11
 xdotool windowsize --sync 33554448 25% 100%
 xdotool search lxterminal
 

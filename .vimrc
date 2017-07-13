@@ -70,6 +70,6 @@ nnoremap <silent> <S-F9> :w!<CR>:!aspell -l es -c %<CR>:e! %<CR>
 nnoremap <silent> <F10> :set number!<CR>
 
 " Move between buffers in normal mode
+nnoremap <silent> <F11> :bp<CR>
 nnoremap <silent> <F12> :bn<CR>
-nnoremap <silent> <S-F12> :bp<CR>
 

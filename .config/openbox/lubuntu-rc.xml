@@ -270,11 +270,11 @@
     </keybind>
     <keybind key="W-S-H">        # HalfLeftScreen shifted
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>42%</width></action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>43%</width></action>
     </keybind>
     <keybind key="W-S-L">        # HalfRightScreen shifted
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>-15%</x><y>0</y><height>100%</height><width>43%</width></action>
+      <action name="MoveResizeTo"><x>-15%</x><y>0</y><height>100%</height><width>42%</width></action>
     </keybind>
     <keybind key="W-S-K">        # HalfUpperScreen shifted
       <action name="UnmaximizeFull"/>
@@ -375,10 +375,6 @@
     <!-- Launch file manager -->
     <keybind key="W-E">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>PCManFM</name>
-        </startupnotify>
         <command>pcmanfm</command>
       </action>
     </keybind>
@@ -396,40 +392,24 @@
     <!-- Launch task manager -->
     <keybind key="C-A-Delete">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Task Manager</name>
-        </startupnotify>
         <command>lxtask</command>
       </action>
     </keybind>
     <!-- Launch terminal -->
     <keybind key="C-A-T">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>LXTerminal</name>
-        </startupnotify>
         <command>lxterminal</command>
       </action>
     </keybind>
-    <!-- Launch screen in terminal -->
+    <!-- Launch GNU Screen in terminal -->
     <keybind key="C-A-S">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>LXTerminal</name>
-        </startupnotify>
-        <command>lxterminal -e screen</command>
+        <command>lxauto screen</command>
       </action>
     </keybind>
     <!-- Launch browser -->
     <keybind key="C-A-B">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Firefox</name>
-        </startupnotify>
         <command>firefox</command>
       </action>
     </keybind>
@@ -442,30 +422,18 @@
     <!-- Launch MATLAB -->
     <keybind key="C-A-M">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>MATLAB</name>
-        </startupnotify>
         <command>matlab -desktop</command>
       </action>
     </keybind>
     <!-- Launch GUI text editor -->
     <keybind key="C-A-E">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>gedit</name>
-        </startupnotify>
         <command>gedit</command>
       </action>
     </keybind>
     <!-- Launch calculator -->
     <keybind key="C-A-G">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Galculator</name>
-        </startupnotify>
         <command>galculator</command>
       </action>
     </keybind>
@@ -552,40 +520,24 @@
     <!-- Keybinding for browser button -->
     <keybind key="XF86WWW">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Firefox</name>
-        </startupnotify>
         <command>firefox</command>
       </action>
     </keybind>
     <!-- Keybinding for terminal button -->
     <keybind key="XF86Terminal">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>LXTerminal</name>
-        </startupnotify>
         <command>lxterminal</command>
       </action>
     </keybind>
     <!-- Keybinding for calculator button -->
     <keybind key="XF86Calculator">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Galculator</name>
-        </startupnotify>
         <command>galculator</command>
       </action>
     </keybind>
     <!-- Keybinding for computer button-->
     <keybind key="XF86MyComputer">
       <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>PCManFM</name>
-        </startupnotify>
         <command>pcmanfm</command>
       </action>
     </keybind>
@@ -1068,7 +1020,7 @@
         <y>0</y>
       </position>
       <size>
-        <width>85%</width>
+        <width>50%</width>
         <height>100%</height>
       </size>
     </application>

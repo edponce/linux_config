@@ -85,7 +85,7 @@ Exec=xpad
 Terminal=false
 Icon=xpad
 
-StartupNotify=true
+StartupNotify=false
 StartupWMClass=xpad
 
 Type=Application

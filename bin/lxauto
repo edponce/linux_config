@@ -1,0 +1,51 @@
+#!/bin/bash
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] command"
+    echo
+    echo "Launch a terminal session and run command automatically."
+    echo
+}
+
+# Default
+cmd=
+
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        *)
+        cmd="$@"
+        shift $# 
+        ;;
+    esac
+done
+
+# Validate
+if [ -z "$cmd" ]; then
+    echo "Error: no command was specified."
+    exit 1
+fi
+
+# app [args] 
+which $(echo "$cmd" | awk '{ print $1}') > /dev/null
+if [ $? -ne 0 ]; then
+    echo "Error: command '$cmd' was not found."
+    exit 1
+fi
+
+# Launch terminal
+lxterminal
+sleep 0.5
+
+# Run command 
+xdotool type "$cmd"
+xdotool key Return
+
+unset cmd
+

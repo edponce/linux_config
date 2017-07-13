@@ -52,19 +52,27 @@ if [ $profile_id -lt 0 ] && [ $profile_id -gt 4 ]; then
     exit 1 
 fi
 
-# Select sound output profile 
+# Select sound output profile
 if [ $profile_id -eq 0 ]; then
+    # Query status of sound profile
+    curr_sink="$(pacmd stat | awk -F':' '/Default sink name/ { print $2 }')"
+
+    new_sink="auto_null"
     profile="off"
 else
+    # Query status of sound profile
+    curr_sink="$(pacmd stat | awk -F':' '/Default sink name/ { print $2 }' | awk -F'.' '{ print $NF }')"
+
     if [ $profile_id -eq 1 ]; then
-        profile="output:analog-stereo" 
+        new_sink="analog-stereo"
     elif [ $profile_id -eq 2 ]; then
-        profile="output:hdmi-stereo" 
+        new_sink="hdmi-stereo" 
     elif [ $profile_id -eq 3 ]; then
-        profile="output:hdmi-surround" 
+        new_sink="hdmi-surround" 
     elif [ $profile_id -eq 4 ]; then
-        profile="output:hdmi-surround71" 
+        new_sink="hdmi-surround71" 
     fi
+    profile="output:$new_sink"
 
     # Check for sound input profile
     if [ $input -eq 1 ]; then
@@ -73,8 +81,10 @@ else
 fi
 
 # Run
-cmd="pacmd set-card-profile $sound_card \"$profile\""
-eval "$cmd"
+if [ $new_sink != $curr_sink ]; then
+    cmd="pacmd set-card-profile $sound_card \"$profile\""
+    eval "$cmd"
+fi
 
-unset profile_id profile input cmd
+unset profile_id profile curr_sink sink input cmd
 

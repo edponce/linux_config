@@ -107,7 +107,7 @@ if [ $launch_tool -gt 0 ]; then
         echo "Setting NVIDIA GPU performance level to $perf_level."
         sudo sed -i "s/\b\(PowerMizer\(Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$perf_level/g" "$x11_nvidia_file"
         perf_level_changed=1
-        sleep 1
+        sleep 0.5 
     fi
 fi
 
