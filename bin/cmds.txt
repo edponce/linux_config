@@ -412,3 +412,9 @@ gpasswd -a edponce autologin
 autologin-user=edponce
 autologin-user-timeout=0
 
+# Convert between package formats
+fakeroot alien --to-deb archive.rpm # .rpm to .deb
+
+# Extract files from .rpm package
+rpm2cpio archive.rpm | cpio -i --make-directories
+

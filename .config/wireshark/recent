@@ -1,4 +1,4 @@
-# Recent settings file for Wireshark 2.0.2.
+# Recent settings file for Wireshark 2.2.6.
 #
 # This file is regenerated each time Wireshark is quit
 # and when changing configuration profile.
@@ -38,7 +38,7 @@ gui.statusbar_show: TRUE
 gui.packet_list_colorize: TRUE
 
 # Timestamp display format.
-# One of: RELATIVE, ABSOLUTE, ABSOLUTE_WITH_YMD, ABSOLUTE_WITH_YDOY, DELTA, DELTA_DIS, EPOCH, UTC, UTC_WITH_YMD, UTC_WITH_YDOY
+# One of: RELATIVE, ABSOLUTE, ABSOLUTE_WITH_YMD, ABSOLUTE_WITH_YDOY, ABSOLUTE_WITH_DATE, DELTA, DELTA_DIS, EPOCH, UTC, UTC_WITH_YMD, UTC_WITH_YDOY, UTC_WITH_DATE
 gui.time_format: RELATIVE
 
 # Timestamp display precision.

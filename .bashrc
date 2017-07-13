@@ -218,18 +218,14 @@ fi
 
 
 ########### Eduado custom #############
+# Java VM environment
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+
 # Set linker library paths
 # CUDA libraries
 # /usr/local/cuda -> /usr/local/cuda-8.0
 # /usr/local/cuda/lib64 -> /usr/local/cuda/targets/x86_64-linux/lib
 #export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
-# NVIDIA libraries
-# NOTE: these paths should be set for each application, not globally
-# primusrun <command>, sets these variables
-#export LD_LIBRARY_PATH="/usr/lib/nvidia-current:$LD_LIBRARY_PATH"
-#export LD_LIBRARY_PATH="/usr/lib32/nvidia-current:$LD_LIBRARY_PATH"
-#env_values=()
-#. ~/bin/set_envvar LD_LIBRARY_PATH "${env_values[@]}"
 
 # NVIDIA path
 # created symlinks in /usr/bin to files:
@@ -254,29 +250,9 @@ env_values=(
 "$HOME/Documents/games"
 )
 . ~/bin/set_envvar PATH "${env_values[@]}"
-
-# Java VM environment
-export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
-
 unset env_values
 
-########### Eduado: do not uncomment, just for reference #############
-# LibGL software rendering
-# https://www.mesa3d.org/envvars.html
-#export LIBGL_ALWAYS_SOFTWARE=1
+# Disable Ctrl + D to close terminal window
+set -o ignoreeof
 
-# Disable AT_SPI2 daemon (set in /etc/environment)
-# Disabled ATK and GAIL in /etc/X11/Xsession.d/
-# Workaround for warning message "Error retrieving accessibility bus address..."
-#export NO_AT_BRIDGE=1 
-
-# The video driver for use with VDPAU is auto-detected but may need to be overriden.
-# Intel=va_gl (VA-API), Nvidia=nvidia (VDPAU)
-# To enable driver for system-wide, see /etc/X11/Xsession.d/20vdpau-va-gl
-#export VDPAU_DRIVER="va_gl"
-
-# If VA-API failed to initialize, test with `vainfo`
-# i965, vdpau 
-#export LIBVA_DRIVER_NAME="i965"
-#######################################
 

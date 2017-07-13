@@ -21,5 +21,7 @@
     <property name="inactivity-on-battery" type="uint" value="25"/>
     <property name="inactivity-on-ac" type="uint" value="25"/>
     <property name="critical-power-action" type="uint" value="0"/>
+    <property name="brightness-level-on-ac" type="uint" value="30"/>
+    <property name="brightness-level-on-battery" type="uint" value="30"/>
   </property>
 </channel>

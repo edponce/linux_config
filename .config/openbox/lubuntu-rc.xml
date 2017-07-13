@@ -286,7 +286,7 @@
     </keybind>
     <keybind key="W-A-1">
       <action name="Execute">
-        <command>screenx -l 1</command>
+        <command>xscreen -l 1</command>
       </action>
     </keybind>
     <keybind key="C-W-0">
@@ -398,18 +398,30 @@
     <!-- Launch terminal -->
     <keybind key="C-A-T">
       <action name="Execute">
+        <startupnotify>
+            <enabled>yes</enabled>
+            <name>LXTerminal</name>
+        </startupnotify>
         <command>lxterminal</command>
       </action>
     </keybind>
     <!-- Launch GNU Screen in terminal -->
     <keybind key="C-A-S">
       <action name="Execute">
+        <startupnotify>
+            <enabled>yes</enabled>
+            <name>LXTerminal</name>
+        </startupnotify>
         <command>lxauto screen</command>
       </action>
     </keybind>
     <!-- Launch browser -->
     <keybind key="C-A-B">
       <action name="Execute">
+        <startupnotify>
+            <enabled>yes</enabled>
+            <name>Firefox</name>
+        </startupnotify>
         <command>firefox</command>
       </action>
     </keybind>
@@ -1002,7 +1014,7 @@
   <applications>
     <!-- default settings for all applications -->
     <application class="*">
-      <layer>above</layer>
+      <layer>normal</layer>
       <decor>yes</decor>
       <shade>no</shade>
       <skip_taskbar>no</skip_taskbar>

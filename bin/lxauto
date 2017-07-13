@@ -3,14 +3,17 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] command"
+    echo "Usage: $(basename $0) [--help] [--delay DELAY] command"
     echo
     echo "Launch a terminal session and run command automatically."
+    echo "The command can be delayed to allow terminal startup."
+    echo "Delay values are in seconds [0-5] (default is 0.5)"
     echo
 }
 
 # Default
 cmd=
+delay=0.5
 
 # Get command line options
 while [ "$1" ]; do
@@ -18,6 +21,10 @@ while [ "$1" ]; do
         -h | --help)
         usage
         exit 0
+        ;;
+        -d | --delay)
+        delay=$2
+        shift 2
         ;;
         *)
         cmd="$@"
@@ -32,6 +39,11 @@ if [ -z "$cmd" ]; then
     exit 1
 fi
 
+if [ $(bc -l <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
+    echo "Error: invalid delay value."
+    exit 1
+fi
+
 # app [args] 
 which $(echo "$cmd" | awk '{ print $1}') > /dev/null
 if [ $? -ne 0 ]; then
@@ -39,11 +51,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Launch terminal
+# Launch terminal and wait
 lxterminal
-sleep 0.5
+sleep $delay
 
-# Run command 
+# Type and run command
 xdotool type "$cmd"
 xdotool key Return
 

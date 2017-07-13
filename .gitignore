@@ -16,6 +16,8 @@ bin/keybinds/build/
 .cinelerra-cv/
 .clamtk/
 #.config/
+.config/audacious/playlists/
+.config/audacious/playlist-state
 .config/byobu/.ssh-agent
 .config/dconf/
 .config/evince/accels

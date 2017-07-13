@@ -1,6 +1,7 @@
 
 [audgui]
 filebrowser_win=3009,150,700,450
+filesel_path=/home/edponce/Music/La Muza
 playlist_import_win=2939,0,840,630
 playlist_path=cdda://sr0/
 

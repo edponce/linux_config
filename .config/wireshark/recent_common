@@ -1,4 +1,4 @@
-# Recent settings file for Wireshark 2.0.2.
+# Recent settings file for Wireshark 2.2.6.
 #
 # This file is regenerated each time Wireshark is quit.
 # So be careful, if you want to make manual changes here.
@@ -20,6 +20,8 @@ recent.display_filter: tcp.stream eq 4
 # Decimal numbers.
 gui.geometry_main_x: 359
 gui.geometry_main_y: 193
+gui.gtk.geometry_main_x: 20
+gui.gtk.geometry_main_y: 20
 gui.geometry_main_width: 960
 gui.geometry_main_height: 768
 
