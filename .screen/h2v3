@@ -6,7 +6,7 @@
 #  |  |  |  |
 #  ----------
 # 6
-layout new six
+layout new h2v3 
 select 0
 split -v
 split -v
@@ -22,5 +22,5 @@ focus right
 select 4
 split
 focus down
-select 9
+select 5
 focus

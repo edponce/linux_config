@@ -1,20 +1,17 @@
 #  -----------
 #  |    |    |
 #  |    |    |
-#  -----------
+#  |----|    |
 #  |    |    |
 #  |    |    |
 #  -----------
-# 8
-layout new four
+# 0
+layout new h2v1
 select 0
 split -v
 split
-focus down 
+focus down
 select 1
-focus right 
+focus right
 select 2
-split
-focus down 
-select 9
 focus

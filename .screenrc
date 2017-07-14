@@ -4,15 +4,15 @@
 # GENERAL SETTINGS
 # ------------------------------------------------------------------------------
 #nethack on # changes style of error messages to be funnier
-#defflow on # will force screen to process ^S/^Q
+#defflow on # force screen to process ^S/^Q
 autodetach on # automatically detach session on SIGHUP
-defnonblock 5 # enable non-blocking mode to better cope with flaky ssh connections.
+defnonblock 5 # enable non-blocking mode to better cope with flaky ssh connections
 deflogin on # login mode
 startup_message off # startup message
 vbell off # visual bell
 vbell_msg ""
-#bell off # sound bell
-#bell_msg ""
+bell off # sound bell
+bell_msg ""
 defscrollback 2048 # set size for scrollback buffer
 defwrap on # line-wrap
 mousetrack on # mouse support for selecting regions
@@ -24,14 +24,15 @@ layout autosave on # save layouts after detaching or layout switching
 # SCREEN KEYBINDINGS
 # ------------------------------------------------------------------------------
 # Remove some stupid / dangerous key bindings
-bind ^k
-#bind L
-bind ^\
-
-# Unbind keys to support custom settings
+bind ^K # kill
+bind ^\ # quit
+bind ^@ # next
+bind b # break
+bind z # suspend
+bind :kB: # backspace
 
 bind / help # help menu
-escape `` # set escape key to '`' instead of 'Ctrl+a'
+escape `` # set escape key to ` (backtick)
 bind Q quit # quit screen
 bind K kill
 bind I login on
@@ -39,7 +40,18 @@ bind O login off
 bind } history
 bind ^H hardcopy # rebind hardcopy, need 'h' for focus movement
 bind ' ' windowlist -b # show windowlist with space
-bind ^D displays # show listing of attached displays
+bind D detach # detach screen session 
+bind ^D pow_detach # detach screen session and send HANGHUP to parent
+bind d displays # show listing of attached displays
+bind ^W wrap # toggle line-wrap
+bind ^R redisplay # redraw display
+bind s split # horizontal split
+bind \\ split -v # vertical split
+bind f fit # fit window to region
+bind t title # set title of window
+bind x remove # set remove region to 'x' instead of 'X'
+bind q only # retain only current region, remove others
+bind ; colon # change colon (literal command) symbol to a semi-colon
 
 # Move input focus between regions using vi-like shortcuts
 bind \t focus
@@ -48,28 +60,21 @@ bind j focus down
 bind k focus up 
 bind l focus right 
 
-bind f fit # fit window to region
-bind t title # set title of window
-bind x remove # set remove region to 'x' instead of 'X'
-bind q only # retain only current region, remove others
-bind ; colon # change colon (literal command) symbol to a semi-colon
-
 # Switch layouts using Shift+[0-9]
-bind ^W layout show
+bind ^L layout show # show listing of layouts
 bind y layout prev
 bind u layout next 
-bind ) eval "layout remove one" "source ~/.screen/one"
-bind ! eval "layout remove v2h1" "source ~/.screen/v2h1"
+bind ! eval "layout remove v1h2" "source ~/.screen/v1h2"
 bind @ eval "layout remove v2" "source ~/.screen/v2"
 bind \# eval "layout remove v3" "source ~/.screen/v3"
-bind $ eval "layout remove v4" "source ~/.screen/v4"
+bind $ eval "layout remove h2v2" "source ~/.screen/h2v2"
 bind % eval "layout remove h2" "source ~/.screen/h2"
-bind \^ eval "layout remove six" "source ~/.screen/six"
+bind \^ eval "layout remove h2v3" "source ~/.screen/h2v3"
 bind & eval "layout remove h3" "source ~/.screen/h3"
-bind * eval "layout remove four" "source ~/.screen/four"
+bind * eval "layout remove v4" "source ~/.screen/v4"
+bind ( eval "layout remove h1v2" "source ~/.screen/h1v2"
+bind ) eval "layout remove h2v1" "source ~/.screen/h2v1"
 
-bind s split # horizontal split
-bind \\ split -v # vertical split
 bind r eval "command -c rsz" # enter resize mode
 
 # In resize mode, resize regions using hjkl keys
@@ -94,7 +99,7 @@ bind -c rsz -k kr eval "focus right" "command -c rsz"
 caption splitonly "%{= WB}%{+b B}%=%?%F%{+b bW}%?%n%f %t%?%F%{-}%?%= %?(%u)%?%{-}"
 
 # Hardstatus to display a bar at the bottom with current window highlighted
-hardstatus on # hardstatus bar
+hardstatus on # hardstatus line 
 hardstatus alwayslastline
 hardstatus string "%{= dW}%{+b W}%{+b dG}[%H]%{-} %=[%-w%{+b bW}%n%f %t%{-}%+w]%= %{+b dC}[%D %M-%d-%Y%{-} %{+b dC}%C %A]%{-}%{-}"
 
@@ -130,7 +135,7 @@ screen -t extra_shell 1 bash
 # ------------------------------------------------------------------------------
 # SCREEN LAYOUTS
 # ------------------------------------------------------------------------------
-# Layout in ~/.screen: one, v2, h2, v3, h3, v2h1, v4, four, six
-layout remove h2 # allow sourcing this file multiple times
-source ~/.screen/h2
+# Available layouts found in ~/.screen
+layout remove v2 # allow sourcing this file multiple times
+source ~/.screen/v2
 

@@ -285,8 +285,9 @@
       <action name="MoveResizeTo"><x>0</x><y>-0</y><width>85%</width><height>50%</height></action>
     </keybind>
     <keybind key="W-A-1">
+      <action name="UnmaximizeFull"/>
       <action name="Execute">
-        <command>xscreen -l 1</command>
+        <command>xscreen.py</command>
       </action>
     </keybind>
     <keybind key="C-W-0">
@@ -491,12 +492,12 @@
     <!-- Keybindings for volume management -->
     <keybind key="XF86AudioRaiseVolume">
       <action name="Execute">
-        <command>amixer -q sset Master 3%+ unmute</command>
+        <command>amixer -q -D pulse sset Master 3%+ unmute</command>
       </action>
     </keybind>
     <keybind key="XF86AudioLowerVolume">
       <action name="Execute">
-        <command>amixer -q sset Master 3%- unmute</command>
+        <command>amixer -q -D pulse sset Master 3%- unmute</command>
       </action>
     </keybind>
     <keybind key="XF86AudioMute">
@@ -511,12 +512,12 @@
     </keybind>
     <keybind key="W-Up">
       <action name="Execute">
-        <command>amixer -q sset Master 3%+ unmute</command>
+        <command>amixer -q -D pulse sset Master 3%+ unmute</command>
       </action>
     </keybind>
     <keybind key="W-Down">
       <action name="Execute">
-        <command>amixer -q sset Master 3%- unmute</command>
+        <command>amixer -q -D pulse sset Master 3%- unmute</command>
       </action>
     </keybind>
     <keybind key="W-Left">

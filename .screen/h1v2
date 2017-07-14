@@ -1,0 +1,17 @@
+#  -----------
+#  |         |
+#  |         |
+#  |---------|
+#  |    |    |
+#  |    |    |
+#  -----------
+# 9
+layout new h1v2
+select 0
+split
+focus
+split -v
+select 1
+focus right
+select 2
+focus

@@ -5,7 +5,7 @@
 #  | | | | |
 #  | | | | |
 #  ---------
-# 4
+# 8
 layout new v4
 select 0
 split -v
