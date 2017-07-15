@@ -3,17 +3,26 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--delay DELAY] command"
+    echo "Usage: $(basename $0) [--help] [--xterm] [--delay DELAY] [--window WINDOW_ID] \"COMMAND\""
     echo
-    echo "Launch a terminal session and run command automatically."
+    echo "Run command automatically in an existing terminal session."
+    echo
+    echo "A terminal can be launched if required."
     echo "The command can be delayed to allow terminal startup."
-    echo "Delay values are in seconds [0-5] (default is 0.5)"
+    echo "Default delay is 0.5 seconds, allowed range is [0-5]."
+    echo
+    echo "Window IDs:"
+    echo " 0 -> first LXTerminal window given by wmctrl, useful for autostart"
+    echo " 1 -> active window (default)"
+    echo " * -> specific window"
     echo
 }
 
 # Default
-cmd=
+xterm=0
 delay=0.5
+wid="1"
+cmd=
 
 # Get command line options
 while [ "$1" ]; do
@@ -22,8 +31,16 @@ while [ "$1" ]; do
         usage
         exit 0
         ;;
+        -x | --xterm)
+        xterm=1
+        shift 1
+        ;;
         -d | --delay)
         delay=$2
+        shift 2
+        ;;
+        -w | --window)
+        wid="$2"
         shift 2
         ;;
         *)
@@ -51,13 +68,38 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Launch terminal and wait
-lxterminal
+# Check if launch terminal
+if [ $xterm -eq 1 ]; then
+    lxterminal
+fi
+
+# Wait
 sleep $delay
 
-# Type and run command
-xdotool type "$cmd"
-xdotool key Return
+# Run commands 
+if [ "$wid" = "1" ]; then
+    # Active window mode
+    xdotool type "$cmd"
+    xdotool key Return
+else
+    # Specific window mode
+    if [ "$wid" = "0" ]; then
+        # For autostart
+        wid="$(wmctrl -l | grep 'LXTerminal' | head -n 1 | awk '{ print $1 }')"
+        if [ -z "$wid" ]; then
+            echo "Error: failed to find an existing terminal window."
+            exit 1
+        fi
+    else
+        if [ -z "$(wmctrl -l | grep $wid)" ]; then
+            echo "Error: failed to find terminal window, $wid."
+            exit 1
+        fi
+    fi
+    xdotool type --window "$wid" "$cmd"
+    xdotool key --window "$wid" Return
+    xdotool windowactivate "$wid"
+fi
 
-unset cmd
+unset xterm delay wid cmd
 

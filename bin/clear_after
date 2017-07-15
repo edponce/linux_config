@@ -3,7 +3,7 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] command"
+    echo "Usage: $(basename $0) [--help] \"COMMAND\""
     echo
     echo "Wrapper to invoke a command and clear terminal after its completion."
     echo

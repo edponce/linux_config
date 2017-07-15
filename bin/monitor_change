@@ -3,14 +3,15 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--protocol PROTOCOL] [--mirror] [--direction DIRECTION_ID]"
+    echo "Usage: $(basename $0) [--help] [--mirror] [--protocol PROTOCOL] [--direction DIRECTION_ID]"
     echo
     echo "Change monitor configuration."
-    echo "Default is extended screen."
+    echo
+    echo "For non-LVDS protocol, default is extended screen."
     echo "Direction ID is ignored if mirror option is set."
     echo
     echo "Protocols:"
-    echo " 0 -> LVDS1 (default)"
+    echo " 0 -> LVDS (default)"
     echo " 1 -> VGA"
     echo " 2 -> HDMI"
     echo
@@ -23,8 +24,8 @@ usage()
 }
 
 # Default options
-mon_proto=0
 mirror=0
+mon_proto=0
 direction_id=0
 vga="--off"
 hdmi="--off" 
@@ -37,13 +38,13 @@ while [ "$1" ]; do
         usage
         exit 0
         ;;
-        -p | --protocol)
-        mon_proto=$2
-        shift 2
-        ;;
         -m | --mirror)
         mirror=1
         shift 1
+        ;;
+        -p | --protocol)
+        mon_proto=$2
+        shift 2
         ;;
         -d | --direction)
         direction_id=$2
@@ -113,5 +114,5 @@ fi
 cmd="xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga"
 eval "$cmd"
 
-unset mon_proto mirror direction_id mon_query rel_pos lvds vga hdmi cmd
+unset mirror mon_proto direction_id mon_query rel_pos lvds vga hdmi cmd
 

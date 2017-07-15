@@ -22,7 +22,7 @@ alias iotop='sudo iotop'
 alias ntop='sudo ntop -u ntop -P /var/lib/ntop -a /var/log/ntop/access.log -i wlp2s0 -p /etc/ntop/protocol.list -O /var/log/ntop'
 alias powertop='sudo powertop'
 alias imagemagick='display-im6'
-alias screen='clear_after screen'
+#alias screen='clear_after screen'
 
 # NVIDIA, settings and visual profiler
 alias nvidia-settingsx='optirun nvidia-settings -c :8' 

@@ -413,7 +413,7 @@
             <enabled>yes</enabled>
             <name>LXTerminal</name>
         </startupnotify>
-        <command>lxauto screen</command>
+        <command>lxauto -x screen</command>
       </action>
     </keybind>
     <!-- Launch browser -->

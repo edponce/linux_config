@@ -6,7 +6,8 @@ usage()
     echo "Usage: $(basename $0) [--help] [--jvm] [--run \"COMMAND\"|SCRIPT.m]"
     echo
     echo "Starts MATLAB interpreter without GUI."
-    echo "Command is executed during startup, script is executed then exit."
+    echo
+    echo "Command is executed during startup and script is executed then exit."
     echo "Default is disabled Java Virtual Machine."
     echo
 }
@@ -40,7 +41,7 @@ while [ "$1" ]; do
         *)
         echo "Error: invalid command line option, $1"
         usage
-        exit 0
+        exit 1
         ;;
     esac
 done

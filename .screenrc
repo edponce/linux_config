@@ -125,8 +125,8 @@ termcapinfo xterm ti@:te@
 # ------------------------------------------------------------------------------
 # STARTUP SCREENS
 # ------------------------------------------------------------------------------
-screen -t main_shell 0 bash
-screen -t extra_shell 1 bash
+screen -t A_sh 0 bash
+screen -t B_sh 1 bash
 #screen -t mail 7 mutt
 #bind ^E eval "remove logs" "screen -t logs 8 bash -c \"tail -f /var/log/syslog | grep -E -i 'error|warn'\""
 #screen -t top 9 top

@@ -6,7 +6,8 @@ usage()
     echo "Usage: $(basename $0) [--help] [--row ROW]"
     echo
     echo "Clears terminal window after having the specified empty rows."
-    echo "Default empty rows allowed is 0."
+    echo
+    echo "Default is to not leave empty rows."
     echo
 }
 
@@ -26,7 +27,8 @@ while [ "$1" ]; do
         ;;
         *)
         echo "Error: invalid command line option, $1"
-        exit 0
+        usage
+        exit 1
         ;;
     esac
 done

@@ -6,6 +6,7 @@ usage()
     echo "Usage: $(basename $0) [--help] [--pid PID]"
     echo
     echo "Sets names to all unnamed windows based on corresponding command name."
+    echo
     echo "A specific window can be targeted by providing its process ID."
     echo
 }

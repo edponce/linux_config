@@ -1,0 +1,38 @@
+#!/bin/bash
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help]"
+    echo
+    echo "Pause command prompt until a key is pressed."
+    echo
+}
+
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Wait for pressed key
+ukey=
+read -r -n 1 -p 'Press any key to continue ... ' ckey
+
+# Print newline if pressed key is not '\n' or '\r'
+#dkey=$(echo "$ckey" | od -An -t uC | awk '{ print $1 }')
+#if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
+    echo
+#fi
+
+unset ckey dkey
+

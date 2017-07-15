@@ -3,11 +3,12 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--profile PROFILE_ID] [--input]"
+    echo "Usage: $(basename $0) [--help] [--input] [--profile PROFILE_ID]"
     echo
     echo "Change sound card configuration."
-    echo "Default is ALSA PCI card with output analog stereo profile."
+    echo
     echo "Default is to disable input analog stereo."
+    echo "Default is ALSA PCI card with output analog stereo profile."
     echo
     echo "Profiles:"
     echo " 0 -> off"
@@ -20,8 +21,8 @@ usage()
 
 # Default options
 declare -r sound_card="alsa_card.pci-0000_00_1b.0"
-profile_id=1
 input=0
+profile_id=1
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -30,13 +31,13 @@ while [ "$1" ]; do
         usage
         exit 0
         ;;
-        -p | --profile)
-        profile_id=$2
-        shift 2
-        ;;
         -i | --input)
         input=1
         shift 1
+        ;;
+        -p | --profile)
+        profile_id=$2
+        shift 2
         ;;
         *)
         echo "Error: invalid command line option, $1"
@@ -86,5 +87,5 @@ if [ $new_sink != $curr_sink ]; then
     eval "$cmd"
 fi
 
-unset profile_id profile curr_sink sink input cmd
+unset input profile_id profile curr_sink sink cmd
 

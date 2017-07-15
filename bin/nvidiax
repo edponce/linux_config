@@ -57,7 +57,7 @@ while [ "$1" ]; do
         *)
         echo "Error: invalid command line option, $1"
         usage
-        exit 0
+        exit 1
         ;;
     esac
 done

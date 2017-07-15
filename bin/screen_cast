@@ -3,12 +3,14 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--timer SECONDS] [--vcodec VIDEO_CODEC] [--rate FRAME_RATE] [--window] [--screen SCREEN_ID] [--audio] [--outfile OUTFILE]"
+    echo "Usage: $(basename $0) [--help] [--audio] [--window] [--timer SECONDS] [--vcodec VIDEO_CODEC] [--rate FRAME_RATE] [--screen SCREEN_ID] [--outfile \"OUTFILE\"]"
     echo
+    echo "Record screen into a video file."
+    echo
+    echo "Default is disabled audio."
+    echo "Default is fullscreen, enabled flag to select specific window."
     echo "Default timer is 5 seconds prior to recording."
     echo "Default frame rate is 30 frames/sec."
-    echo "Default window is fullscreen, set to select specific window."
-    echo "Default is disabled audio."
     echo "Default outfile is \"$HOME/screencast_DATE_TIME.avi\""
     echo "Supported outfile formats: avi, mp4, mpg, mkv"
     echo
@@ -24,13 +26,13 @@ usage()
 }
 
 # Default options
+use_audio=0
+use_window=0
 timer=5
 vcodec="libx264"
 acodec="pcm_s16le"
 framerate=30
-use_window=0
 screen_id=0
-use_audio=0
 outfile="$HOME/screencast_$(date +%m-%d-%Y_%H-%M).avi"
 
 # Get command line options 
@@ -39,6 +41,14 @@ while [ "$1" ]; do
         -h | --help)
         usage
         exit 0
+        ;;
+        -a | --audio)
+        use_audio=1
+        shift 1
+        ;;
+        -w | --window)
+        use_window=1
+        shift 1
         ;;
         -t | --timer)
         timer=$2
@@ -52,17 +62,9 @@ while [ "$1" ]; do
         framerate=$2
         shift 2
         ;;
-        -w | --window)
-        use_window=1
-        shift 1
-        ;;
         -s | --screen)
         screen_id=$2
         shift 2
-        ;;
-        -a | --audio)
-        use_audio=1
-        shift 1
         ;;
         -o | --outfile)
         outfile="$2"
@@ -125,5 +127,5 @@ elif [ $use_audio -eq 1 ]; then
 fi
 eval "$cmd"
 
-unset timer vcodec acodec framerate use_window x y x_offs y_offs screen_id use_audio outfile cmd 
+unset use_audio use_window timer vcodec acodec framerate x y x_offs y_offs screen_id outfile cmd 
 
