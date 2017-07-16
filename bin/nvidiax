@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# DO NOT CHANGE
-# X11 NVIDIA configuration file
-declare -r x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia"
-
 usage()
 {
     echo
@@ -15,7 +11,7 @@ usage()
     echo "This script may require root privileges to change the performance level"
     echo "of the X11 NVIDIA configuration file."
     echo
-    echo "X11 NVIDIA configuration file: $x11_nvidia_file"
+    echo "X11 NVIDIA configuration file: $1"
     echo
     echo "GPU Performance levels:"
     echo " 1 -> high"
@@ -29,6 +25,9 @@ usage()
     echo
 }
 
+# X11 NVIDIA configuration file
+declare -r x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia"
+
 # Default options
 launch_tool=1
 perf_level=3
@@ -39,7 +38,7 @@ app=
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
+        usage $x11_nvidia_file
         exit 0
         ;;
         -t | --tool)
@@ -56,7 +55,7 @@ while [ "$1" ]; do
         ;;
         *)
         echo "Error: invalid command line option, $1"
-        usage
+        usage $x11_nvidia_file
         exit 1
         ;;
     esac
@@ -65,7 +64,6 @@ done
 # Validate
 if [ -z "$app" ]; then
     echo "Error: no application was specified."
-    usage
     exit 1
 fi
 

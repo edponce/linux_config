@@ -75,7 +75,7 @@ def get_windows_list(desktop):
 
             # Ignore specified windows
             win_name = subprocess.getoutput("xprop -id " + win_id + " | awk -F'=' '/_OB_APP_NAME/ { print $2 }' | tr -d ' \"'").strip()
-            if not win_name in ['pcmanfm', 'xpad']:
+            if not win_name in ['pcmanfm', 'xpad', 'galculator']:
                 win_ids.insert(0, win_id)
                 win_names.insert(0, win_name)
 
@@ -234,7 +234,7 @@ def set_layout(layout_id, desktop, screen_dims, screen_offs, win_ids, win_names)
         win_offs[wi][1] += screen_offs[1]
 
     # LIFO priority queue for arrangement of windows
-    win_priority = ['Navigator', 'lxterminal']
+    win_priority = ['Navigator', 'gedit', 'evince', 'lxterminal']
 
     # Process all windows
     while win_dict:
