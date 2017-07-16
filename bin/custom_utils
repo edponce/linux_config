@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get dimensions and offsets of selected screen
-#  0 -> primary, LVDS1 
+#  0 -> primary, LVDS 
 #  1 -> lower-left (default)
 #  2 -> second screen
 # Inputs: screen ID (optional)
@@ -18,7 +18,7 @@ screen_position()
     fi
 
     if [ $sid -eq 0 ]; then
-        # Primary screen, LVDS1
+        # Primary screen, LVDS
         screen_regex="primary\W\d+x\d+((\+|-)\d+){2}\W"
     elif [ $sid -eq 1 ]; then
         # Lower-left screen

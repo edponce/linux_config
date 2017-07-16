@@ -136,6 +136,7 @@ screen -t B_sh 1 bash
 # SCREEN LAYOUTS
 # ------------------------------------------------------------------------------
 # Available layouts found in ~/.screen
-layout remove v2 # allow sourcing this file multiple times
-source ~/.screen/v2
+#layout remove v2 # allow sourcing this file multiple times
+#source ~/.screen/v2
+select 0
 

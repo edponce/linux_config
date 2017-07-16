@@ -11,12 +11,10 @@ def parse_args():
     parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X')
     parser.add_argument('-l', '--layout_id', type=int, default=1,
                         dest='layout_id', help='layout identifier')
-    parser.add_argument('-s', '--shift', action='store_true',
-                        dest='shifted', help='shift layout to allow space for Xpad notes')
     args = parser.parse_args()
 
     # Validate
-    if args.layout_id < 1 or args.layout_id > 4:
+    if args.layout_id < 0 or args.layout_id > 9:
         print('Error: invalid layout value.')
         exit(1)
 
@@ -27,7 +25,7 @@ def get_active_screen_dims():
     '''
     Get screen dimensions and offsets based on active window
     '''
-    screen_dims = []
+    screen_all_dims = []
 
     # Get active window and dimensions
     desktop = int(subprocess.getoutput('xdotool get_desktop')) 
@@ -35,9 +33,9 @@ def get_active_screen_dims():
     str_win_dims = subprocess.getoutput('. ~/bin/custom_utils; window_position ' + win_id + '; echo "${win_dims[@]} ${win_offs[@]}"').split()
     win_dims = [int(x) for x in str_win_dims]
 
-    # Get dimensions of lower-left screen
+    # Get dimensions and offsets of lower-left screen
     str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 1; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
-    screen_dims = [int(x) for x in str_screen_dims]
+    screen_all_dims = [int(x) for x in str_screen_dims]
 
     # Check for multiple screens
     num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
@@ -46,17 +44,22 @@ def get_active_screen_dims():
         win_y = win_dims[1] + win_dims[3]
 
         # Check if active window is not in lower-left screen 
-        if win_x > screen_dims[0] or win_y > screen_dims[1]:
+        if win_x > screen_all_dims[0] or win_y > screen_all_dims[1]:
             str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
-            screen_dims = [int(x) for x in str_screen_dims]
-    
-    return desktop, screen_dims
+            screen_all_dims = [int(x) for x in str_screen_dims]
+   
+    # Screen dimensions and offsets 
+    screen_dims = screen_all_dims[0:2]
+    screen_offs = screen_all_dims[2:4]
+
+    return desktop, screen_dims, screen_offs
 
 
 def get_windows_list(desktop):
     '''
     Get lists of visible window IDs and names
     '''
+    # Window queues
     win_ids = []
     win_names = []
     
@@ -71,43 +74,26 @@ def get_windows_list(desktop):
         if win_desk == desktop:
 
             # Ignore specified windows
-            win_name = subprocess.getoutput("xprop -id " + win_id + " | awk -F'=' '/_OB_APP_NAME/ { print $2 }' | sed 's/\"//g'").strip()
-            if not win_name in ['xpad']:
-                win_ids.append(win_id)
-                win_names.append(win_name)
+            win_name = subprocess.getoutput("xprop -id " + win_id + " | awk -F'=' '/_OB_APP_NAME/ { print $2 }' | tr -d ' \"'").strip()
+            if not win_name in ['pcmanfm', 'xpad']:
+                win_ids.insert(0, win_id)
+                win_names.insert(0, win_name)
 
     return win_ids, win_names
 
 
-def set_layout(layout_id, shifted, desktop, screen_dims, win_ids, win_names):
+def set_layout(layout_id, desktop, screen_dims, screen_offs, win_ids, win_names):
     '''
     Arrange windows based on layout ID
     '''
-    '''
-    1 -> Dual vertical split (default)
-    2 -> Dual horizontal split
-    3 -> Triple vertical split
-    4 -> Four-way split
-    5 -> Dual vertical split with shift
-    6 -> Dual horizontal split with shift
-    7 -> Triple vertical split with shift
-    8 -> Four-way split with shift
-    '''
-    print(layout_id)
-    print(shifted)
-    print(desktop)
-    print(screen_dims)
-    print(win_ids)
-    print(win_names)
-    num_wins = len(win_ids)
-
-    # If no or single window, do not do anything
-    if num_wins < 2:
-        print('Debug: few windows, nothing to do.')
-        return
+    # Check if windows are available 
+    if not win_ids:
+        print('Warning: no windows were detected for processing.')
+        return 0
 
     # Create dictionary where keys -> win_names, values -> win_ids
     win_dict = dict()
+    num_wins = len(win_ids)
     for wi in range(0, num_wins):
         win_name = win_names[wi]
         win_id = win_ids[wi]
@@ -116,48 +102,182 @@ def set_layout(layout_id, shifted, desktop, screen_dims, win_ids, win_names):
         else:
             win_dict[win_name] = [win_id]
 
-    print(win_dict.keys())
-    print(win_dict.values())
+    # Do not consider taskbar space
+    screen_dims[1] -= 14
 
-    '''
-    if layout_id == 1:
-        print(layout_id)
+    # Compute window layouts coordinates (integers), [[x0,y0],[x1,y1],...] 
+    win_dims = []
+    win_offs = []
+    if layout_id == 0:
+        # h2v1 
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
+        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
+
+    elif layout_id == 1:
+        # v1h2 
+        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+
     elif layout_id == 2:
-        print(layout_id)
-    elif layout_id == 3:
-        print(layout_id)
-    elif layout_id == 4:
-        print(layout_id)
-    '''
+        # v2
+        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
+        win_offs.insert(0, [0, 0])
 
-    # Priority stack for arrangement of windows [lowest to highest]
+        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
+        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
+
+    elif layout_id == 3:
+        # v3 
+        win_dims.insert(0, [int(screen_dims[0] / 3), screen_dims[1]])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), screen_dims[1]])
+        win_offs.insert(0, [int(screen_dims[0] / 3), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), screen_dims[1]])
+        win_offs.insert(0, [int(2 * screen_dims[0] / 3), 0])
+
+    elif layout_id == 4:
+        # h2v2 
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+
+    elif layout_id == 5:
+        # h2
+        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
+
+    elif layout_id == 6:
+        # h2v3 
+        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 3), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(2 * screen_dims[0] / 3), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(2 * screen_dims[0] / 3), int(screen_dims[1] / 2)])
+
+    elif layout_id == 7:
+        # h3 
+        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 3)])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 3)])
+        win_offs.insert(0, [0, int(screen_dims[1] / 3)])
+
+        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 3)])
+        win_offs.insert(0, [0, int(2 * screen_dims[1] / 3)])
+
+    elif layout_id == 8:
+        # v4
+        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
+        win_offs.insert(0, [int(screen_dims[0] / 4), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
+        win_offs.insert(0, [int(2 * screen_dims[0] / 4), 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
+        win_offs.insert(0, [int(3 * screen_dims[0] / 4), 0])
+
+    elif layout_id == 9:
+        # h1v2 
+        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, 0])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
+
+        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+
+    # Add screen offsets to window offsets
+    max_wins = len(win_dims)
+    for wi in range(0, max_wins):
+        win_offs[wi][0] += screen_offs[0]
+        win_offs[wi][1] += screen_offs[1]
+
+    # LIFO priority queue for arrangement of windows
     win_priority = ['Navigator', 'lxterminal']
 
+    # Process all windows
     while win_dict:
+        # Handle windows with priority
         if win_priority:
-            wids = win_dict[win_priority.pop()]
+            wprior = win_priority.pop()
+            if wprior in win_dict.keys():
+                wids = win_dict.pop(wprior)
+                win_name = wprior
+        else:
+            witem = win_dict.popitem()
+            win_name = witem[0]
+            wids = witem[1]       
 
-        if not wids:
-            # Process remaining windows
+        # Process current set of windows 
+        while wids and win_dims and win_offs:
+            win_id = wids.pop()
+            # Save ID of first window to set as active window after arrangement
+            if len(win_dims) == max_wins:
+                win_id_active = win_id
+            win_grav = 0
+            win_dim = win_dims.pop()
+            win_off = win_offs.pop()
 
-    # Arrange window
-    win_id = win_ids[0]
-    win_grav = 0
+            # Special cases
+            if win_name == 'Navigator':
+                win_dim[1] -= 30 
+ 
+            # Activate window and arrange 
+            subprocess.getoutput('xdotool windowactivate {}'.format(win_id))
+            subprocess.getoutput('wmctrl -i -r {} -b remove,maximized_vert,maximized_horz'.format(win_id))
+            cmd = 'wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_off[0], win_off[1], win_dim[0], win_dim[1])
+            subprocess.getoutput(cmd)
 
+    # Activate first window
+    subprocess.getoutput('xdotool windowactivate {}'.format(win_id_active))
 
-    win_offx = 0
-    win_offy = 0
-    win_x = 1920 # based on maximize
-    win_y = 1066 # based on maximize
-
-    cmd = 'wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_offx, win_offy, win_x, win_y)
-    print(cmd)
-    #subprocess.getoutput(cmd)
+    return 0
 
 
 if __name__ == '__main__':
     args = parse_args()
-    desktop, screen_dims = get_active_screen_dims()
+    desktop, screen_dims, screen_offs = get_active_screen_dims()
     win_ids, win_names = get_windows_list(desktop)
-    set_layout(args.layout_id, args.shifted, desktop, screen_dims, win_ids, win_names)
+    set_layout(args.layout_id, desktop, screen_dims, screen_offs, win_ids, win_names)
 

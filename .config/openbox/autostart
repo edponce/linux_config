@@ -1,0 +1,2 @@
+screen &
+lxterminal -e screen &
