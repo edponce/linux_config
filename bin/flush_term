@@ -56,4 +56,5 @@ if [ $((max_rows - ${curr_pos[0]})) -le $empty_rows ]; then
 fi 
 
 unset empty_rows
+exit 0
 

@@ -83,9 +83,10 @@ eval $(xdotool mousemove --sync -- $x $y)
 eval $(xdotool click $click_id)
 
 # Restore initial mouse position and active window
-eval $(xdotool mousemove --sync -- $X $Y windowactivate $win_active)
-#eval $(xdotool mousemove --sync -- $X $Y)
+#eval $(xdotool mousemove --sync -- $X $Y windowactivate $win_active)
+eval $(xdotool mousemove --sync -- $X $Y)
 
 unset X Y SCREEN WINDOW
 unset click_id applet x y
+exit 0
 

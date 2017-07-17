@@ -128,4 +128,5 @@ fi
 eval "$cmd"
 
 unset use_audio use_window timer vcodec acodec framerate x y x_offs y_offs screen_id outfile cmd 
+exit 0
 

@@ -88,4 +88,5 @@ if [ $new_sink != $curr_sink ]; then
 fi
 
 unset input profile_id profile curr_sink sink cmd
+exit 0
 

@@ -65,4 +65,5 @@ cmd="pcmanfm --set-wallpaper=\"$wall_file\" --wallpaper-mode=stretch"
 eval "$cmd"
 
 unset wall_id wall_file wall_files cmd 
+exit 0
 

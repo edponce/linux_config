@@ -41,7 +41,7 @@ set_win_name()
 
     wid=$1
     wpid=$2
-    wname="$(ps -A | awk '/'"$wpid"'/ { print $4 }')"
+    wname="$(ps -e | awk '/'"$wpid"'/ { print $4 }')"
     case "$wname" in
         lxterminal)
         wname="LXTerminal"
@@ -70,4 +70,5 @@ echo "$(wmctrl -l -p)" | while read wquery; do
 done
 
 unset pid win_id win_pid
+exit 0
 

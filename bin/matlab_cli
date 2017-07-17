@@ -51,4 +51,5 @@ cmd="matlab $deskcmd $jvmcmd $runcmd"
 eval "$cmd"
 
 unset deskcmd jvmcmd runcmd cmd
+exit 0
 

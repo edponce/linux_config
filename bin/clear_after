@@ -44,4 +44,5 @@ eval "$cmd"
 tput clear
 
 unset cmd 
+exit 0
 

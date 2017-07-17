@@ -31,8 +31,9 @@ read -r -n 1 -p 'Press any key to continue ... ' ckey
 # Print newline if pressed key is not '\n' or '\r'
 #dkey=$(echo "$ckey" | od -An -t uC | awk '{ print $1 }')
 #if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
-    echo
+echo
 #fi
 
 unset ckey dkey
+exit 0
 

@@ -115,4 +115,5 @@ cmd="xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --ou
 eval "$cmd"
 
 unset mirror mon_proto direction_id mon_query rel_pos lvds vga hdmi cmd
+exit 0
 

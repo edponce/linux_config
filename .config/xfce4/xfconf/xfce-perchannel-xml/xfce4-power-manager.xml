@@ -14,7 +14,7 @@
     <property name="sleep-button-action" type="uint" value="3"/>
     <property name="hibernate-button-action" type="uint" value="3"/>
     <property name="critical-power-level" type="uint" value="20"/>
-    <property name="logind-handle-lid-switch" type="bool" value="false"/>
+    <property name="logind-handle-lid-switch" type="bool" value="true"/>
     <property name="lock-screen-suspend-hibernate" type="bool" value="true"/>
     <property name="brightness-on-battery" type="uint" value="9"/>
     <property name="blank-on-ac" type="int" value="0"/>
@@ -23,5 +23,7 @@
     <property name="critical-power-action" type="uint" value="0"/>
     <property name="brightness-level-on-ac" type="uint" value="30"/>
     <property name="brightness-level-on-battery" type="uint" value="30"/>
+    <property name="lid-action-on-battery" type="uint" value="1"/>
+    <property name="lid-action-on-ac" type="uint" value="1"/>
   </property>
 </channel>

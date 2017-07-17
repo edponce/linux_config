@@ -102,4 +102,5 @@ else
 fi
 
 unset xterm delay wid cmd
+exit 0
 

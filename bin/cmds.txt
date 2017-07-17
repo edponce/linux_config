@@ -108,7 +108,8 @@ sudo find / -type s
 sudo iptables -L
 
 # List all running processes
-ps -A
+ps -e
+ps -Ao pid,tt,user
 pstree -p
 sudo pkill PROC_NAME
 

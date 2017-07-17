@@ -1129,11 +1129,7 @@
     <!-- Xpad -->
     <application name="xpad">
       <desktop>all</desktop>
-      <skip_taskbar>yes</skip_taskbar>
-      <position force="no">
-        <x>-0</x>
-        <y>0</y>
-      </position>
+      <skip_taskbar>no</skip_taskbar>
       <size>
         <width>15%</width>
       </size>

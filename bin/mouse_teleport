@@ -174,4 +174,5 @@ else
 fi
 
 unset movement direction_id screen_id mouse_click edge_dist rel_dist x y
+exit 0
 

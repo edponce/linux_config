@@ -82,26 +82,11 @@ def get_windows_list(desktop):
     return win_ids, win_names
 
 
-def set_layout(layout_id, desktop, screen_dims, screen_offs, win_ids, win_names):
+def create_layout(layout_id, screen_dims, screen_offs):
     '''
-    Arrange windows based on layout ID
+    Create layout based on screen dimensions
+    
     '''
-    # Check if windows are available 
-    if not win_ids:
-        print('Warning: no windows were detected for processing.')
-        return 0
-
-    # Create dictionary where keys -> win_names, values -> win_ids
-    win_dict = dict()
-    num_wins = len(win_ids)
-    for wi in range(0, num_wins):
-        win_name = win_names[wi]
-        win_id = win_ids[wi]
-        if win_name in  win_dict.keys():
-            win_dict[win_name] += [win_id]
-        else:
-            win_dict[win_name] = [win_id]
-
     # Do not consider taskbar space
     screen_dims[1] -= 14
 
@@ -228,16 +213,40 @@ def set_layout(layout_id, desktop, screen_dims, screen_offs, win_ids, win_names)
         win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
 
     # Add screen offsets to window offsets
-    max_wins = len(win_dims)
-    for wi in range(0, max_wins):
+    for wi in range(0, len(win_dims)):
         win_offs[wi][0] += screen_offs[0]
         win_offs[wi][1] += screen_offs[1]
+
+    return win_dims, win_offs
+
+
+def set_layout(desktop, win_ids, win_names, win_dims, win_offs):
+    '''
+    Arrange windows based on layout
+    '''
+    # Check if windows are available 
+    if not win_ids:
+        print('Warning: no windows were detected for processing.')
+        return 0
+
+    # Create dictionary where keys -> win_names, values -> win_ids
+    win_dict = dict()
+    num_wins = len(win_ids)
+    for wi in range(0, num_wins):
+        win_name = win_names[wi]
+        win_id = win_ids[wi]
+        if win_name in  win_dict.keys():
+            win_dict[win_name] += [win_id]
+        else:
+            win_dict[win_name] = [win_id]
 
     # LIFO priority queue for arrangement of windows
     win_priority = ['Navigator', 'gedit', 'evince', 'lxterminal']
 
     # Process all windows
+    max_wins = len(win_dims)
     while win_dict:
+
         # Handle windows with priority
         if win_priority:
             wprior = win_priority.pop()
@@ -279,5 +288,6 @@ if __name__ == '__main__':
     args = parse_args()
     desktop, screen_dims, screen_offs = get_active_screen_dims()
     win_ids, win_names = get_windows_list(desktop)
-    set_layout(args.layout_id, desktop, screen_dims, screen_offs, win_ids, win_names)
+    win_dims, win_offs = create_layout(args.layout_id, screen_dims, screen_offs)
+    set_layout(desktop, win_ids, win_names, win_dims, win_offs)
 

@@ -83,4 +83,5 @@ if [ ${#symlinks[@]} -gt 0 ]; then
 fi
 
 unset recursive search_path symlinks prune_cmd
+exit 0
 
