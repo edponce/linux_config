@@ -10,7 +10,7 @@ alias word2vec='cd ~/Documents/utk/word2vec/word2vec_dev'
 alias pgs='cd ~/Documents/pgs'
 alias mri='cd ~/Documents/utk/mri'
 alias rdf='cd ~/Documents/utk/rdf_analysis'
-alias caaqa='cd ~/Documents/caaqa'
+alias caaqa='cd ~/Documents/caaqa/6ed'
 
 # Commands/utilities
 alias clear='tput clear'

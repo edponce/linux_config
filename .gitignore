@@ -21,6 +21,7 @@ bin/keybinds/build/
 .config/byobu/.ssh-agent
 .config/dconf/
 .config/evince/accels
+.config/galculator/
 .config/gpicview/
 .config/gtk-*/
 .config/ibus/

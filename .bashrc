@@ -64,7 +64,6 @@ if [ "$color_prompt" = yes ]; then
 else
     #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\[\033[01;32m\]\$\[\033[00m\] '
 
-    ########### Eduado custom #############
     # Controls for sync_history function
     history_last_sync_seconds=$SECONDS
     declare -r history_max_sync_seconds=60
@@ -216,8 +215,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Disable Ctrl + D to close terminal window
+set -o ignoreeof
 
-########### Eduado custom #############
 # Java VM environment
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 
@@ -225,34 +225,32 @@ export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 # CUDA libraries
 # /usr/local/cuda -> /usr/local/cuda-8.0
 # /usr/local/cuda/lib64 -> /usr/local/cuda/targets/x86_64-linux/lib
-#export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 # NVIDIA path
 # created symlinks in /usr/bin to files:
-#export PATH="/usr/lib/nvidia-current/bin:$PATH" 
+#export PATH="/usr/lib/nvidia-current/bin${PATH:+:$PATH}" 
 # CUDA path
-#export PATH="/usr/local/cuda/bin:$PATH"
-#export PATH="/usr/local/cuda/extras/demo_suite:$PATH"
-#export PATH="/usr/local/cuda/samples/bin/x86_64/linux/release:$PATH"
+#export PATH="/usr/local/cuda/bin:${PATH:+:$PATH}"
+#export PATH="/usr/local/cuda/extras/demo_suite:${PATH:+:$PATH}"
+#export PATH="/usr/local/cuda/samples/bin/x86_64/linux/release${PATH:+:$PATH}"
 # SASv9.4 root directory
-#export PATH="/usr/local/SASHome/SASFoundation/9.4:$PATH"
+#export PATH="/usr/local/SASHome/SASFoundation/9.4:${PATH:+:$PATH}"
 # Python local bin directory (required for Jupyter notebook)
-#export PATH="$HOME/.local/bin:$PATH"
+#export PATH="$HOME/.local/bin:${PATH:+:$PATH}"
 # Rstudio
-#export PATH="/usr/local/lib/rstudio/bin:$PATH"
+#export PATH="/usr/local/lib/rstudio/bin:${PATH:+:$PATH}"
 # EPSXE (games)
-#export PATH="$HOME/Documents/games:$PATH"
+#export PATH="$HOME/Documents/games:${PATH:+:$PATH}"
 env_values=(
 "/usr/local/cuda/extras/demo_suite"
 "/usr/local/cuda/bin"
 "/usr/local/SASHome/SASFoundation/9.4"
 "/usr/local/lib/rstudio/bin"
 "$HOME/Documents/games"
+"$HOME/.local/bin"
+"$HOME/bin"
 )
 . ~/bin/set_envvar PATH "${env_values[@]}"
 unset env_values
-
-# Disable Ctrl + D to close terminal window
-set -o ignoreeof
-
 

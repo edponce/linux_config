@@ -11,19 +11,27 @@ def parse_args():
     parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X')
     parser.add_argument('-l', '--layout_id', type=int, default=1,
                         dest='layout_id', help='layout identifier')
+    parser.add_argument('-s', '--screen_id', type=int, default=0,
+                        dest='screen_id', help='screen/monitor identifier')
     args = parser.parse_args()
 
     # Validate
     if args.layout_id < 0 or args.layout_id > 9:
         print('Error: invalid layout value.')
         exit(1)
+    if args.screen_id < 0 or args.screen_id > 2:
+        print('Error: invalid screen value.')
+        exit(1)
 
     return args
 
 
-def get_active_screen_dims():
+def get_active_screen_dims(screen_pos = 0):
     '''
     Get screen dimensions and offsets based on active window
+     0 -> screen with active window
+     1 -> lower-left screen
+     2 -> second screen
     '''
     screen_all_dims = []
 
@@ -37,14 +45,24 @@ def get_active_screen_dims():
     str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 1; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
     screen_all_dims = [int(x) for x in str_screen_dims]
 
-    # Check for multiple screens
-    num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
-    if num_monitors > 1:
-        win_x = win_dims[0] + win_dims[2]
-        win_y = win_dims[1] + win_dims[3]
+    # Use screen with active window
+    if screen_pos == 0:
+        # Check for multiple screens
+        num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
+        if num_monitors > 1:
+            win_x = win_dims[0] + win_dims[2]
+            win_y = win_dims[1] + win_dims[3]
 
         # Check if active window is not in lower-left screen 
         if win_x > screen_all_dims[0] or win_y > screen_all_dims[1]:
+            str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
+            screen_all_dims = [int(x) for x in str_screen_dims]
+
+    # Use second screen
+    elif screen_pos == 2:
+        # Check for multiple screens
+        num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
+        if num_monitors > 1:
             str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
             screen_all_dims = [int(x) for x in str_screen_dims]
    
@@ -55,7 +73,7 @@ def get_active_screen_dims():
     return desktop, screen_dims, screen_offs
 
 
-def get_windows_list(desktop):
+def get_windows_list(desktop = 1):
     '''
     Get lists of visible window IDs and names
     '''
@@ -82,13 +100,13 @@ def get_windows_list(desktop):
     return win_ids, win_names
 
 
-def create_layout(layout_id, screen_dims, screen_offs):
+def create_layout(layout_id = 1, screen_dims = [], screen_offs = []):
     '''
     Create layout based on screen dimensions
     
     '''
     # Do not consider taskbar space
-    screen_dims[1] -= 14
+    screen_dims[1] -= 14 
 
     # Compute window layouts coordinates (integers), [[x0,y0],[x1,y1],...] 
     win_dims = []
@@ -220,7 +238,7 @@ def create_layout(layout_id, screen_dims, screen_offs):
     return win_dims, win_offs
 
 
-def set_layout(desktop, win_ids, win_names, win_dims, win_offs):
+def set_layout(win_ids = [], win_names = [], win_dims = [], win_offs = []):
     '''
     Arrange windows based on layout
     '''
@@ -241,7 +259,8 @@ def set_layout(desktop, win_ids, win_names, win_dims, win_offs):
             win_dict[win_name] = [win_id]
 
     # LIFO priority queue for arrangement of windows
-    win_priority = ['Navigator', 'gedit', 'evince', 'lxterminal']
+    #win_priority = ['Navigator', 'libreoffice', 'gedit', 'evince', 'lxterminal']
+    win_priority = ['libreoffice', 'gedit', 'evince', 'lxterminal']
 
     # Process all windows
     max_wins = len(win_dims)
@@ -253,6 +272,8 @@ def set_layout(desktop, win_ids, win_names, win_dims, win_offs):
             if wprior in win_dict.keys():
                 wids = win_dict.pop(wprior)
                 win_name = wprior
+            else:
+                continue
         else:
             witem = win_dict.popitem()
             win_name = witem[0]
@@ -268,10 +289,13 @@ def set_layout(desktop, win_ids, win_names, win_dims, win_offs):
             win_dim = win_dims.pop()
             win_off = win_offs.pop()
 
-            # Special cases
-            if win_name == 'Navigator':
-                win_dim[1] -= 30 
- 
+            # Special cases (e.g., decorated vs. undecorated)
+            if not win_name in ['lxterminal']:
+                if not win_name in ['Navigator','evince']:
+                    win_off[1] += 26
+                if win_dim[1] > 28: win_dim[1] -= 28 
+                if win_dim[0] > 2: win_dim[0] -= 2
+
             # Activate window and arrange 
             subprocess.getoutput('xdotool windowactivate {}'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -b remove,maximized_vert,maximized_horz'.format(win_id))
@@ -286,8 +310,8 @@ def set_layout(desktop, win_ids, win_names, win_dims, win_offs):
 
 if __name__ == '__main__':
     args = parse_args()
-    desktop, screen_dims, screen_offs = get_active_screen_dims()
+    desktop, screen_dims, screen_offs = get_active_screen_dims(args.screen_id)
     win_ids, win_names = get_windows_list(desktop)
     win_dims, win_offs = create_layout(args.layout_id, screen_dims, screen_offs)
-    set_layout(desktop, win_ids, win_names, win_dims, win_offs)
+    set_layout(win_ids, win_names, win_dims, win_offs)
 

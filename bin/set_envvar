@@ -65,7 +65,6 @@ for value in "${arg_value[@]}"; do
         env_value+=("$value")
     fi
 done
-
 if [ ${#env_value[@]} -eq 0 ]; then
     return 0
 fi
