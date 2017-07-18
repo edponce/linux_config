@@ -284,104 +284,154 @@
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>-0</y><width>85%</width><height>50%</height></action>
     </keybind>
+    <keybind key="W-0">
+      <action name="Execute">
+        <command>xscreen.py -l 0 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-1">
+      <action name="Execute">
+        <command>xscreen.py -l 1 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-2">
+      <action name="Execute">
+        <command>xscreen.py -l 2 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-3">
+      <action name="Execute">
+        <command>xscreen.py -l 3 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-4">
+      <action name="Execute">
+        <command>xscreen.py -l 4 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-5">
+      <action name="Execute">
+        <command>xscreen.py -l 5 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-6">
+      <action name="Execute">
+        <command>xscreen.py -l 6 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-7">
+      <action name="Execute">
+        <command>xscreen.py -l 7 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-8">
+      <action name="Execute">
+        <command>xscreen.py -l 8 -s 1 -w 0</command>
+      </action>
+    </keybind>
+    <keybind key="W-9">
+      <action name="Execute">
+        <command>xscreen.py -l 9 -s 1 -w 0</command>
+      </action>
+    </keybind>
     <keybind key="W-A-0">
       <action name="Execute">
-        <command>xscreen.py -l 0 -s 1</command>
+        <command>xscreen.py -l 0 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-1">
       <action name="Execute">
-        <command>xscreen.py -l 1 -s 1</command>
+        <command>xscreen.py -l 1 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-2">
       <action name="Execute">
-        <command>xscreen.py -l 2 -s 1</command>
+        <command>xscreen.py -l 2 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-3">
       <action name="Execute">
-        <command>xscreen.py -l 3 -s 1</command>
+        <command>xscreen.py -l 3 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-4">
       <action name="Execute">
-        <command>xscreen.py -l 4 -s 1</command>
+        <command>xscreen.py -l 4 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-5">
       <action name="Execute">
-        <command>xscreen.py -l 5 -s 1</command>
+        <command>xscreen.py -l 5 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-6">
       <action name="Execute">
-        <command>xscreen.py -l 6 -s 1</command>
+        <command>xscreen.py -l 6 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-7">
       <action name="Execute">
-        <command>xscreen.py -l 7 -s 1</command>
+        <command>xscreen.py -l 7 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-8">
       <action name="Execute">
-        <command>xscreen.py -l 8 -s 1</command>
+        <command>xscreen.py -l 8 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-A-9">
       <action name="Execute">
-        <command>xscreen.py -l 9 -s 1</command>
+        <command>xscreen.py -l 9 -s 2 -w 0</command>
       </action>
     </keybind>
     <keybind key="W-S-0">
       <action name="Execute">
-        <command>xscreen.py -l 0 -s 2</command>
+        <command>xscreen.py -l 0 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-1">
       <action name="Execute">
-        <command>xscreen.py -l 1 -s 2</command>
+        <command>xscreen.py -l 1 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-2">
       <action name="Execute">
-        <command>xscreen.py -l 2 -s 2</command>
+        <command>xscreen.py -l 2 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-3">
       <action name="Execute">
-        <command>xscreen.py -l 3 -s 2</command>
+        <command>xscreen.py -l 3 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-4">
       <action name="Execute">
-        <command>xscreen.py -l 4 -s 2</command>
+        <command>xscreen.py -l 4 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-5">
       <action name="Execute">
-        <command>xscreen.py -l 5 -s 2</command>
+        <command>xscreen.py -l 5 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-6">
       <action name="Execute">
-        <command>xscreen.py -l 6 -s 2</command>
+        <command>xscreen.py -l 6 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-7">
       <action name="Execute">
-        <command>xscreen.py -l 7 -s 2</command>
+        <command>xscreen.py -l 7 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-8">
       <action name="Execute">
-        <command>xscreen.py -l 8 -s 2</command>
+        <command>xscreen.py -l 8 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="W-S-9">
       <action name="Execute">
-        <command>xscreen.py -l 9 -s 2</command>
+        <command>xscreen.py -l 9 -s 0 -w 1</command>
       </action>
     </keybind>
     <keybind key="C-W-0">
@@ -753,11 +803,11 @@
     <!-- number of pixels the mouse must move before a drag begins -->
     <doubleClickTime>200</doubleClickTime>
     <!-- in milliseconds (1000 = 1 second) -->
-    <screenEdgeWarpTime>400</screenEdgeWarpTime>
+    <screenEdgeWarpTime>0</screenEdgeWarpTime>
     <!-- Time before changing desktops when the pointer touches the edge of the
        screen while moving a window, in milliseconds (1000 = 1 second).
        Set this to 0 to disable warping -->
-    <screenEdgeWarpMouse>true</screenEdgeWarpMouse>
+    <screenEdgeWarpMouse>false</screenEdgeWarpMouse>
     <!-- Set this to TRUE to move the mouse pointer across the desktop when
        switching due to hitting the edge of the screen -->
     <context name="Frame">
