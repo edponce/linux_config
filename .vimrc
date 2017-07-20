@@ -59,8 +59,8 @@ set hlsearch
 nnoremap <silent> <F6> :nohlsearch<CR>
 
 " Enable spell checking
-nnoremap <silent> <F8> :set spell! spelllang=en<CR>
-nnoremap <silent> <S-F8> :set spell! spelllang=es<CR>
+nnoremap <silent> <F7> :set spell! spelllang=en<CR>
+nnoremap <silent> <F8> :set spell! spelllang=es<CR>
 
 " Set aspell spell checker
 nnoremap <silent> <F9> :w!<CR>:!aspell -l en_US -c %<CR>:e! %<CR>

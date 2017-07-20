@@ -42,6 +42,10 @@ def get_active_screen_dims(screen_id = 0):
     # Get active desktop
     desktop = int(subprocess.getoutput('xdotool get_desktop')) 
 
+    # Get active window as int and convert to hex
+    win_id_active_int = int(subprocess.getoutput('xdotool getactivewindow'))
+    win_id_active = '{0:#0{1}x}'.format(win_id_active_int, 10)
+
     # Get dimensions and offsets of lower-left screen
     str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 1; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
     screen_all_dims = [int(x) for x in str_screen_dims]
@@ -52,9 +56,8 @@ def get_active_screen_dims(screen_id = 0):
         # Check for multiple screens
         num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
         if num_monitors > 1:
-            # Get active window and dimensions
-            win_id = subprocess.getoutput('xdotool getactivewindow')
-            str_win_dims = subprocess.getoutput('. ~/bin/custom_utils; window_position ' + win_id + '; echo "${win_dims[@]} ${win_offs[@]}"').split()
+            # Get active window dimensions
+            str_win_dims = subprocess.getoutput('. ~/bin/custom_utils; window_position ' + win_id_active + '; echo "${win_dims[@]} ${win_offs[@]}"').split()
             win_dims = [int(x) for x in str_win_dims]
             win_x = win_dims[0] + win_dims[2]
             win_y = win_dims[1] + win_dims[3]
@@ -76,7 +79,7 @@ def get_active_screen_dims(screen_id = 0):
     screen_dims = screen_all_dims[0:2]
     screen_offs = screen_all_dims[2:4]
 
-    return desktop, screen_dims, screen_offs
+    return desktop, win_id_active, screen_dims, screen_offs
 
 
 def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs = []):
@@ -266,7 +269,7 @@ def create_layout(layout_id = 1, screen_dims = [], screen_offs = []):
     return win_dims, win_offs
 
 
-def set_layout(win_ids = [], win_names = [], win_dims = [], win_offs = []):
+def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], win_offs = []):
     '''
     Arrange windows based on layout
     '''
@@ -288,7 +291,8 @@ def set_layout(win_ids = [], win_names = [], win_dims = [], win_offs = []):
 
     # LIFO priority queue for arrangement of windows
     #win_priority = ['Navigator', 'libreoffice', 'gedit', 'evince', 'lxterminal']
-    win_priority = ['libreoffice', 'gedit', 'evince', 'lxterminal']
+    win_name_active = list(win_dict.keys())[list(win_dict.values()).index([win_id_active])]
+    win_priority = ['libreoffice', 'gedit', 'evince', win_name_active, 'lxterminal']
 
     # Process all windows
     max_wins = len(win_dims)
@@ -310,27 +314,24 @@ def set_layout(win_ids = [], win_names = [], win_dims = [], win_offs = []):
         # Process current set of windows 
         while wids and win_dims and win_offs:
             win_id = wids.pop()
-            # Save ID of first window to set as active window after arrangement
-            if len(win_dims) == max_wins:
-                win_id_active = win_id
             win_grav = 0
             win_dim = win_dims.pop()
             win_off = win_offs.pop()
 
             # Special cases (e.g., decorated vs. undecorated)
             if not win_name in ['lxterminal']:
-                if not win_name in ['Navigator','evince']:
+                if not win_name in ['Navigator','evince', 'gedit']:
                     win_off[1] += 26
-                if win_dim[1] > 28: win_dim[1] -= 28 
+                if not win_name in ['gedit']:
+                    if win_dim[1] > 28: win_dim[1] -= 28 
                 if win_dim[0] > 2: win_dim[0] -= 2
 
             # Activate window and arrange 
             subprocess.getoutput('xdotool windowactivate {}'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -b remove,maximized_vert,maximized_horz'.format(win_id))
-            cmd = 'wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_off[0], win_off[1], win_dim[0], win_dim[1])
-            subprocess.getoutput(cmd)
+            subprocess.getoutput('wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_off[0], win_off[1], win_dim[0], win_dim[1]))
 
-    # Activate first window
+    # Activate window
     subprocess.getoutput('xdotool windowactivate {}'.format(win_id_active))
 
     return 0
@@ -338,8 +339,8 @@ def set_layout(win_ids = [], win_names = [], win_dims = [], win_offs = []):
 
 if __name__ == '__main__':
     args = parse_args()
-    desktop, screen_dims, screen_offs = get_active_screen_dims(args.screen_id)
+    desktop, win_id_active, screen_dims, screen_offs = get_active_screen_dims(args.screen_id)
     win_ids, win_names = get_windows_list(desktop, args.win_select, screen_dims, screen_offs)
     win_dims, win_offs = create_layout(args.layout_id, screen_dims, screen_offs)
-    set_layout(win_ids, win_names, win_dims, win_offs)
+    set_layout(win_id_active, win_ids, win_names, win_dims, win_offs)
 

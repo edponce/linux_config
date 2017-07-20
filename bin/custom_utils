@@ -39,7 +39,7 @@ screen_position()
 }
 
 # Get dimensions and offsets of selected window
-# Inputs: window ID (optional)
+# Inputs: window ID, int or hex value (optional)
 # Outputs: win_dims, win_offs
 window_position()
 {
