@@ -227,6 +227,9 @@ export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 # /usr/local/cuda/lib64 -> /usr/local/cuda/targets/x86_64-linux/lib
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
+# RISC-V
+export RISCV="/opt/riscv"
+#export PATH="$RISCV/bin${PATH:+:$PATH}"
 # NVIDIA path
 # created symlinks in /usr/bin to files:
 #export PATH="/usr/lib/nvidia-current/bin${PATH:+:$PATH}" 
@@ -243,6 +246,7 @@ export LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PAT
 # EPSXE (games)
 #export PATH="$HOME/Documents/games:${PATH:+:$PATH}"
 env_values=(
+"$RISCV/bin"
 "/usr/local/cuda/extras/demo_suite"
 "/usr/local/cuda/bin"
 "/usr/local/SASHome/SASFoundation/9.4"

@@ -139,10 +139,17 @@ pcmanfm --set-wallpaper=/usr/share/lubuntu/wallpapers/lubuntu-eduardo-wallpaper.
 # pdf2[html|tex|...]
 
 # To disable services at boot
-sudo echo "manual" >> /etc/init/SERVICE.conf
+# /etc/init
+# sudo echo "manual" >> /etc/init/SERVICE.override
+sudo systemctl disable SERVICE
 
 # To disable services permanently
 sudo mv /etc/init/SERVICE.conf /etc/init/SERVICE.conf.disabled
+
+# Disabled services
+bluetooth
+mysql
+whoopsie
 
 # View tasks, memory, and network usage
 top # tasks

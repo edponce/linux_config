@@ -11,6 +11,7 @@ alias pgs='cd ~/Documents/pgs'
 alias mri='cd ~/Documents/utk/mri'
 alias rdf='cd ~/Documents/utk/rdf_analysis'
 alias caaqa='cd ~/Documents/caaqa/6ed'
+alias sacnas='cd ~/Documents/utk/sacnas_chapter'
 
 # Commands/utilities
 alias clear='tput clear'
@@ -29,9 +30,9 @@ alias nvidia-settingsx='optirun nvidia-settings -c :8'
 alias nvvpx='optirun nvvp'
 
 # Session control
-alias goodbye='sudo systemctl poweroff'
-alias restart='sudo systemctl reboot'
-alias powernap='sudo systemctl suspend'
+alias poweroff='sudo systemctl poweroff'
+alias reboot='sudo systemctl reboot'
+alias suspend='sudo systemctl suspend'
 alias hibernate='sudo systemctl hibernate'
 
 #alias battery='upower -i `upower -e | grep battery` | grep -E "state|percentage"'

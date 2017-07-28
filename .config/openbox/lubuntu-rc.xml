@@ -1234,6 +1234,17 @@
         <width>15%</width>
       </size>
     </application>
+    <!-- LibreOffice apps -->
+    <application name="libreoffice">
+      <position force="no">
+        <x>-0</x>
+        <y>0</y>
+      </position>
+      <size>
+        <width>50%</width>
+        <height>100%</height>
+      </size>
+    </application>
     <!--
   # this is an example with comments through out. use these to make your
   # own rules, but without the comments of course.

@@ -2,19 +2,25 @@
 
 import argparse
 import subprocess
+from argparse import RawTextHelpFormatter
 
 
 def parse_args():
     '''
     Parse command line arguments
     '''
-    parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X')
+    parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-l', '--layout_id', type=int, default=1,
                         dest='layout_id', help='layout identifier')
     parser.add_argument('-s', '--screen_id', type=int, default=0,
-                        dest='screen_id', help='screen/monitor identifier')
+                        dest='screen_id', help='screen/monitor identifier\n'
+                                               ' 0 -> screen with active window\n'
+                                               ' 1 -> lower-left screen\n'
+                                               ' 2 -> second screen')
     parser.add_argument('-w', '--win_select', type=int, default=0,
-                        dest='win_select', help='window select identifier')
+                        dest='win_select', help='window select identifier\n'
+                                                ' 0 -> visible windows in active screen/monitor\n'
+                                                ' 1 -> visible windows in active desktop')
     args = parser.parse_args()
 
     # Validate
@@ -34,10 +40,6 @@ def parse_args():
 def get_active_screen_dims(screen_id = 0):
     '''
     Get screen dimensions and offsets based on active window
-     screen_id:
-      0 -> screen with active window
-      1 -> lower-left screen
-      2 -> second screen
     '''
     # Get active desktop
     desktop = int(subprocess.getoutput('xdotool get_desktop')) 
@@ -85,9 +87,6 @@ def get_active_screen_dims(screen_id = 0):
 def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs = []):
     '''
     Get lists of visible window IDs and names
-     win_select:
-      0 -> visible windows in active screen/monitor 
-      1 -> visible windows in active desktop
     '''
     # Window queues
     win_ids = []
@@ -143,123 +142,124 @@ def create_layout(layout_id = 1, screen_dims = [], screen_offs = []):
     screen_dims[1] -= 14 
 
     if layout_id == 0:
-        # h2v1 
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        # h2v1 -> 3 windows
+        wx = int(screen_dims[0] / 2)
+        wy = int(screen_dims[1] / 2)
+
+        win_dims.insert(0, [wx, wy])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
-        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [0, wy])
+        win_dims.insert(0, [wx, screen_dims[1]])
+        win_offs.insert(0, [wx, 0])
 
     elif layout_id == 1:
-        # v1h2 
-        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
+        # v1h2 -> 3 windows
+        wx = int(screen_dims[0] / 2)
+        wy = int(screen_dims[1] / 2)
+
+        win_dims.insert(0, [wx, screen_dims[1]])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, 0])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, wy])
 
     elif layout_id == 2:
-        # v2
-        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
-        win_offs.insert(0, [0, 0])
+        # v2 -> 2 windows
+        wx = int(screen_dims[0] / 2)
 
-        win_dims.insert(0, [int(screen_dims[0] / 2), screen_dims[1]])
-        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
+        win_dims.insert(0, [wx, screen_dims[1]])
+        win_offs.insert(0, [0, 0])
+        win_dims.insert(0, [wx, screen_dims[1]])
+        win_offs.insert(0, [wx, 0])
 
     elif layout_id == 3:
-        # v3 
-        win_dims.insert(0, [int(screen_dims[0] / 3), screen_dims[1]])
+        # v3 -> 3 windows
+        wx = int(screen_dims[0] / 3);
+
+        win_dims.insert(0, [wx, screen_dims[1]])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), screen_dims[1]])
-        win_offs.insert(0, [int(screen_dims[0] / 3), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), screen_dims[1]])
-        win_offs.insert(0, [int(2 * screen_dims[0] / 3), 0])
+        win_dims.insert(0, [wx, screen_dims[1]])
+        win_offs.insert(0, [wx, 0])
+        win_dims.insert(0, [wx, screen_dims[1]])
+        win_offs.insert(0, [2 * wx, 0])
 
     elif layout_id == 4:
-        # h2v2 
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        # h2v2 -> 4 windows
+        wx = int(screen_dims[0] / 2)
+        wy = int(screen_dims[1] / 2)
+
+        win_dims.insert(0, [wx, wy])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 2), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [0, wy])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, 0])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, wy])
 
     elif layout_id == 5:
-        # h2
-        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 2)])
-        win_offs.insert(0, [0, 0])
+        # h2 -> 2 windows
+        wy = int(screen_dims[1] / 2)
 
-        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 2)])
-        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
+        win_dims.insert(0, [screen_dims[0], wy])
+        win_offs.insert(0, [0, 0])
+        win_dims.insert(0, [screen_dims[0], wy])
+        win_offs.insert(0, [0, wy])
 
     elif layout_id == 6:
-        # h2v3 
-        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        # h2v3 -> 6 windows
+        wx = int(screen_dims[0] / 3)
+        wy = int(screen_dims[1] / 2)
+
+        win_dims.insert(0, [wx, wy])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 3), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(2 * screen_dims[0] / 3), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 3), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(2 * screen_dims[0] / 3), int(screen_dims[1] / 2)])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [0, wy])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, 0])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, wy])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [2 * wx, 0])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [2 * wx, wy])
 
     elif layout_id == 7:
-        # h3 
-        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 3)])
+        # h3 -> 3 windows
+        wy = int(screen_dims[1] / 3)
+
+        win_dims.insert(0, [screen_dims[0], wy])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 3)])
-        win_offs.insert(0, [0, int(screen_dims[1] / 3)])
-
-        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 3)])
-        win_offs.insert(0, [0, int(2 * screen_dims[1] / 3)])
+        win_dims.insert(0, [screen_dims[0], wy])
+        win_offs.insert(0, [0, wy])
+        win_dims.insert(0, [screen_dims[0], wy])
+        win_offs.insert(0, [0, 2 * wy])
 
     elif layout_id == 8:
-        # v4
-        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
+        # v2h1 -> 3 windows
+        wx = int(screen_dims[0] / 2)
+        wy = int(screen_dims[1] / 2)
+
+        win_dims.insert(0, [wx, wy])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
-        win_offs.insert(0, [int(screen_dims[0] / 4), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
-        win_offs.insert(0, [int(2 * screen_dims[0] / 4), 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 4), screen_dims[1]])
-        win_offs.insert(0, [int(3 * screen_dims[0] / 4), 0])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, 0])
+        win_dims.insert(0, [screen_dims[0], wy])
+        win_offs.insert(0, [0, wy])
 
     elif layout_id == 9:
-        # h1v2 
-        win_dims.insert(0, [screen_dims[0], int(screen_dims[1] / 2)])
+        # h1v2 -> 3 windows
+        wx = int(screen_dims[0] / 2)
+        wy = int(screen_dims[1] / 2)
+
+        win_dims.insert(0, [screen_dims[0], wy])
         win_offs.insert(0, [0, 0])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [0, int(screen_dims[1] / 2)])
-
-        win_dims.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
-        win_offs.insert(0, [int(screen_dims[0] / 2), int(screen_dims[1] / 2)])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [0, wy])
+        win_dims.insert(0, [wx, wy])
+        win_offs.insert(0, [wx, wy])
 
     # Add screen offsets to window offsets
     for wi in range(0, len(win_dims)):
@@ -290,9 +290,12 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
             win_dict[win_name] = [win_id]
 
     # LIFO priority queue for arrangement of windows
-    #win_priority = ['Navigator', 'libreoffice', 'gedit', 'evince', 'lxterminal']
-    win_name_active = list(win_dict.keys())[list(win_dict.values()).index([win_id_active])]
-    win_priority = ['libreoffice', 'gedit', 'evince', win_name_active, 'lxterminal']
+    if win_id_active in win_dict.values():
+        win_name_active = list(win_dict.keys())[list(win_dict.values()).index([win_id_active])]
+        win_priority = ['libreoffice', 'gedit', 'evince', win_name_active, 'lxterminal']
+    else:
+        #win_priority = ['Navigator', 'libreoffice', 'gedit', 'evince', 'lxterminal']
+        win_priority = ['libreoffice', 'gedit', 'evince', 'lxterminal']
 
     # Process all windows
     max_wins = len(win_dims)
@@ -319,7 +322,9 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
             win_off = win_offs.pop()
 
             # Special cases (e.g., decorated vs. undecorated)
-            if not win_name in ['lxterminal']:
+            if win_name in ['lxterminal']:
+                win_dim[1] += 2
+            else:
                 if not win_name in ['Navigator','evince', 'gedit']:
                     win_off[1] += 26
                 if not win_name in ['gedit']:
