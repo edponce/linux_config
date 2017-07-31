@@ -359,9 +359,16 @@ tar cvzf hidden_home.tgz ~/.[a-zA-Z]* --exclude-backups --exclude-caches-all --e
 localhost:631
 # Printing from terminal
 lpstat -p -d  # list printers
-lpstat -s  # more info on printers
-lp -n 1 file.pdf  # prints 1 copy to default printer
+lpstat -t  # more info on printers
+lp file.pdf  # prints 1 copy to default printer
 lp -n 2 -d hp-3511 file.pdf  # prints 2 copies to specified printer
+lpr file.pdf # prints 1 copy to default printer
+lpr -# 2 -P hp-3511 file.pdf # prints 2 copies to specified printer
+lpq -P hp-3511 # list queue of specified printer
+lprm -P hp-3511 71 # cancel job 71 from specified printer
+libreoffice -p "file.docx" # print 1 copy to default printer
+libreoffice --pt hp-3511 "file.docx" # print 1 copy to specified printer
+libreoffice --pt PDF "file.docx" # convert to PDF
 
 # Update latest kernel image
 # Required when a module file or similar config are modified

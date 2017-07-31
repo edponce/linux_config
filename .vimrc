@@ -48,7 +48,7 @@ nnoremap ; :
 " Prevent stupid window from popping up
 nnoremap q: :q
 
-" Clear terminal 
+" Clear terminal
 nnoremap <silent> <F4> :!clear<CR><CR>
 
 " Search and replace shortcut
@@ -60,12 +60,17 @@ nnoremap <silent> <F6> :nohlsearch<CR>
 
 " Enable spell checking
 nnoremap <silent> <F7> :set spell! spelllang=en<CR>
-nnoremap <silent> <F8> :set spell! spelllang=es<CR>
+nnoremap <silent> <S-F7> :set spell! spelllang=es<CR>
 
 " Set aspell spell checker
-nnoremap <silent> <F9> :w!<CR>:!aspell -l en_US -c %<CR>:e! %<CR>
-nnoremap <silent> <S-F9> :w!<CR>:!aspell -l es -c %<CR>:e! %<CR>
-  
+nnoremap <silent> <F8> :w!<CR>:!aspell -l en_US -c %<CR>:e! %<CR>
+nnoremap <silent> <S-F8> :w!<CR>:!aspell -l es -c %<CR>:e! %<CR>
+
+" Toggle hidden characters
+" eol:U+23ce,tab:U+25b6-,space:U+00b7,extends:U+25b6,precedes:U+25c0,nbsp:U+23b5
+set listchars=eol:⏎,tab:▶-,space:·,trail:~,extends:▶,precedes:◀,nbsp:⎵
+nnoremap <silent> <F9> :set list!<CR>
+
 " Toggle line numbers
 nnoremap <silent> <F10> :set number!<CR>
 

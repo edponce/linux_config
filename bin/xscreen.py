@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
+import sys, os
 import argparse
-import subprocess
 from argparse import RawTextHelpFormatter
+import subprocess
 
 
 def parse_args():
@@ -26,13 +27,13 @@ def parse_args():
     # Validate
     if args.layout_id < 0 or args.layout_id > 9:
         print('Error: invalid layout value.')
-        exit(1)
+        sys.exit(os.EX_USAGE)
     if args.screen_id < 0 or args.screen_id > 2:
         print('Error: invalid screen value.')
-        exit(1)
+        sys.exit(os.EX_USAGE)
     if args.win_select < 0 or args.win_select > 1:
         print('Error: invalid window select value.')
-        exit(1)
+        sys.exit(os.EX_USAGE)
 
     return args
 
@@ -42,7 +43,7 @@ def get_active_screen_dims(screen_id = 0):
     Get screen dimensions and offsets based on active window
     '''
     # Get active desktop
-    desktop = int(subprocess.getoutput('xdotool get_desktop')) 
+    desktop = int(subprocess.getoutput('xdotool get_desktop'))
 
     # Get active window as int and convert to hex
     win_id_active_int = int(subprocess.getoutput('xdotool getactivewindow'))
@@ -64,7 +65,7 @@ def get_active_screen_dims(screen_id = 0):
             win_x = win_dims[0] + win_dims[2]
             win_y = win_dims[1] + win_dims[3]
 
-            # Check if active window is not in lower-left screen 
+            # Check if active window is not in lower-left screen
             if win_x > screen_all_dims[0] or win_y > screen_all_dims[1]:
                 str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
                 screen_all_dims = [int(x) for x in str_screen_dims]
@@ -77,7 +78,7 @@ def get_active_screen_dims(screen_id = 0):
             str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
             screen_all_dims = [int(x) for x in str_screen_dims]
    
-    # Screen dimensions and offsets 
+    # Screen dimensions and offsets
     screen_dims = screen_all_dims[0:2]
     screen_offs = screen_all_dims[2:4]
 
@@ -92,7 +93,7 @@ def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs 
     win_ids = []
     win_names = []
     
-    # Check if screens are available 
+    # Check if screens are available
     if not screen_dims or not screen_offs:
         print('Warning: incomplete screen/monitor properties.')
         return win_ids, win_names
@@ -110,7 +111,7 @@ def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs 
         if win_desk != desktop:
             continue
 
-        if win_select == 0: 
+        if win_select == 0:
             # Skip windows not in active screen/monitor
             if win_off[0] >= screen_offs[0] + screen_dims[0] or win_off[0] + win_dim[0] <= screen_offs[0] or win_off[1] >= screen_offs[1] + screen_dims[1] or win_off[1] + win_dim[1] <= screen_offs[1]:
                 continue
@@ -129,17 +130,17 @@ def create_layout(layout_id = 1, screen_dims = [], screen_offs = []):
     Create layout based on screen dimensions
     
     '''
-    # Window layout coordinates (integers), [[x0,y0],[x1,y1],...] 
+    # Window layout coordinates (integers), [[x0,y0],[x1,y1],...]
     win_dims = []
     win_offs = []
 
-    # Check if screens are available 
+    # Check if screens are available
     if not screen_dims or not screen_offs:
         print('Warning: incomplete screen/monitor properties.')
         return win_dims, win_offs
 
     # Do not consider taskbar space
-    screen_dims[1] -= 14 
+    screen_dims[1] -= 14
 
     if layout_id == 0:
         # h2v1 -> 3 windows
@@ -312,9 +313,9 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
         else:
             witem = win_dict.popitem()
             win_name = witem[0]
-            wids = witem[1]       
+            wids = witem[1]
 
-        # Process current set of windows 
+        # Process current set of windows
         while wids and win_dims and win_offs:
             win_id = wids.pop()
             win_grav = 0
@@ -328,10 +329,10 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
                 if not win_name in ['Navigator','evince', 'gedit']:
                     win_off[1] += 26
                 if not win_name in ['gedit']:
-                    if win_dim[1] > 28: win_dim[1] -= 28 
+                    if win_dim[1] > 28: win_dim[1] -= 28
                 if win_dim[0] > 2: win_dim[0] -= 2
 
-            # Activate window and arrange 
+            # Activate window and arrange
             subprocess.getoutput('xdotool windowactivate {}'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -b remove,maximized_vert,maximized_horz'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_off[0], win_off[1], win_dim[0], win_dim[1]))
@@ -348,4 +349,5 @@ if __name__ == '__main__':
     win_ids, win_names = get_windows_list(desktop, args.win_select, screen_dims, screen_offs)
     win_dims, win_offs = create_layout(args.layout_id, screen_dims, screen_offs)
     set_layout(win_id_active, win_ids, win_names, win_dims, win_offs)
+    sys.exit(os.EX_OK)
 
