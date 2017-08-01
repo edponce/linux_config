@@ -1245,6 +1245,17 @@
         <height>100%</height>
       </size>
     </application>
+    <!-- pcmanfm -->
+    <application name="pcmanfm">
+      <position force="no">
+        <x>0</x>
+        <y>0</y>
+      </position>
+      <size>
+        <width>700</width>
+        <height>300</height>
+      </size>
+    </application>
     <!--
   # this is an example with comments through out. use these to make your
   # own rules, but without the comments of course.

@@ -26,6 +26,7 @@ bin/keybinds/build/
 .config/gtk-*/
 .config/ibus/
 .config/libreoffice/
+.config/pcmanfm/lubuntu/pcmanfm.conf
 .config/pulse/
 .config/xpad/
 .cups/
