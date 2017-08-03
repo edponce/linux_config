@@ -56,7 +56,7 @@ if [ -z "$cmd" ]; then
     exit 1
 fi
 
-if [ $(bc -l <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
+if [ $(bc <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
     echo "Error: invalid delay value."
     exit 1
 fi
@@ -69,9 +69,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Check if launch terminal
-if [ $xterm -eq 1 ]; then
-    lxterminal
-fi
+[ $xterm -eq 1 ] && lxterminal
 
 # Wait
 sleep $delay

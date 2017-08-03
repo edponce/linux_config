@@ -20,7 +20,7 @@ HISTSIZE=10000
 HISTFILESIZE=100000
 HISTTIMEFORMAT="[%F %T] "
 HISTIGNORE="l:ll:la:ls:ls -l:ls -la:ls -lh:LS:sl:pwd:cd:cd :cd ..:date:ps:vi:vim:history:"
-HISTIGNORE+="$(grep '^alias' .bash_aliases | sed 's/=/ /' | cut -d' ' -f2 | tr '\n' ':')"
+HISTIGNORE+="$(grep '^alias' $HOME/.bash_aliases | sed 's/=/ /' | cut -d' ' -f2 | tr '\n' ':')"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -50,12 +50,12 @@ esac
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-	color_prompt=
+        color_prompt=
     fi
 fi
 
@@ -85,7 +85,7 @@ else
         local err_cmd 
 
         local history_last file_num history_basefile history_backupfile 
-        local history_val history_curr git_branch prompt_symbol
+        local history_val history_curr git_branch git_branch_str prompt_symbol
 
         # History consistency between shells
         if [ $((SECONDS - history_last_sync_seconds)) -gt $history_max_sync_seconds ]; then
@@ -100,9 +100,7 @@ else
             history_last=0
         elif [ $history_last -ge $HISTSIZE ]; then
             history_last=0
-            if [[ ! -d "$history_backup_dir" ]]; then
-                mkdir "$history_backup_dir"
-            fi
+            [ ! -d "$history_backup_dir" ] && mkdir "$history_backup_dir"
             file_num=$(ls "$history_backup_dir" | awk -F. '{ print $2 }' | sort | tail -n 1)
             if [[ $file_num = *[[:digit:]] ]]; then
                 file_num=$((file_num + 1))
@@ -123,9 +121,10 @@ else
 
         # Check if current dir has a .git repo, but hide $HOME git repo
         git_branch=
-        if [[ "$PWD" != "$HOME" ]]; then
+        if [ "$PWD" != "$HOME" ]; then
             if [ ! -z "$(ls -A | grep '^.git$')" ]; then
-                git_branch="${cyan_c}$(git branch | grep '\*' | awk '{ print $NF }')${off_c}:"
+                git_branch_str="$(git branch | grep '\*' | awk '{ print $NF }')"
+                git_branch="${cyan_c}${git_branch_str:-?}${off_c}:"
             fi
         fi
 

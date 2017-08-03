@@ -3,7 +3,7 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--jvm] [--run \"COMMAND\"|SCRIPT.m]"
+    echo "Usage: $(basename $0) [--help] [--jvm] [--run \"COMMAND\"|\"SCRIPT.m\"]"
     echo
     echo "Starts MATLAB interpreter without GUI."
     echo

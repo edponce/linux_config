@@ -52,9 +52,7 @@ fi
 declare -ra curr_pos=($(get_cursor_pos))
 
 # Run
-if [ $((max_rows - ${curr_pos[0]})) -le $empty_rows ]; then
-    clear
-fi 
+[ $((max_rows - ${curr_pos[0]})) -le $empty_rows ] && clear
 
 unset empty_rows
 exit 0

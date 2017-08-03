@@ -65,9 +65,7 @@ for value in "${arg_value[@]}"; do
         env_value+=("$value")
     fi
 done
-if [ ${#env_value[@]} -eq 0 ]; then
-    return 0
-fi
+[ ${#env_value[@]} -eq 0 ] && return 0
 
 # Convert values into delimited string
 env_str=$(IFS=":"; echo "${env_value[*]}")

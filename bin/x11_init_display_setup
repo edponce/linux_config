@@ -9,9 +9,10 @@ if [ $(xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }') -gt 1 
 fi
 
 # Enable horizontal two finger scroll for Synaptic touchpad
-if [ $(synclient -l | awk -F'=' '/HorizTwoFingerScroll/ { print $2 }') -eq 0 ]; then
-    synclient HorizTwoFingerScroll=1
-fi
+# Creates error in MATLAB, so disable it
+#if [ $(synclient -l | awk -F'=' '/HorizTwoFingerScroll/ { print $2 }') -eq 0 ]; then
+#    synclient HorizTwoFingerScroll=1
+#fi
 
 # Enable numlock
 if [ "$(numlockx status | grep 'off')" ]; then

@@ -1,60 +1,70 @@
 #!/bin/bash 
 
-# Usage information
-while [ $1 ]; do 
-    case $1 in 
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--file \"ADFILE\"]"
+    echo
+    echo "If an ASCIIDoc file is not provided, current directory is searched for one."
+    echo "All other arguments are ignored."
+    echo
+}
+
+
+# Default options
+adfile=
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
         -h | --help)
-        echo "Usage: $(basename $0) [--help] [--file asciifile]"
-        echo
-        echo "If an ASCIIDoc file is not provided, current directory is searched for one."
-        echo "All other arguments are ignored."
+        usage
         exit 0
         ;;
         -f | --file)
-        ASCIIFILE=$2
+        adfile="$2"
         shift 2
         ;;
         *)
-        echo "Invalid argument: $1"
-        exit 0
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
         ;;
     esac
 done
-
-# Validate ASCIIDoc file
-if [[ -z $ASCIIFILE ]]; then
-    ASCIIFILE=`ls | grep ".*\.asciidoc$"`
-    NUMFILES=`ls | grep ".*\.asciidoc$" | wc -l`
-    if [[ $NUMFILES -eq 0 ]]; then
-        echo "Warning: no automatic ASCIIDoc file found, '$ASCIIFILE'."
+     
+# Validate
+if [ -z "$adfile" ]; then
+    adfile="$(ls | grep '.*\.asciidoc$')"
+    num_adfiles=$(ls | grep '.*\.asciidoc$' | wc -l)
+    if [ $num_adfiles -le 0 ]; then
+        echo "Error: no automatic ASCIIDoc file found."
         exit 1
-    elif [[ $NUMFILES -gt 1 ]]; then
-        echo "Error: too many ASCIIDoc files found, '$ASCIIFILE'."
+    elif [ $num_adfiles -gt 1 ]; then
+        echo "Error: too many ASCIIDoc files found, '$adfile'."
         exit 1
     else
-        echo "Automatic ASCIIDoc file found, '$ASCIIFILE'."
+        echo "Automatic ASCIIDoc file found, '$adfile'."
     fi
-fi
-if [[ ! -e $ASCIIFILE ]]; then
-    echo "Error: ASCIIDoc file does not exists, '$ASCIIFILE'."
+elif [ ! -e "$adfile" ]; then
+    echo "Error: ASCIIDoc file '$adfile' does not exists."
     exit 1
 fi
 
-# Internal stuff
-BASEFILE=${ASCIIFILE%.*}
+# Compiling commands
+base_adfile="${adfile%.*}"
+#ad_cmd="asciidoc -b docbook $adfile"
+ad_cmd="a2x -d article -f pdf $adfile"
+dblatex_cmd="dblatex $base_adfile.xml -T simple"
 
-# Define commands
-#ASCIIDOC_CMD="asciidoc -b docbook $ASCIIFILE"
-#DBLATEX_CMD="dblatex $BASEFILE.xml -T simple"
-ASCIIDOC_CMD="a2x -d article -f pdf $ASCIIFILE"
-VIEW_CMD="evince $BASEFILE.pdf"
+# Viewer commands
+view_cmd="evince $base_adfile.pdf"
 
-# Run commands
-$ASCIIDOC_CMD
-#$DBLATEX_CMD
-#rm $BASEFILE.xml
-$VIEW_CMD & disown
+# Run
+eval "$ad_cmd"
+#eval "$dblatex_cmd" && rm "$base_adfile.xml"
+eval "$view_cmd & disown"
 
-#unset ASCIIFILE NUMFILES BASEFILE ASCIIDOC_CMD DBLATEX_CMD VIEW_CMD
-unset ASCIIFILE NUMFILES BASEFILE ASCIIDOC_CMD VIEW_CMD
+unset adfile num_adfiles base_adfile ad_cmd dblatex_cmd view_cmd
+exit 0
 

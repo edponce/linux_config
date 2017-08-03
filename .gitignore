@@ -52,6 +52,7 @@ Dropbox/
 .gnome2/
 .gnupg/
 .gnuplot_history
+.gstreamer-*/
 .hardinfo/
 #.history/
 .hplip/
