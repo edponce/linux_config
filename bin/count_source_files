@@ -1,0 +1,39 @@
+#!/bin/bash
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--recursive] [--dir \"DIR\"] [\".EXT1\"] [\".EXT2\"] ..."
+    echo
+}
+
+# Default options
+recursive=1
+
+# Get command line options 
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -r | --recursive)
+        recursive=1
+        shift 1
+        ;;
+    esac
+done
+
+DIR=$1
+
+if [ -z $DIR ]; then
+    echo "ERROR! need to provide a directory to search recursively for C++ files."
+    exit 0
+fi
+
+# List files recursively, ignore hidden files
+# Filter source files and count
+NUMFILES=`ls -R "$DIR" | grep -E '(\.cpp|\.h)$' | wc -l`
+
+echo "Number of C++ files: $NUMFILES"
+

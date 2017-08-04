@@ -550,6 +550,12 @@
         <command>lxterminal</command>
       </action>
     </keybind>
+    <!-- Launch terminal -->
+    <keybind key="C-A-X">
+      <action name="Execute">
+        <command>xterm</command>
+      </action>
+    </keybind>
     <!-- Launch GNU Screen in terminal -->
     <keybind key="C-A-S">
       <action name="Execute">

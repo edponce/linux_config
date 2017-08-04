@@ -353,7 +353,7 @@ tar uzvf backup.tgz /some/dir
 # Restore (preserve symbolic links as they were)
 tar xhzvf backup.tgz
 # Home hidden files
-tar cvzf hidden_home.tgz ~/.[a-zA-Z]* --exclude-backups --exclude-caches-all --exclude-from=hidden_ignore_tar.txt
+tar cvzf hidden_home.tgz ~/.[a-zA-Z]* --exclude-backups --exclude-caches-all --exclude-vcs --exclude-from=hidden_ignore_tar.txt
 
 # CUPS browser
 localhost:631

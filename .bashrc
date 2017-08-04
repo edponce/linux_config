@@ -20,7 +20,7 @@ HISTSIZE=10000
 HISTFILESIZE=100000
 HISTTIMEFORMAT="[%F %T] "
 HISTIGNORE="l:ll:la:ls:ls -l:ls -la:ls -lh:LS:sl:pwd:cd:cd :cd ..:date:ps:vi:vim:history:"
-HISTIGNORE+="$(grep '^alias' $HOME/.bash_aliases | sed 's/=/ /' | cut -d' ' -f2 | tr '\n' ':')"
+#HISTIGNORE+="$(grep '^alias' $HOME/.bash_aliases | sed 's/=/ /' | cut -d' ' -f2 | tr '\n' ':')"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
