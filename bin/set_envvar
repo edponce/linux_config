@@ -9,9 +9,10 @@
 #usage_set_envvar()
 #{
 #    echo
-#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\" ...]"
+#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\"] ..."
 #    echo
 #    echo "Adds a list of values to an environment variable."
+#    echo
 #    echo "If environment variable exists, values are prepended (set option to overwrite)."
 #    echo "Default delimiter symbol is colon, ':'."
 #    echo "Duplicate values are prevented."
@@ -28,10 +29,10 @@ arg_value=()
 # Get command line options 
 while [ "$1" ]; do 
     case "$1" in 
-        -h | --help)
-        usage_set_envvar
-        return 0 
-        ;;
+        #-h | --help)
+        #usage_set_envvar
+        #return 0 
+        #;;
         -o | --overwrite)
         overwrite=1
         shift 1
@@ -50,11 +51,13 @@ done
 # Validate
 if [ -z "$env_var" ]; then
     echo "Error: missing name of environment variable."
+    unset overwrite delim env_var arg_value env_value env_str
     return 1
 fi
 
 if [ ${#arg_value[@]} -eq 0 ]; then
     echo "Error: missing value(s) for environment variable."
+    unset overwrite delim env_var arg_value env_value env_str
     return 1
 fi
 
@@ -65,18 +68,20 @@ for value in "${arg_value[@]}"; do
         env_value+=("$value")
     fi
 done
-[ ${#env_value[@]} -eq 0 ] && return 0
-
-# Convert values into delimited string
-env_str=$(IFS=":"; echo "${env_value[*]}")
-if [ -z "${!env_var}" ] || [ $overwrite -eq 1 ]; then
-    cmd="export $env_var=\"$env_str\""
-else
-    cmd="export $env_var=\"$env_str$delim${!env_var}\""
+if [ ${#env_value[@]} -eq 0 ]; then
+    unset overwrite delim env_var arg_value env_value env_str
+    return 0
 fi
 
-#Run
-eval "$cmd"
+# Convert values into delimited string
+env_str=$(IFS="$delim"; echo "${env_value[*]}")
 
-unset overwrite delim env_var arg_value env_value env_str cmd
+#Run
+if [ -z "${!env_var}" ] || [ $overwrite -eq 1 ]; then
+    export "$env_var"="$env_str"
+else
+    export "$env_var"="$env_str$delim${!env_var}"
+fi
+
+unset overwrite delim env_var arg_value env_value env_str
 

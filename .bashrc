@@ -215,7 +215,7 @@ if ! shopt -oq posix; then
 fi
 
 # Disable Ctrl + D to close terminal window
-set -o ignoreeof
+#set -o ignoreeof
 
 # Java VM environment
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"

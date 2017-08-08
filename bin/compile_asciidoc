@@ -6,18 +6,16 @@ usage()
     echo "Usage: $(basename $0) [--help] [--article] [--book] [--docbook] [--file \"ADFILE\"]"
     echo
     echo "Compile an ASCIIDoc file into PDF format."
-    echo "If an ASCIIDoc file is not provided, current directory is searched for one."
     echo
-    echo "Type of output file:"
-    echo " 0 -> article (default)"
-    echo " 1 -> book"
-    echo " 2 -> docbook"
+    echo "If an ASCIIDoc file is not provided, current directory is searched for one."
+    echo "Default file type is article."
     echo
 }
 
 # Default options
-type_id=0
-fadfile=
+adtype=0
+adffile=
+filext=".asciidoc"
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -27,19 +25,19 @@ while [ "$1" ]; do
         exit 0
         ;;
         -a | --article)
-        type_id=0
+        adtype=0
         shift 1
         ;;
         -b | --book)
-        type_id=1
+        adtype=1
         shift 1
         ;;
         -d | --docbook)
-        type_id=2
+        adtype=2
         shift 1
         ;;
         -f | --file)
-        fadfile="$2"
+        adffile="$2"
         shift 2
         ;;
         *)
@@ -51,62 +49,49 @@ while [ "$1" ]; do
 done
      
 # Validate
-if [ $type_id -lt 0 ] || [ $type_id -gt 2 ]; then
-    echo "Error: invalid value for compilation type."
-    exit 1
-fi
-
-if [ -z "$fadfile" ]; then
-    fadfile="$(ls | grep '.*\.asciidoc$')"
-    num_adfiles=$(echo -n "$fadfile" | wc -l)
-    if [ $num_adfiles -eq 1 ]; then
-        echo "Automatic ASCIIDoc file found, '$fadfile'."
-    elif [ $num_adfiles -le 0 ]; then
-        echo "Error: no automatic ASCIIDoc file found."
-        exit 1
-    elif [ $num_adfiles -gt 1 ]; then
-        echo "Error: too many ASCIIDoc files found, '$fadfile'."
-        exit 1
-    fi
-elif [ ! -e "$fadfile" ]; then
-    echo "Error: ASCIIDoc file '$fadfile' does not exists."
+if [ -z "$adffile" ]; then
+    . common_utils
+    find_file_ext "$filext" 
+    [ $? -ne 0 ] && exit 1
+    adffile="$file_list"
+elif [ ! -e "$adffile" ]; then
+    echo "Error: file '$adffile' does not exists."
     exit 1
 fi
 
 # Commands (compile and view)
-dir_adfile="$(dirname $fadfile)"
-adfile="$(basename $fadfile)"
-base_adfile="${adfile%.*}"
-pdf_adfile="$base_adfile.pdf"
-xml_adfile="$base_adfile.xml"
-dblatex_cmd="dblatex $xml_adfile -T simple"
-view_cmd="evince $pdf_adfile"
+addir="$(dirname $adffile)"
+adfile="$(basename $adffile)"
+adbase="${adfile%.*}"
+adpdf="$adbase.pdf"
+adxml="$adbase.xml"
+dblatex_cmd="dblatex $adxml -T simple"
+view_cmd="evince $adpdf"
 
-case $type_id in
+case $adtype in
     0) ad_cmd="a2x -d article -f pdf $adfile" ;;
     1) ad_cmd="a2x -d book -f pdf $adfile" ;;
     2) ad_cmd="asciidoc -b docbook $adfile" ;;
 esac
 
 # Change to file directory
-pushd .
-cd "$dir_adfile"
+pushd . > /dev/null 2>&1
+cd "$addir"
 
 # Run
-eval "$ad_cmd"
-if [ -e "$xml_adfile" ]; then
-    eval "$dblatex_cmd"
-    rm "$xml_adfile"
+$ad_cmd
+if [ -e "$adxml" ]; then
+    $dblatex_cmd
+    rm "$adxml"
 fi
 
 # View
-if [ -e "$pdf_adfile" ]; then
-    eval "$view_cmd & disown"
+if [ -e "$adpdf" ]; then
+    $view_cmd & disown
 fi
 
 # Change to initial directory
-popd
+popd > /dev/null 2>&1
 
-unset type_id fadfile num_adfiles adfile dir_adfile base_adfile pdf_adfile xml_adfile ad_cmd dblatex_cmd view_cmd
 exit 0
 

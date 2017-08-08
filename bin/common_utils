@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Find a single file based on given extension
+# Inputs: file extension
+# Outputs: file_list (empty if not found)
+# Usage: find_file_ext .cpp
+find_file_ext()
+{
+    local file_ext
+    local num_files
+
+    file_ext="$(echo "$1" | sed 's/\./\\\./g')"
+    file_list=($(ls -1 | grep ".\+$file_ext$"))
+    num_files=${#file_list[@]}
+
+    if [ $num_files -eq 1 ]; then
+        echo "Automatic file found, '$file_list'."
+        return 0
+    elif [ $num_files -gt 1 ]; then
+        echo "Error: too many files found, '${file_list[@]}'."
+        return 1
+    else
+        echo "Error: no automatic file found."
+        return 1
+    fi
+}
+

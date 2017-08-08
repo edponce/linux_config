@@ -34,6 +34,5 @@ read -r -n 1 -p 'Press any key to continue ... ' ckey
 echo
 #fi
 
-unset ckey dkey
 exit 0
 

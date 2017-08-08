@@ -18,15 +18,15 @@ usage()
     echo " 2 -> medium"
     echo " 3 -> low (default)"
     echo
-    echo "GPU launcher tools:"
+    echo "GPU launch tools:"
     echo " 0 -> none"
-    echo " 1 -> primusrun (default) (for OpenGL apps)"
+    echo " 1 -> primusrun (OpenGL support, default)"
     echo " 2 -> optirun"
     echo
 }
 
 # X11 NVIDIA configuration file
-declare -r x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia"
+x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia"
 
 # Default options
 launch_tool=1
@@ -68,9 +68,10 @@ if [ -z "$app" ]; then
 fi
 
 # app [args]
-which $(echo "$app" | awk '{ print $1 }') > /dev/null
+appname="$(echo "$app" | awk '{ print $1 }')"
+which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Error: application '$app' was not found."
+    echo "Error: application '$appname' was not found."
     exit 1
 fi
 
@@ -110,16 +111,11 @@ if [ $launch_tool -gt 0 ]; then
 fi
 
 # Select launcher tool
-if [ $launch_tool -eq 0 ]; then
-    cmd="$app"
-elif [ $launch_tool -eq 1 ]; then
-    cmd="primusrun $app"
-elif [ $launch_tool -eq 2 ]; then
-    cmd="optirun $app"
-fi
-
-# Run
-eval "$cmd"
+case $launch_tool in
+    0) $app ;;
+    1) primusrun $app ;;
+    2) optirun $app ;;
+esac
 
 # Restore default performance level
 if [ $perf_level_changed -eq 1 ]; then
@@ -128,6 +124,5 @@ if [ $perf_level_changed -eq 1 ]; then
     perf_level_changed=0
 fi
 
-unset perf_level default_perf_level perf_level_changed launch_tool app cmd
 exit 0
 

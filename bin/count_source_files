@@ -3,12 +3,20 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--recursive] [--dir \"DIR\"] [\".EXT1\"] [\".EXT2\"] ..."
+    echo "Usage: $(basename $0) [--help] [--recursive] [--workdir \"WORKDIR\"] \".EXT1\" [\".EXT2\"] ..."
+    echo
+    echo "Count files that match given extension."
+    echo
+    echo "Default working directory is current directory."
+    echo "Default is to not recurse directories."
+    echo "Hidden files are ignored."
     echo
 }
 
 # Default options
-recursive=1
+recursive=
+workdir="."
+filext=()
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -18,22 +26,44 @@ while [ "$1" ]; do
         exit 0
         ;;
         -r | --recursive)
-        recursive=1
+        recursive="-R"
+        shift 1
+        ;;
+        -w | --workdir)
+        workdir="$2"
+        shift 2
+        ;; 
+        *)
+        filext+=("$(echo "$1" | sed 's/\./\\\./g')")
         shift 1
         ;;
     esac
 done
 
-DIR=$1
-
-if [ -z $DIR ]; then
-    echo "ERROR! need to provide a directory to search recursively for C++ files."
-    exit 0
+# Validate
+if [ ! -d $workdir ]; then
+    echo "Error: working directory does not exists."
+    exit 1
 fi
+
+if [ ${#filext[@]} -eq 0 ]; then
+    echo "Error: no file extensions were provided."
+    exit 1
+fi
+
+# Change to file directory
+pushd . > /dev/null 2>&1
+cd "$workdir"
 
 # List files recursively, ignore hidden files
 # Filter source files and count
-NUMFILES=`ls -R "$DIR" | grep -E '(\.cpp|\.h)$' | wc -l`
+file_regex=$(IFS="|"; echo "${filext[*]}")
+file_list=($(ls -1 "$recursive" | grep -E ".+($file_regex)$"))
+num_files=${#file_list[@]}
+echo "Number of matched files: $num_files"
 
-echo "Number of C++ files: $NUMFILES"
+# Change to initial directory
+popd . > /dev/null 2>&1
+
+exit 0
 

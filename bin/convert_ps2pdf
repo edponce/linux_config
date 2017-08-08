@@ -1,14 +1,26 @@
 #!/bin/bash 
 
-# Usage information
-while [ $1 ]; do 
-    case $1 in 
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--outdir OUTDIR] PSFILE1 [PSFILE2] ..."
+    echo
+    echo "Convert PostScript files into PDF format."
+    echo
+    echo "If a PostScript file is not provided, current directory is searched for all."
+    echo "Default output files are placed in current directory."
+    echo
+}
+
+# Default options
+outdir=
+psfile=()
+
+
+# Get command line options
+while [ "$1" ]; do 
+    case "$1" in 
         -h | --help)
-        echo "Usage: $(basename $0) [--help] [--outdir example] [PS files]"
-        echo
-        echo "If a PostScript file is not provided, current directory is searched for all."
-        echo "Default output files are placed in current directory."
-        exit 0
         ;;
         -o | --outdir)
         OUTDIR="$2"

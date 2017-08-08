@@ -62,7 +62,7 @@ if [ $(bc <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
 fi
 
 # app [args] 
-which $(echo "$cmd" | awk '{ print $1}') > /dev/null
+which $(echo "$cmd" | awk '{ print $1}') > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Error: command '$cmd' was not found."
     exit 1
@@ -99,6 +99,5 @@ else
     xdotool windowactivate "$wid"
 fi
 
-unset xterm delay wid cmd
 exit 0
 

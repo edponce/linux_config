@@ -436,3 +436,16 @@ fakeroot alien --to-deb archive.rpm # .rpm to .deb
 # Extract files from .rpm package
 rpm2cpio archive.rpm | cpio -i --make-directories
 
+# Apparmor
+sudo apparmor_status 
+sudo systemctl reload apparmor.service
+# Add rules for apps/lib located in SSD
+# e.g. evince did not open hyperlinks -> worked after adding these lines 
+#  /mnt/ssd/usr/bin/firefox Cxr -> sanitized_helper,
+#  /mnt/ssd/usr/lib/firefox*/firefox*.sh Cx -> sanitized_helper,
+sudo vi /etc/apparmor.d/abstractions/ubuntu-browsers
+# and adding these lines
+#  /mnt/ssd/{,s,usr/,usr/local/,usr/s}bin/* Pixr,
+#  /mnt/ssd/usr/{,local/}lib*/{,**/}* Pixr,
+#  /mnt/ssd/{,usr/,usr/local/}lib{,32,64}/{,**/}*.so{,.*} m,
+sudo vi /etc/apparmor.d/abstractions/ubuntu-helpers

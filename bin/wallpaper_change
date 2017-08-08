@@ -21,8 +21,8 @@ usage()
 }
 
 # Default options 
-wall_id=0
-wall_files=(
+wallid=0
+wallfiles=(
 "$HOME/Documents/wallpapers/1604-lubuntu-default-wallpaper.png"
 "$HOME/Documents/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png"
 "$HOME/Documents/wallpapers/gray_1920x1080.png"
@@ -33,37 +33,35 @@ wall_files=(
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage ${wall_files[@]}
+        usage ${wallfiles[@]}
         exit 0
         ;;
         -w | --wallpaper)
-        wall_id=$2
+        wallid=$2
         shift 2
         ;;
         *)
         echo "Error: invalid command line option, $1"
-        usage ${wall_files[@]}
+        usage ${wallfiles[@]}
         exit 1
         ;;
     esac
 done
 
 # Validate
-if [ $wall_id -lt 0 ] || [ $wall_id -ge ${#wall_files[@]} ]; then
+if [ $wallid -lt 0 ] || [ $wallid -ge ${#wallfiles[@]} ]; then
     echo "Error: invalid wallpaper ID value."
     exit 1
 fi
 
-wall_file="${wall_files[$wall_id]}"
-if [ ! -e "$wall_file" ]; then
-    echo "Error: wallpaper file does not exists, \"$wall_file\""
+wallfile="${wallfiles[$wallid]}"
+if [ ! -e "$wallfile" ]; then
+    echo "Error: wallpaper file does not exists, \"$wallfile\""
     exit 1
 fi
 
 # Run
-cmd="pcmanfm --set-wallpaper=\"$wall_file\" --wallpaper-mode=stretch"
-eval "$cmd"
+pcmanfm --set-wallpaper="$wallfile" --wallpaper-mode=stretch
 
-unset wall_id wall_file wall_files cmd 
 exit 0
 

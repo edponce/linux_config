@@ -72,15 +72,12 @@ fi
 # Select monitor relative position
 if [ $mirror -eq 0 ]; then
     # Extended mode
-    if [ $direction_id -eq 0 ]; then
-        rel_pos="--left-of LVDS1"  
-    elif [ $direction_id -eq 1 ]; then
-        rel_pos="--above LVDS1"  
-    elif [ $direction_id -eq 2 ]; then
-        rel_pos="--right-of LVDS1"  
-    elif [ $direction_id -eq 3 ]; then
-        rel_pos="--below LVDS1"  
-    fi
+    case $direction_id in
+        0) rel_pos="--left-of LVDS1" ;;
+        1) rel_pos="--above LVDS1" ;; 
+        2) rel_pos="--right-of LVDS1" ;; 
+        3) rel_pos="--below LVDS1" ;; 
+    esac
 elif [ $mirror -eq 1 ]; then
     # Mirror mode
     rel_pos="--pos 0x0"
@@ -111,9 +108,7 @@ elif [ $mon_proto -eq 2 ]; then
 fi
 
 # Run
-cmd="xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga"
-eval "$cmd"
+xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga
 
-unset mirror mon_proto direction_id mon_query rel_pos lvds vga hdmi cmd
 exit 0
 

@@ -6,12 +6,12 @@ usage()
     echo "Usage: $(basename $0) [--help] [--bibtex] [--clean] [--pdfpc] [--workdir \"WORDIR\"] [--file \"TeXFILE\"]"
     echo
     echo "Compile a LaTeX file into PDF format."
+    echo
     echo "If a LaTeX file is not provided, current directory is searched for one."
     echo "Default working directory is 'build'."
     echo "To remove working directory after compiling, enable the 'clean' option."
     echo "To run bibTeX enable the 'bibtex' option."
     echo "To view as Beamer presentation with pdfpc, enable 'pc' option."
-    echo "All other arguments are passed directly to pdfpc command line."
     echo
 }
 
@@ -19,9 +19,9 @@ usage()
 bibtex=0
 clean=0
 pdfpc=0
-pdfpc_opts=
 workdir="build"
-ftexfile=
+texffile=
+filext=".tex"
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -38,94 +38,76 @@ while [ "$1" ]; do
         clean=1
         shift 1
         ;;
-        -w | --workdir)
-        workdir="$2"
-        shift 2
-        ;;
         -p | --pdfpc)
         pdfpc=1
         shift 1
         ;;
+        -w | --workdir)
+        workdir="$2"
+        shift 2
+        ;;
         -f | --file)
-        ftexfile="$2"
+        texffile="$2"
         shift 2
         ;;
         *)
-        if [ $pdfpc -eq 1 ]; then
-            pdfpc_opts+="$@"
-            shift ${#@}
-        else
-            echo "Error: invalid command line option, $1"
-            usage
-            exit 1
-        fi
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
         ;;
     esac
 done
 
 # Validate
-if [ -z "$ftexfile" ]; then
-    ftexfile="$(ls | grep '.*\.tex$')"
-    num_texfiles=$(echo -n "$ftexfile" | wc -l)
-    if [ $num_texfiles -eq 1 ]; then
-        echo "Automatic TeX file found, '$ftexfile'."
-    elif [ $num_texfiles -le 0 ]; then
-        echo "Error: no automatic TeX file found."
-        exit 1
-    elif [ $num_texfiles -gt 1 ]; then
-        echo "Error: too many TeX files found, '$ftexfile'."
-        exit 1
-    fi
-elif [ ! -e "$ftexfile" ]; then
-    echo "Error: TeX file '$texfile' does not exists."
+if [ -z "$texffile" ]; then
+    . common_utils
+    find_file_ext "$filext" 
+    [ $? -ne 0 ] && exit 1
+    texffile="$file_list"
+elif [ ! -e "$texffile" ]; then
+    echo "Error: file '$texffile' does not exists."
     exit 1
 fi
 
 # Commands (compile and view) 
-dir_texfile="$(dirname $ftexfile)"
-texfile="$(basename $ftexfile)"
-base_texfile="${texfile%.*}"
-pdf_texfile="$base_texfile.pdf"
+texdir="$(dirname $texffile)"
+texfile="$(basename $texffile)"
+texbase="${texfile%.*}"
+texpdf="$texbase.pdf"
 pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=$workdir $texfile"
-bibtex_cmd="bibtex $workdir/$base_texfile"
+bibtex_cmd="bibtex $workdir/$texbase"
 
 # Change to file directory
-pushd .
-cd "$dir_texfile"
+pushd . > /dev/null 2>&1
+cd "$texdir"
 
 [ ! -d "$workdir" ] && mkdir "$workdir"
 
 # Run
-eval "$pdflatex_cmd"
-if [ -e "$workdir/$pdf_texfile" ]; then 
-    if [ $bibtex -ge 1 ]; then
-        eval "$bibtex_cmd"
-        eval "$pdflatex_cmd"
-        eval "$pdflatex_cmd"
-    fi
-
-    # View
-    if [ $clean -ge 1 ]; then
-        mv "$workdir/$pdf_texfile" "$pdf_texfile"
-        rm -r "$workdir"
-        if [ $pdfpc -eq 0 ]; then
-            view_cmd="evince $pdf_texfile"
-        else
-            view_cmd="pdfpc $pdfpc_opts $pdf_texfile"
-        fi
-    else
-        if [ $pdfpc -eq 0 ]; then
-            view_cmd="evince $workdir/$pdf_texfile"
-        else
-            view_cmd="pdfpc $pdfpc_opts $workdir/$pdf_texfile"
-        fi
-    fi
-    eval "$view_cmd & disown"
+$pdflatex_cmd
+[ $? -ne 0 ] && exit 1
+if [ $bibtex -ge 1 ]; then
+    $bibtex_cmd
+    $pdflatex_cmd
+    $pdflatex_cmd
 fi
 
-# Change to initial directory
-popd
+# View
+if [ $clean -eq 0 ]; then
+    texpdf="$workdir/$texpdf"
+else
+    mv "$workdir/$texpdf" "$texpdf"
+    rm -r "$workdir"
+fi
+if [ $pdfpc -eq 0 ]; then
+    view_cmd="evince $texpdf"
+else
+    view_cmd="pdfpc $texpdf"
+fi
+$view_cmd & disown
 
-unset bibtex workdir pdfpc pdfpc_opts ftexfile num_texfiles texfile base_texfile dir_texfile pdf_texfile pdflatex_cmd bibtex_cmd view_cmd
+# Change to initial directory
+popd > /dev/null 2>&1
+
 exit 0
 

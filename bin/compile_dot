@@ -1,12 +1,86 @@
 #!/bin/bash
 
-DOTFILE=$1
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--tex] --file=\"DOTFILE\""
+    echo
+    echo "Compile a DOT file into PNG or TeX format."
+    echo "If a DOT file is not provided, current directory is search for one."
+    echo "To generate TeX output format, enable 'tex' option."
+    echo
+}
 
-if [ ! -z $DOTFILE ]; then
-    dot -Tpng $DOTFILE -o graph.png
+# Default options
+tex=0
+fdotfile=
+
+# Get command line options
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+        usage
+        exit 0
+        ;;
+        -t | --tex)
+        tex=1
+        shift 1
+        ;;
+        -f | --file)
+        fdotfile="$2"
+        shift 2
+        ;;
+        *)
+        echo "Error: invalid command line option, $1"
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+# Validate
+if [ -z "$fdotfile" ]; then
+    fdotfile="$(ls | grep '.*\.dot$')"
+    num_dotfiles=$(echo -n "$fdotfile" | wc -l)
+    if [ $num_dotfiles -eq 1 ]; then
+        echo "Automatic DOT file found, '$fdotfile'."
+    elif [ $num_dotfiles -le 0 ]; then
+        echo "Error: no automatic DOT file found."
+        exit 1
+    elif [ $num_dotfiles -gt 1 ]; then
+        echo "Error: too many DOT files found, '$fdotfile'."
+        exit 1
+    fi
+elif [ ! -e "$fdotfile" ]; then
+    echo "Error: DOT file '$fdotfile' does not exists."
+    exit 1
 fi
 
-#if [ ! -z $DOTFILE ]; then
-#    dot -Txdot $DOTFILE | dot2tex > graph.tex
-#fi
+# Commands (compile) 
+dir_dotfile="$(dirname $fdotfile)"
+dotfile="$(basename $fdotfile)"
+base_dotfile="${dotfile%.*}"
+
+# Change to file directory
+pushd .
+cd "$dir_dotfile"
+
+# Run
+if [ $tex -eq 0 ]; then
+    out_dotfile="$base_dotfile.png"
+    dot_cmd="dot -Tpng $dotfile -o $out_dotfile"
+    view_cmd="gpicview $out_dotfile"
+    eval "$dot_cmd"
+    eval "$view_cmd & disown"
+elif [ $tex -eq 1 ]; then
+    out_dotfile="$base_dotfile.tex"
+    dot_cmd="dot -Txdot $dotfile | dot2tex > $out_dotfile"
+    eval "$dot_cmd"
+fi
+
+# Change to initial directory
+popd
+
+unset tex fdotfile num_dotfiles dotfile base_dotfile dir_dotfile out_dotfile dot_cmd view_cmd
+exit 0
 

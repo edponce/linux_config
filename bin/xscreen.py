@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-import sys, os
+import sys
+import os
 import argparse
 from argparse import RawTextHelpFormatter
 import subprocess
@@ -12,15 +13,15 @@ def parse_args():
     '''
     parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-l', '--layout_id', type=int, default=1,
-                        dest='layout_id', help='layout identifier')
+                        dest='layout_id', help='layout identifier, default=1')
     parser.add_argument('-s', '--screen_id', type=int, default=0,
                         dest='screen_id', help='screen/monitor identifier\n'
-                                               ' 0 -> screen with active window\n'
+                                               '*0 -> screen with active window\n'
                                                ' 1 -> lower-left screen\n'
                                                ' 2 -> second screen')
     parser.add_argument('-w', '--win_select', type=int, default=0,
                         dest='win_select', help='window select identifier\n'
-                                                ' 0 -> visible windows in active screen/monitor\n'
+                                                '*0 -> visible windows in active screen/monitor\n'
                                                 ' 1 -> visible windows in active desktop')
     args = parser.parse_args()
 
@@ -107,8 +108,8 @@ def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs 
         win_off = [int(win_line[2]), int(win_line[3])]
         win_dim = [int(win_line[4]), int(win_line[5])]
 
-        # Skip windows in other desktops
-        if win_desk != desktop:
+        # Skip windows in other desktops or minimized
+        if win_desk != desktop or not subprocess.getoutput("xwininfo -id " + win_id + " | grep 'IsViewable'"):
             continue
 
         if win_select == 0:
@@ -310,6 +311,7 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
             # Activate window and arrange
             subprocess.getoutput('xdotool windowactivate {}'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -b remove,maximized_vert,maximized_horz'.format(win_id))
+            subprocess.getoutput('wmctrl -i -r {} -b remove,fullscreen'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_off[0], win_off[1], win_dim[0], win_dim[1]))
 
     # Activate window

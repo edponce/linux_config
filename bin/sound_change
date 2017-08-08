@@ -20,8 +20,8 @@ usage()
 }
 
 # Default options
-declare -r sound_card="alsa_card.pci-0000_00_1b.0"
-input=0
+sound_card="alsa_card.pci-0000_00_1b.0"
+sound_input=0
 profile_id=1
 
 # Get command line options 
@@ -32,7 +32,7 @@ while [ "$1" ]; do
         exit 0
         ;;
         -i | --input)
-        input=1
+        sound_input=1
         shift 1
         ;;
         -p | --profile)
@@ -57,36 +57,29 @@ fi
 if [ $profile_id -eq 0 ]; then
     # Query status of sound profile
     curr_sink="$(pacmd stat | awk -F':' '/Default sink name/ { print $2 }')"
-
     new_sink="auto_null"
     profile="off"
 else
     # Query status of sound profile
     curr_sink="$(pacmd stat | awk -F':' '/Default sink name/ { print $2 }' | awk -F'.' '{ print $NF }')"
-
-    if [ $profile_id -eq 1 ]; then
-        new_sink="analog-stereo"
-    elif [ $profile_id -eq 2 ]; then
-        new_sink="hdmi-stereo" 
-    elif [ $profile_id -eq 3 ]; then
-        new_sink="hdmi-surround" 
-    elif [ $profile_id -eq 4 ]; then
-        new_sink="hdmi-surround71" 
-    fi
+    case $profile_id in
+        1) new_sink="analog-stereo" ;;
+        2) new_sink="hdmi-stereo" ;;
+        3) new_sink="hdmi-surround" ;;
+        4) new_sink="hdmi-surround71" ;;
+    esac 
     profile="output:$new_sink"
 
     # Check for sound input profile
-    if [ $input -eq 1 ]; then
+    if [ $sound_input -eq 1 ]; then
         profile+="+input:analog-stereo"
     fi
 fi
 
 # Run
 if [ $new_sink != $curr_sink ]; then
-    cmd="pacmd set-card-profile $sound_card \"$profile\""
-    eval "$cmd"
+    pacmd set-card-profile "$sound_card" "$profile"
 fi
 
-unset input profile_id profile curr_sink sink cmd
 exit 0
 

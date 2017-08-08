@@ -107,26 +107,22 @@ if [ $use_window -eq 0 ]; then
     y_offs=${screen_offs[1]}
     x=${screen_dims[0]}
     y=${screen_dims[1]}
-    unset screen_dims screen_offs 
 elif [ $use_window -eq 1 ]; then
     window_position
     x_offs=${win_offs[0]}
     y_offs=${win_offs[1]}
     x=${win_dims[0]}
     y=${win_dims[1]}
-    unset win_dims win_offs 
 fi
 
 sleep $timer
 
 # Run
 if [ $use_audio -eq 0 ]; then
-    cmd="ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v $vcodec -crf 0 -preset:v ultrafast \"$outfile\""
+    ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v "$vcodec" -crf 0 -preset:v ultrafast "$outfile"
 elif [ $use_audio -eq 1 ]; then
-    cmd="ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v $vcodec -crf 0 -preset:v ultrafast -c:a $acodec -af aresample=async=1:first_pts=0 \"$outfile\""
+    ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v "$vcodec" -crf 0 -preset:v ultrafast -c:a "$acodec" -af aresample=async=1:first_pts=0 "$outfile"
 fi
-eval "$cmd"
 
-unset use_audio use_window timer vcodec acodec framerate x y x_offs y_offs screen_id outfile cmd 
 exit 0
 
