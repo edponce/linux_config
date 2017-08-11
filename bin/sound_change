@@ -11,11 +11,11 @@ usage()
     echo "Default is ALSA PCI card with output analog stereo profile."
     echo
     echo "Profiles:"
-    echo " 0 -> off"
-    echo " 1 -> analog stereo (default)"
-    echo " 2 -> HDMI stereo"
-    echo " 3 -> HDMI surround"
-    echo " 4 -> HDMI surround 7.1"
+    echo "  0 -> off"
+    echo " *1 -> analog stereo"
+    echo "  2 -> HDMI stereo"
+    echo "  3 -> HDMI surround"
+    echo "  4 -> HDMI surround 7.1"
     echo
 }
 
@@ -28,22 +28,22 @@ profile_id=1
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -i | --input)
-        sound_input=1
-        shift 1
-        ;;
+            sound_input=1
+            shift 1
+            ;;
         -p | --profile)
-        profile_id=$2
-        shift 2
-        ;;
+            profile_id=$2
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 

@@ -15,13 +15,13 @@ usage()
     echo "Supported outfile formats: avi, mp4, mpg, mkv"
     echo
     echo "Video codecs:"
-    echo " libx264 (high) (default)"
-    echo " huffyuv (normal)"
-    echo " libxvid (low)"
+    echo " *libx264 (high)"
+    echo "  huffyuv (normal)"
+    echo "  libxvid (low)"
     echo
     echo "Screen IDs:"
-    echo " 0 -> lower-left (default)"
-    echo " 1 -> second"
+    echo " *0 -> lower-left"
+    echo "  1 -> second"
     echo
 }
 
@@ -39,42 +39,42 @@ outfile="$HOME/screencast_$(date +%m-%d-%Y_%H-%M).avi"
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -a | --audio)
-        use_audio=1
-        shift 1
-        ;;
+            use_audio=1
+            shift
+            ;;
         -w | --window)
-        use_window=1
-        shift 1
-        ;;
+            use_window=1
+            shift
+            ;;
         -t | --timer)
-        timer=$2
-        shift 2
-        ;;
+            timer=$2
+            shift 2
+            ;;
         -v | --vcodec)
-        vcodec="$2"
-        shift 2
-        ;;
+            vcodec="$2"
+            shift 2
+            ;;
         -r | --rate)
-        framerate=$2
-        shift 2
-        ;;
+            framerate=$2
+            shift 2
+            ;;
         -s | --screen)
-        screen_id=$2
-        shift 2
-        ;;
+            screen_id=$2
+            shift 2
+            ;;
         -o | --outfile)
-        outfile="$2"
-        shift 2
-        ;;
+            outfile="$2"
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 

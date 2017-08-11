@@ -22,21 +22,21 @@ filext=()
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -r | --recursive)
-        recursive="-R"
-        shift 1
-        ;;
+            recursive="-R"
+            shift
+            ;;
         -w | --workdir)
-        workdir="$2"
-        shift 2
-        ;; 
+            workdir="$2"
+            shift 2
+            ;; 
         *)
-        filext+=("$(echo "$1" | sed 's/\./\\\./g')")
-        shift 1
-        ;;
+            filext+=("$(echo "$1" | sed 's/\./\\\./g')")
+            shift
+            ;;
     esac
 done
 

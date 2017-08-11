@@ -19,23 +19,23 @@ empty_rows=0
 while [ "$1" ]; do
     case "$1" in
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -r | --row)
-        empty_rows=$2
-        shift 2 
-        ;;
+            empty_rows=$2
+            shift 2 
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 
 # Get terminal window maximum number of rows
-declare -r max_rows=$(tput lines)
+max_rows=$(tput lines)
 
 # Validate
 if [ $empty_rows -lt 0 ]; then
@@ -49,11 +49,12 @@ fi
 
 # Get current cursor row in terminal window
 . custom_utils
-declare -ra curr_pos=($(get_cursor_pos))
+curr_pos=($(get_cursor_pos))
 
 # Run
-[ $((max_rows - ${curr_pos[0]})) -le $empty_rows ] && clear
+if [ $((max_rows - ${curr_pos[0]})) -le $empty_rows ]; then
+    clear
+fi
 
-unset empty_rows
 exit 0
 

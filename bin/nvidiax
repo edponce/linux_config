@@ -14,21 +14,20 @@ usage()
     echo "X11 NVIDIA configuration file: $1"
     echo
     echo "GPU Performance levels:"
-    echo " 1 -> high"
-    echo " 2 -> medium"
-    echo " 3 -> low (default)"
+    echo "  1 -> high"
+    echo "  2 -> medium"
+    echo " *3 -> low"
     echo
     echo "GPU launch tools:"
-    echo " 0 -> none"
-    echo " 1 -> primusrun (OpenGL support, default)"
-    echo " 2 -> optirun"
+    echo "  0 -> none"
+    echo " *1 -> primusrun (OpenGL support)"
+    echo "  2 -> optirun"
     echo
 }
 
-# X11 NVIDIA configuration file
-x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia"
 
 # Default options
+x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia" # X11 NVIDIA configuration file
 launch_tool=1
 perf_level=3
 perf_level_changed=0
@@ -38,26 +37,26 @@ app=
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage $x11_nvidia_file
-        exit 0
-        ;;
+            usage $x11_nvidia_file
+            exit 0
+            ;;
         -t | --tool)
-        launch_tool=$2
-        shift 2
-        ;;
+            launch_tool=$2
+            shift 2
+            ;;
         -p | --perf)
-        perf_level=$2
-        shift 2
-        ;;
+            perf_level=$2
+            shift 2
+            ;;
         -r | --run)
-        app="$2"
-        shift 2 
-        ;;
+            app="$2"
+            shift 2 
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage $x11_nvidia_file
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage $x11_nvidia_file
+            exit 1
+            ;;
     esac
 done
 

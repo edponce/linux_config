@@ -11,8 +11,8 @@ usage()
     echo "Hidden directories and files are searched."
     echo
     echo "These directories are ignored by default:"
-    for prune_dir in "$@"; do 
-        echo " $prune_dir"
+    for each in "$@"; do 
+        echo " $each"
     done
     echo
 }
@@ -20,30 +20,28 @@ usage()
 # Default options
 search_path="."
 recursive=0
-
-# Directory names to ignore
-declare -ra prune_dirs=("help" "icons" "doc" "man")
+prune_dirs=("help" "icons" "doc" "man") # directory names to ignore
 
 # Get command line options 
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage ${prune_dirs[@]}
-        exit 0
-        ;;
+            usage ${prune_dirs[@]}
+            exit 0
+            ;;
         -r | --recursive)
-        recursive=1
-        shift 1
-        ;;
+            recursive=1
+            shift
+            ;;
         -p | --path)
-        search_path="$2"
-        shift 2
-        ;;
+            search_path="$2"
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage ${prune_dirs[@]}
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage ${prune_dirs[@]}
+            exit 1
+            ;;
     esac
 done
 
@@ -58,16 +56,15 @@ prune_cmd=
 if [ ${#prune_dirs[@]} -gt 0 ]; then
     prune_cmd="-type d ("
     cnt=0
-    for d in "${prune_dirs[@]}"; do
+    for each in "${prune_dirs[@]}"; do
         if [ $cnt -eq 0 ]; then
-            prune_cmd+=" -name $d "
+            prune_cmd+=" -name $each "
         else
-            prune_cmd+="-o -name $d "
+            prune_cmd+="-o -name $each "
         fi
         cnt=$((cnt + 1))
     done
     prune_cmd+=") -prune -o"
-    unset cnt
 fi
 
 # Run
@@ -82,6 +79,5 @@ if [ ${#symlinks[@]} -gt 0 ]; then
     echo "Dangling symbolic links: ${#symlinks[@]}"
 fi
 
-unset recursive search_path symlinks prune_cmd
 exit 0
 

@@ -21,28 +21,28 @@ runcmd=
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -j | --jvm)
-        jvmcmd=
-        shift 1
-        ;;
+            jvmcmd=
+            shift
+            ;;
         -r | --run)
-        if [ "${2##*.}" = "m" ]; then
-            # Script
-            runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end, exit(0);\""
-        else
-            # Command
-            runcmd="-r \"try, $2, catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end\""
-        fi
-        shift 2
-        ;;
+            if [ "${2##*.}" = "m" ]; then
+                # Script
+                runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end, exit(0);\""
+            else
+                # Command
+                runcmd="-r \"try, $2, catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end\""
+            fi
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 

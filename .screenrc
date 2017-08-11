@@ -12,12 +12,12 @@ vbell off # visual bell
 vbell_msg ""
 bell off # sound bell
 bell_msg ""
-defscrollback 2048 # set size for scrollback buffer
+defscrollback 4096 # set size for scrollback buffer
 defwrap on # line-wrap
 mousetrack on # mouse support for selecting regions
 altscreen on # use an alternate screen to run commands, view shell after execution
 layout autosave on # save layouts after detaching or layout switching
-msgwait 3 # wait 3 seconds before hiding last message
+msgwait 1 # seconds to wait before hiding last message
 
 
 # ------------------------------------------------------------------------------

@@ -640,6 +640,11 @@
       </action>
     </keybind>
     <!-- Keybindings for volume management -->
+    <keybind key="XF86AudioMute">
+      <action name="Execute">
+        <command>amixer -q -D pulse sset Master toggle</command>
+      </action>
+    </keybind>
     <keybind key="XF86AudioRaiseVolume">
       <action name="Execute">
         <command>amixer -q -D pulse sset Master 3%+ unmute</command>
@@ -650,11 +655,6 @@
         <command>amixer -q -D pulse sset Master 3%- unmute</command>
       </action>
     </keybind>
-    <keybind key="XF86AudioMute">
-      <action name="Execute">
-        <command>amixer -q -D pulse sset Master toggle</command>
-      </action>
-    </keybind>
     <keybind key="W-V">
       <action name="Execute">
         <command>amixer -q -D pulse sset Master toggle</command>
@@ -662,12 +662,12 @@
     </keybind>
     <keybind key="W-Up">
       <action name="Execute">
-        <command>amixer -q -D pulse sset Master 3%+ unmute</command>
+        <command>amixer -q -D pulse sset Master 5%+ unmute</command>
       </action>
     </keybind>
     <keybind key="W-Down">
       <action name="Execute">
-        <command>amixer -q -D pulse sset Master 3%- unmute</command>
+        <command>amixer -q -D pulse sset Master 5%- unmute</command>
       </action>
     </keybind>
     <keybind key="W-Left">

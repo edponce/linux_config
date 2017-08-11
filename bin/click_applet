@@ -8,9 +8,9 @@ usage()
     echo "Perform a mouse click to an applet found in desktop panel."
     echo
     echo "Mouse click IDs:"
-    echo " 1 - left button (default)"
-    echo " 2 - middle button"
-    echo " 3 - right button"
+    echo " *1 - left button"
+    echo "  2 - middle button"
+    echo "  3 - right button"
     echo
 }
 
@@ -22,22 +22,22 @@ click_id=1
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -c | --click)
-        click_id=$2
-        shift 2 
-        ;;
+            click_id=$2
+            shift 2 
+            ;;
         -a | --applet)
-        applet="$2"
-        shift 2 
-        ;;
+            applet="$2"
+            shift 2 
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 
@@ -56,37 +56,35 @@ fi
 # Save initial mouse position and active window
 # Outputs: X, Y, SCREEN, WINDOW
 eval $(xdotool getmouselocation --shell)
-declare -r win_active=$(xdotool getactivewindow)
+win_active=$(xdotool getactivewindow)
 
 # Query applet information
-declare -r applet_query="$(xwininfo -root -tree | grep $applet | head -n 1)"
+applet_query="$(xwininfo -root -tree | grep $applet | head -n 1)"
 if [ -z "$applet_query" ]; then
     echo "Error: applet \"$applet\" was not found in desktop panel."
     exit 1 
 fi
 
 # Get dimensions and position of applet 
-declare -ar applet_dims=($(echo "$applet_query" | awk '{ print $(NF-1) }' | sed 's/\([[:digit:]]\+\)x\([[:digit:]]\+\).*/\1 \2/g')) 
-declare -ar applet_pos=($(echo "$applet_query" | awk '{ print $NF }' | sed -e 's/+/ /g' -e 's/-/ -/g')) 
+applet_dims=($(echo "$applet_query" | awk '{ print $(NF-1) }' | sed 's/\([[:digit:]]\+\)x\([[:digit:]]\+\).*/\1 \2/g')) 
+applet_pos=($(echo "$applet_query" | awk '{ print $NF }' | sed -e 's/+/ /g' -e 's/-/ -/g')) 
 
 # Show panel bar
 x=$((applet_pos[0] + applet_dims[0]/2))
 y=$((applet_pos[1] + applet_dims[1]))
-eval $(xdotool mousemove --sync -- $x $y)
+xdotool mousemove --sync -- $x $y
 sleep 0.5 # allow panel to appear
 
 # Move mouse on top of applet
 y=$((applet_pos[1] + applet_dims[1]/2))
-eval $(xdotool mousemove --sync -- $x $y)
+xdotool mousemove --sync -- $x $y
 
 # Click applet 
-eval $(xdotool click $click_id)
+xdotool click $click_id
 
 # Restore initial mouse position and active window
-#eval $(xdotool mousemove --sync -- $X $Y windowactivate $win_active)
-eval $(xdotool mousemove --sync -- $X $Y)
+#xdotool mousemove --sync -- $X $Y windowactivate $win_active
+xdotool mousemove --sync -- $X $Y
 
-unset X Y SCREEN WINDOW
-unset click_id applet x y
 exit 0
 

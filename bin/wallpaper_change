@@ -9,11 +9,11 @@ usage()
     echo
     echo "Wallpaper IDs:"
     local wid=0
-    for wfile in "$@"; do 
+    for each in "$@"; do 
         if [ $wid -eq 0 ]; then
-            echo " $wid -> $wfile (default)"
+            echo " *$wid -> $each"
         else
-            echo " $wid -> $wfile"
+            echo "  $wid -> $each"
         fi
         wid=$((wid + 1))
     done
@@ -33,18 +33,18 @@ wallfiles=(
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage ${wallfiles[@]}
-        exit 0
-        ;;
+            usage ${wallfiles[@]}
+            exit 0
+            ;;
         -w | --wallpaper)
-        wallid=$2
-        shift 2
-        ;;
+            wallid=$2
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage ${wallfiles[@]}
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage ${wallfiles[@]}
+            exit 1
+            ;;
     esac
 done
 

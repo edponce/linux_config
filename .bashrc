@@ -215,7 +215,7 @@ if ! shopt -oq posix; then
 fi
 
 # Disable Ctrl + D to close terminal window
-#set -o ignoreeof
+set -o ignoreeof
 
 # Java VM environment
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
@@ -225,6 +225,11 @@ export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 # /usr/local/cuda -> /usr/local/cuda-8.0
 # /usr/local/cuda/lib64 -> /usr/local/cuda/targets/x86_64-linux/lib
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+# OpenMP
+export OMP_NUM_THREADS=$(lscpu | awk -v fac=2 '/^CPU\(s\):/ { print "scale=0;"($2+fac-1)"/"fac }' | bc)
+export OMP_THREAD_LIMIT=$(lscpu | awk '/^CPU\(s\):/ { print $2 }')
+export OMP_SCHEDULE="dynamic,1"
 
 # RISC-V
 export RISCV="/opt/riscv"
@@ -255,5 +260,5 @@ env_values=(
 "$HOME/bin"
 )
 . ~/bin/set_envvar PATH "${env_values[@]}"
-unset env_values
+unset env_values num_cpus
 

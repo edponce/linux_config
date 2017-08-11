@@ -16,20 +16,21 @@ usage()
 outdir=
 psfile=()
 
-
 # Get command line options
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        ;;
+            usage
+            exit 0
+            ;;
         -o | --outdir)
-        OUTDIR="$2"
-        shift 2
-        ;;
+            OUTDIR="$2"
+            shift 2
+            ;;
         *)
-        PSFILE+="$1 "
-        shift 1
-        ;;
+            PSFILE+="$1 "
+            shift
+            ;;
     esac
 done
 
@@ -50,21 +51,21 @@ if [ -z "$PSFILE" ]; then
 fi
 
 # Iterate through all PS files
-for i in $PSFILE; do 
-    if [[ ! -e $i ]]; then
-        echo "Error: PS file does not exists, '$i'."
+for each in $PSFILE; do 
+    if [ ! -e $each ]; then
+        echo "Error: PS file does not exists, '$each'."
         continue 
     fi
 
-    CURRFILE=$(basename $i)
+    CURRFILE=$(basename $each)
     BASEFILE=${CURRFILE%.*}
     PDFFILE=${BASEFILE}.pdf
 
     # Run command to convert file
-    ps2eps --force --ignoreBB --rotate=+ $i
+    ps2eps --force --ignoreBB --rotate=+ $each
     epstopdf --outfile=${OUTDIR}/${BASEFILE}.pdf ${BASEFILE}.eps
     rm ${BASEFILE}.eps
 done
 
-unset OUTDIR PSFILE NUMFILES CURRFILE BASEFILE PDFFILE
+exit 0
 

@@ -21,17 +21,17 @@ filext=".sas"
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -f | --file)
-        sasffile="$2"
-        shift 2
-        ;;
+            sasffile="$2"
+            shift 2
+            ;;
         *)
-        sasopts+="$sasopts $1"
-        shift 1
-        ;;
+            sasopts+="$sasopts $1"
+            shift
+            ;;
     esac
 done
 

@@ -16,13 +16,13 @@ cmd=
 while [ "$1" ]; do
     case "$1" in
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         *)
-        cmd="$@"
-        shift $# 
-        ;;
+            cmd="$@"
+            shift $# 
+            ;;
     esac
 done
 
@@ -40,9 +40,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Run 
-eval "$cmd"
+$cmd
 tput clear
 
-unset cmd 
 exit 0
 

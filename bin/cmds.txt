@@ -13,8 +13,9 @@
 # Resume normal boot
 #   exit
 
-# ASCII table
+# ASCII and console codes 
 man ascii
+man console_codes
 
 # Extract line 4 from file.txt
 awk 'NR==4' file.txt

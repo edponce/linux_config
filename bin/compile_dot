@@ -19,22 +19,22 @@ fdotfile=
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -t | --tex)
-        tex=1
-        shift 1
-        ;;
+            tex=1
+            shift
+            ;;
         -f | --file)
-        fdotfile="$2"
-        shift 2
-        ;;
+            fdotfile="$2"
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 
@@ -81,6 +81,5 @@ fi
 # Change to initial directory
 popd
 
-unset tex fdotfile num_dotfiles dotfile base_dotfile dir_dotfile out_dotfile dot_cmd view_cmd
 exit 0
 

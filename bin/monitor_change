@@ -11,15 +11,15 @@ usage()
     echo "Direction ID is ignored if mirror option is set."
     echo
     echo "Protocols:"
-    echo " 0 -> LVDS (default)"
-    echo " 1 -> VGA"
-    echo " 2 -> HDMI"
+    echo " *0 -> LVDS"
+    echo "  1 -> VGA"
+    echo "  2 -> HDMI"
     echo
     echo "Direction IDs for extended mode:"
-    echo " 0 -> left (default)"
-    echo " 1 -> above"
-    echo " 2 -> right"
-    echo " 3 -> below"
+    echo " *0 -> left"
+    echo "  1 -> above"
+    echo "  2 -> right"
+    echo "  3 -> below"
     echo
 }
 
@@ -35,26 +35,26 @@ win_restore=0
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -m | --mirror)
-        mirror=1
-        shift 1
-        ;;
+            mirror=1
+            shift
+            ;;
         -p | --protocol)
-        mon_proto=$2
-        shift 2
-        ;;
+            mon_proto=$2
+            shift 2
+            ;;
         -d | --direction)
-        direction_id=$2
-        shift 2
-        ;;
+            direction_id=$2
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 

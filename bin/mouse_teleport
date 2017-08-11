@@ -11,20 +11,21 @@ usage()
     echo "Also, left and right mouse clicks can be simulated (all other options are ignored)."
     echo
     echo "Screen IDs:"
-    echo " 0 -> current (default)"
-    echo " 1 -> lower-left"
-    echo " 2 -> second"
+    echo " *0 -> current"
+    echo "  1 -> lower-left"
+    echo "  2 -> second"
     echo
     echo "Direction IDs:"
-    echo " 0 -> left (default)"
-    echo " 1 -> up"
-    echo " 2 -> right"
-    echo " 3 -> down"
-    echo " 4 -> center (w/o relative flag)"
+    echo " *0 -> left"
+    echo "  1 -> up"
+    echo "  2 -> right"
+    echo "  3 -> down"
+    echo "  4 -> center (w/o relative flag)"
     echo
     echo "Click IDs:"
-    echo " 0 -> left (default)"
-    echo " 1 -> right"
+    echo " *0 -> left"
+    echo "  1 -> right"
+    echo
 }
 
 # Default options 
@@ -39,31 +40,31 @@ mouse_click=
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -r | --relative)
-        movement="mousemove_relative"
-        rel_dist=$2
-        shift 2
-        ;;
+            movement="mousemove_relative"
+            rel_dist=$2
+            shift 2
+            ;;
         -s | --screen)
-        screen_id=$2
-        shift 2
-        ;;
+            screen_id=$2
+            shift 2
+            ;;
         -d | --direction)
-        direction_id=$2
-        shift 2
-        ;;
+            direction_id=$2
+            shift 2
+            ;;
         -c | --click)
-        mouse_click=$2
-        shift 2
-        ;;
+            mouse_click=$2
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 
@@ -96,10 +97,8 @@ if [ ! -z $mouse_click ]; then
     
     # Run
     case $mouse_click in
-        0) # left click
-        xdotool click 1 ;;
-        1) # right click
-        xdotool click 3 ;;
+        0) xdotool click 1 ;; # left click
+        1) xdotool click 3 ;; # right click
     esac
 else
     # Move mouse pointer
@@ -126,30 +125,30 @@ else
         # Move mouse to preset position 
         case $direction_id in
             0) # left
-            x=$edge_dist
-            y=$((screen_dims[1] / 2))
-            ;;
+                x=$edge_dist
+                y=$((screen_dims[1] / 2))
+                ;;
             1) # up
-            x=$((screen_dims[0] / 2))
-            y=$edge_dist
-            ;;
+                x=$((screen_dims[0] / 2))
+                y=$edge_dist
+                ;;
             2) # right 
-            x=$((screen_dims[0] - edge_dist))
-            y=$((screen_dims[1] / 2))
-            ;;
+                x=$((screen_dims[0] - edge_dist))
+                y=$((screen_dims[1] / 2))
+                ;;
             3) # down 
-            x=$((screen_dims[0] / 2))
-            if [ $screen_id -eq 1 ]; then
-                # Show desktop panel
-                y=${screen_dims[1]}
-            else
-                y=$((screen_dims[1] - edge_dist))
-            fi
-            ;;
+                x=$((screen_dims[0] / 2))
+                if [ $screen_id -eq 1 ]; then
+                    # Show desktop panel
+                    y=${screen_dims[1]}
+                else
+                    y=$((screen_dims[1] - edge_dist))
+                fi
+                ;;
             4) # center 
-            x=$((screen_dims[0] / 2))
-            y=$((screen_dims[1] / 2))
-            ;;
+                x=$((screen_dims[0] / 2))
+                y=$((screen_dims[1] / 2))
+                ;;
         esac
         x=$((screen_offs[0] + x))
         y=$((screen_offs[1] + y))

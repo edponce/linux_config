@@ -27,34 +27,34 @@ filext=".tex"
 while [ "$1" ]; do 
     case "$1" in 
         -h | --help)
-        usage
-        exit 0
-        ;;
+            usage
+            exit 0
+            ;;
         -b | --bibtex)
-        bibtex=1
-        shift 1
-        ;;
+            bibtex=1
+            shift
+            ;;
         -c | --clean)
-        clean=1
-        shift 1
-        ;;
+            clean=1
+            shift
+            ;;
         -p | --pdfpc)
-        pdfpc=1
-        shift 1
-        ;;
+            pdfpc=1
+            shift
+            ;;
         -w | --workdir)
-        workdir="$2"
-        shift 2
-        ;;
+            workdir="$2"
+            shift 2
+            ;;
         -f | --file)
-        texffile="$2"
-        shift 2
-        ;;
+            texffile="$2"
+            shift 2
+            ;;
         *)
-        echo "Error: invalid command line option, $1"
-        usage
-        exit 1
-        ;;
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
     esac
 done
 
