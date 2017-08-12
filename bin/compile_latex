@@ -62,7 +62,7 @@ done
 if [ -z "$texffile" ]; then
     . common_utils
     find_file_ext "$filext" 
-    [ $? -ne 0 ] && exit 1
+    [ $? -eq 0 ] || exit 1
     texffile="$file_list"
 elif [ ! -e "$texffile" ]; then
     echo "Error: file '$texffile' does not exists."
@@ -85,7 +85,7 @@ cd "$texdir"
 
 # Run
 $pdflatex_cmd
-[ $? -ne 0 ] && exit 1
+[ $? -eq 0 ] || exit 1
 if [ $bibtex -ge 1 ]; then
     $bibtex_cmd
     $pdflatex_cmd

@@ -67,7 +67,7 @@ if [ -z "$app" ]; then
 fi
 
 # app [args]
-appname="$(echo "$app" | awk '{ print $1 }')"
+appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
 which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Error: application '$appname' was not found."

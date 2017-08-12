@@ -52,7 +52,7 @@ done
 if [ -z "$adffile" ]; then
     . common_utils
     find_file_ext "$filext" 
-    [ $? -ne 0 ] && exit 1
+    [ $? -eq 0 ] || exit 1
     adffile="$file_list"
 elif [ ! -e "$adffile" ]; then
     echo "Error: file '$adffile' does not exists."

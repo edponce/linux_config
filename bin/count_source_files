@@ -3,17 +3,19 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--recursive] [--workdir \"WORKDIR\"] \".EXT1\" [\".EXT2\"] ..."
+    echo "Usage: $(basename $0) [--help] [--list] [--recursive] [--workdir \"WORKDIR\"] \".EXT1\" [\".EXT2\"] ..."
     echo
-    echo "Count files that match given extension."
+    echo "Count files that match given extensions."
     echo
     echo "Default working directory is current directory."
-    echo "Default is to not recurse directories."
-    echo "Hidden files are ignored."
+    echo "Files are displayed by enabling listing option."
+    echo "Default is to not operate recursively."
+    echo "Hidden/temporary files are ignored."
     echo
 }
 
 # Default options
+list=0
 recursive=
 workdir="."
 filext=()
@@ -25,6 +27,10 @@ while [ "$1" ]; do
             usage
             exit 0
             ;;
+        -l | --list)
+            list=1
+            shift
+            ;;
         -r | --recursive)
             recursive="-R"
             shift
@@ -34,14 +40,18 @@ while [ "$1" ]; do
             shift 2
             ;; 
         *)
-            filext+=("$(echo "$1" | sed 's/\./\\\./g')")
+            if [ "${1:0:1}" = "." ]; then
+                filext+=("$(echo "$1" | sed 's/\./\\\./g')")
+            else
+                filext+=("\.$1")
+            fi
             shift
             ;;
     esac
 done
 
 # Validate
-if [ ! -d $workdir ]; then
+if [ ! -d "$workdir" ]; then
     echo "Error: working directory does not exists."
     exit 1
 fi
@@ -57,9 +67,13 @@ cd "$workdir"
 
 # List files recursively, ignore hidden files
 # Filter source files and count
-file_regex=$(IFS="|"; echo "${filext[*]}")
-file_list=($(ls -1 "$recursive" | grep -E ".+($file_regex)$"))
+file_regex=$(IFS='|'; echo "${filext[*]}")
+file_list=($(ls -1 $recursive | grep -E "^\w+($file_regex)$"))
 num_files=${#file_list[@]}
+
+if [ $list -eq 1 ]; then
+    IFS=$'\n'; echo "${file_list[*]}"
+fi
 echo "Number of matched files: $num_files"
 
 # Change to initial directory

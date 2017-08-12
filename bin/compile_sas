@@ -3,7 +3,7 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--file \"SASFILE\"] [SASOPT1] [SASOPTION2] ..."
+    echo "Usage: $(basename $0) [--help] [--file \"SASFILE\"] [SASOPTIONS]"
     echo
     echo "Run SAS script."
     echo
@@ -39,7 +39,7 @@ done
 if [ -z "$sasffile" ]; then
     . common_utils
     find_file_ext "$filext" 
-    [ $? -ne 0 ] && exit 1
+    [ $? -eq 0 ] || exit 1
     sasffile="$file_list"
 elif [ ! -e "$sasffile" ]; then
     echo "Error: file '$sasffile' does not exists."

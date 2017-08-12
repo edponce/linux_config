@@ -3,14 +3,14 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] \"COMMAND\""
+    echo "Usage: $(basename $0) [--help] \"APPLICATION\""
     echo
-    echo "Wrapper to invoke a command and clear terminal after its completion."
+    echo "Wrapper to invoke an application and clear terminal after its completion."
     echo
 }
 
 # Default options
-cmd=
+app=
 
 # Get command line options
 while [ "$1" ]; do
@@ -20,27 +20,28 @@ while [ "$1" ]; do
             exit 0
             ;;
         *)
-            cmd="$@"
+            app="$@"
             shift $# 
             ;;
     esac
 done
 
 # Validate
-if [ -z "$cmd" ]; then
+if [ -z "$app" ]; then
     echo "Error: no command was specified."
     exit 1
 fi
 
 # app [args] 
-which $(echo "$cmd" | awk '{ print $1}') > /dev/null 2>&1
+appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
+which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Error: command '$cmd' was not found."
+    echo "Error: command '$appname' was not found."
     exit 1
 fi
 
 # Run 
-$cmd
+$app
 tput clear
 
 exit 0

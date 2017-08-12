@@ -3,9 +3,9 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--xterm] [--delay DELAY] [--window WINDOW_ID] \"COMMAND\""
+    echo "Usage: $(basename $0) [--help] [--xterm] [--delay DELAY] [--window WINDOW_ID] \"APPLICATION\""
     echo
-    echo "Run command automatically in an existing terminal session."
+    echo "Run application automatically in an existing terminal session."
     echo
     echo "A terminal can be launched if required."
     echo "The command can be delayed to allow terminal startup."
@@ -22,7 +22,7 @@ usage()
 xterm=0
 delay=0.5
 wid="1"
-cmd=
+app=
 
 # Get command line options
 while [ "$1" ]; do
@@ -44,15 +44,15 @@ while [ "$1" ]; do
             shift 2
             ;;
         *)
-            cmd="$@"
+            app="$@"
             shift $# 
             ;;
     esac
 done
 
 # Validate
-if [ -z "$cmd" ]; then
-    echo "Error: no command was specified."
+if [ -z "$app" ]; then
+    echo "Error: no application was specified."
     exit 1
 fi
 
@@ -62,11 +62,13 @@ if [ $(bc <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
 fi
 
 # app [args] 
-which $(echo "$cmd" | awk '{ print $1}') > /dev/null 2>&1
+appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
+which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Error: command '$cmd' was not found."
+    echo "Error: application '$app' was not found."
     exit 1
 fi
+echo "$appname"
 
 # Check if launch terminal
 [ $xterm -eq 1 ] && lxterminal
@@ -77,7 +79,7 @@ sleep $delay
 # Run commands 
 if [ "$wid" = "1" ]; then
     # Active window mode
-    xdotool type "$cmd"
+    xdotool type "$app"
     xdotool key Return
 else
     # Specific window mode
@@ -94,7 +96,7 @@ else
             exit 1
         fi
     fi
-    xdotool type --window "$wid" "$cmd"
+    xdotool type --window "$wid" "$app"
     xdotool key --window "$wid" Return
     xdotool windowactivate "$wid"
 fi

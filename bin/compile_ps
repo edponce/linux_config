@@ -1,0 +1,72 @@
+#!/bin/bash 
+
+usage()
+{
+    echo
+    echo "Usage: $(basename $0) [--help] [--file \"PSFILE\"]"
+    echo
+    echo "Compile a PostScript file into PDF format."
+    echo
+    echo "If a PostScript file is not provided, current directory is searched for one."
+    echo
+}
+
+# Default options
+psffile=
+filext=".ps"
+
+# Get command line options
+while [ "$1" ]; do 
+    case "$1" in 
+        -h | --help)
+            usage
+            exit 0
+            ;;
+        -f | --file)
+            psffile="$2"
+            shift 2
+            ;;
+        *)
+            echo "Error: invalid command line option, $1"
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+# Validate
+if [ -z "$psffile" ]; then
+    . common_utils
+    find_file_ext "$filext"
+    [ $? -eq 0 ] || exit 1
+    psffile="$file_list"
+elif [ ! -e "$psffile" ]; then
+    echo "Error: file '$psffile' does not exists."
+    exit 1
+fi
+
+# Commands (compile and view) 
+psdir="$(dirname $psffile)"
+psfile="$(basename $psffile)"
+psbase="${psfile%.*}"
+pspdf="$psbase.pdf"
+pseps="$psbase.eps"
+view_cmd="evince $pspdf"
+
+# Change to file directory
+pushd . > /dev/null 2>&1
+cd "$psdir"
+
+# Run
+ps2eps --force --ignoreBB --rotate=+ "$psfile"
+epstopdf --outfile="$pspdf" "$pseps"
+rm "$pseps"
+
+# View
+$view_cmd & disown
+
+# Change to initial directory
+popd > /dev/null 2>&1
+
+exit 0
+

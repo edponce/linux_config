@@ -3,7 +3,7 @@
 usage()
 {
     echo
-    echo "Usage: $(basename $0) [--help] [--tex] --file=\"DOTFILE\""
+    echo "Usage: $(basename $0) [--help] [--tex] [--file=\"DOTFILE\"]"
     echo
     echo "Compile a DOT file into PNG or TeX format."
     echo "If a DOT file is not provided, current directory is search for one."
@@ -13,7 +13,8 @@ usage()
 
 # Default options
 tex=0
-fdotfile=
+dotffile=
+filext=".dot"
 
 # Get command line options
 while [ "$1" ]; do 
@@ -27,7 +28,7 @@ while [ "$1" ]; do
             shift
             ;;
         -f | --file)
-            fdotfile="$2"
+            dotffile="$2"
             shift 2
             ;;
         *)
@@ -39,47 +40,43 @@ while [ "$1" ]; do
 done
 
 # Validate
-if [ -z "$fdotfile" ]; then
-    fdotfile="$(ls | grep '.*\.dot$')"
-    num_dotfiles=$(echo -n "$fdotfile" | wc -l)
-    if [ $num_dotfiles -eq 1 ]; then
-        echo "Automatic DOT file found, '$fdotfile'."
-    elif [ $num_dotfiles -le 0 ]; then
-        echo "Error: no automatic DOT file found."
-        exit 1
-    elif [ $num_dotfiles -gt 1 ]; then
-        echo "Error: too many DOT files found, '$fdotfile'."
-        exit 1
-    fi
-elif [ ! -e "$fdotfile" ]; then
-    echo "Error: DOT file '$fdotfile' does not exists."
+if [ -z "$dotffile" ]; then
+    . common_utils
+    find_file_ext "$filext"
+    [ $? -eq 0 ] || exit 1
+    dotffile="$file_list"
+elif [ ! -e "$dotffile" ]; then
+    echo "Error: file '$dotffile' does not exists."
     exit 1
 fi
 
-# Commands (compile) 
-dir_dotfile="$(dirname $fdotfile)"
-dotfile="$(basename $fdotfile)"
-base_dotfile="${dotfile%.*}"
+# Commands (compile and view) 
+dotdir="$(dirname $dotffile)"
+dotfile="$(basename $dotffile)"
+dotbase="${dotfile%.*}"
+dotpng="$dotbase.png"
+dottex="$dotbase.tex"
+view_cmd="gpicview $dotpng"
+
+case $tex in
+    0) dot_cmd="dot -Tpng $dotfile -o $dotpng" ;;
+    1) dot_cmd="dot -Txdot $dotfile | dot2tex > $dottex" ;;
+esac
 
 # Change to file directory
-pushd .
-cd "$dir_dotfile"
+pushd . > /dev/null 2>&1
+cd "$dotdir"
 
 # Run
-if [ $tex -eq 0 ]; then
-    out_dotfile="$base_dotfile.png"
-    dot_cmd="dot -Tpng $dotfile -o $out_dotfile"
-    view_cmd="gpicview $out_dotfile"
-    eval "$dot_cmd"
-    eval "$view_cmd & disown"
-elif [ $tex -eq 1 ]; then
-    out_dotfile="$base_dotfile.tex"
-    dot_cmd="dot -Txdot $dotfile | dot2tex > $out_dotfile"
-    eval "$dot_cmd"
+$dot_cmd
+
+# View
+if [ -e "$dotpng" ]; then
+    $view_cmd & disown
 fi
 
 # Change to initial directory
-popd
+popd > /dev/null 2>&1
 
 exit 0
 
