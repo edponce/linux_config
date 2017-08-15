@@ -1,5 +1,8 @@
 #!/bin/bash
 
+. $HOME/bin/error_utils
+. $HOME/bin/custom_utils
+
 usage()
 {
     echo
@@ -51,22 +54,19 @@ while [ "$1" ]; do
             shift 2
             ;;
         *)
-            echo "Error: invalid command line option, $1"
             usage
-            exit 1
+            error_msg "invalid command line option, $1" 1
             ;;
     esac
 done
 
 # Validate        
 if [ $mon_proto -lt 0 ] && [ $mon_proto -gt 2 ]; then
-    echo "Error: invalid protocol value."
-    exit 1 
+    error_msg "invalid protocol value" 1
 fi
 
 if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
-    echo "Error: invalid direction value."
-    exit 1 
+    error_msg "invalid direction value" 1
 fi
 
 # Select monitor relative position
@@ -85,27 +85,29 @@ fi
 
 # Select monitor protocol
 mon_query="$(xrandr)"
-if [ $mon_proto -eq 0 ]; then
-    if [ $(echo "$mon_query" | grep -c '\bconnected\b') -gt 1 ]; then
-        # Restore windows into default screen
-        . custom_utils
-        window_restore
-    fi
-elif [ $mon_proto -eq 1 ]; then
-    if [ $(echo "$mon_query" | grep -c 'VGA1 connected\b') -eq 1 ]; then
-        vga="--auto $rel_pos --rotate normal"
-    else
-        echo "Error: VGA connection was not detected."
-        exit 1
-    fi
-elif [ $mon_proto -eq 2 ]; then
-    if [ $(echo "$mon_query" | grep -c 'HDMI1 connected\b') -eq 1 ]; then
-        hdmi="--auto $rel_pos --rotate normal"
-    else
-        echo "Error: HDMI connection was not detected."
-        exit 1
-    fi
-fi
+case $mon_proto in
+    0)
+        if [ $(echo "$mon_query" | grep -c '\bconnected\b') -gt 1 ]; then
+            # Restore windows into default screen
+            echo 
+            #window_restore
+        fi
+        ;;
+    1)
+        if [ $(echo "$mon_query" | grep -c 'VGA1 connected\b') -eq 1 ]; then
+            vga="--auto $rel_pos --rotate normal"
+        else
+            error_msg "VGA connection was not detected" 1
+        fi
+        ;;
+    2)
+        if [ $(echo "$mon_query" | grep -c 'HDMI1 connected\b') -eq 1 ]; then
+            hdmi="--auto $rel_pos --rotate normal"
+        else
+            error_msg "HDMI connection was not detected" 1
+        fi
+        ;;
+esac
 
 # Run
 xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga

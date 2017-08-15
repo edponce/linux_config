@@ -51,7 +51,7 @@ def get_active_screen_dims(screen_id = 0):
     win_id_active = '{0:#0{1}x}'.format(win_id_active_int, 10)
 
     # Get dimensions and offsets of lower-left screen
-    str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 1; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
+    str_screen_dims = subprocess.getoutput('. $HOME/bin/custom_utils; screen_position 1; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
     screen_all_dims = [int(x) for x in str_screen_dims]
 
     # Use screen with active window
@@ -61,14 +61,14 @@ def get_active_screen_dims(screen_id = 0):
         num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
         if num_monitors > 1:
             # Get active window dimensions
-            str_win_dims = subprocess.getoutput('. ~/bin/custom_utils; window_position ' + win_id_active + '; echo "${win_dims[@]} ${win_offs[@]}"').split()
+            str_win_dims = subprocess.getoutput('. $HOME/bin/custom_utils; window_position ' + win_id_active + '; echo "${win_dims[@]} ${win_offs[@]}"').split()
             win_dims = [int(x) for x in str_win_dims]
             win_x = win_dims[0] + win_dims[2]
             win_y = win_dims[1] + win_dims[3]
 
             # Check if active window is not in lower-left screen
             if win_x > screen_all_dims[0] or win_y > screen_all_dims[1]:
-                str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
+                str_screen_dims = subprocess.getoutput('. $HOME/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
                 screen_all_dims = [int(x) for x in str_screen_dims]
 
     # Use second screen
@@ -76,7 +76,7 @@ def get_active_screen_dims(screen_id = 0):
         # Check for multiple screens
         num_monitors = int(subprocess.getoutput("xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }'"))
         if num_monitors > 1:
-            str_screen_dims = subprocess.getoutput('. ~/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
+            str_screen_dims = subprocess.getoutput('. $HOME/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
             screen_all_dims = [int(x) for x in str_screen_dims]
    
     # Screen dimensions and offsets

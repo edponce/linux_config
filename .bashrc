@@ -64,9 +64,10 @@ if [ "$color_prompt" = yes ]; then
 else
     #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\[\033[01;32m\]\$\[\033[00m\] '
 
-    # Controls for sync_history function
+    # Controls for sync_history function, do not unset these variables
     history_last_sync_seconds=$SECONDS
-    declare -r history_max_sync_seconds=60
+    declare -r history_max_sync_seconds=90
+    declare -r history_backup_dir="$HOME/.history"
 
     # Colors
     declare -r off_c="\[\033[00m\]"
@@ -78,14 +79,19 @@ else
     declare -r magenta_c="\[\033[01;35m\]"
     declare -r cyan_c="\[\033[01;36m\]"
     declare -r white_c="\[\033[01;37m\]"
-    declare -r history_backup_dir="$HOME/.history"
 
     prompt_command() {
         local -r err_cmd_val=$? # get error from last command
         local err_cmd 
-
-        local history_last file_num history_basefile history_backupfile 
-        local history_val history_curr git_branch git_branch_str prompt_symbol
+        local history_last
+        local file_num
+        local history_basefile
+        local history_backupfile 
+        local history_val
+        local history_curr
+        local git_branch
+        local git_branch_str
+        local prompt_symbol
 
         # History consistency between shells
         if [ $((SECONDS - history_last_sync_seconds)) -gt $history_max_sync_seconds ]; then
@@ -100,7 +106,7 @@ else
             history_last=0
         elif [ $history_last -ge $HISTSIZE ]; then
             history_last=0
-            [ ! -d "$history_backup_dir" ] && mkdir "$history_backup_dir"
+            [ -d "$history_backup_dir" ] || mkdir "$history_backup_dir"
             file_num=$(ls "$history_backup_dir" | awk -F. '{ print $2 }' | sort | tail -n 1)
             if [[ $file_num = *[[:digit:]] ]]; then
                 file_num=$((file_num + 1))
@@ -120,7 +126,6 @@ else
         history_curr="(${cyan_c}${history_val}${off_c})"
 
         # Check if current dir has a .git repo, but hide $HOME git repo
-        git_branch=
         if [ "$PWD" != "$HOME" ]; then
             if [ ! -z "$(ls -A | grep '^.git$')" ]; then
                 git_branch_str="$(git branch | grep '\*' | awk '{ print $NF }')"
@@ -129,7 +134,6 @@ else
         fi
 
         # Check if error occurred from last command
-        err_cmd=
         if [ $err_cmd_val -ne 0 ]; then
             err_cmd="[${red_c}${err_cmd_val}${off_c}]"
         fi
@@ -214,23 +218,32 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Disable Ctrl + D to close terminal window
+# Disable Ctrl + d to close terminal window
 set -o ignoreeof
+
+# Environment utilities (e.g., set_envvar)
+. $HOME/bin/environ_utils
 
 # Java VM environment
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 
-# Set linker library paths
+# Linker library paths
 # CUDA libraries
 # /usr/local/cuda -> /usr/local/cuda-8.0
-# /usr/local/cuda/lib64 -> /usr/local/cuda/targets/x86_64-linux/lib
-export LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# /usr/local/cuda/lib64 -> /usr/local/cuda-8.0/targets/x86_64-linux/lib
+#export LD_LIBRARY_PATH="/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+env_values=(
+            "/usr/local/cuda/lib64"
+           )
+set_envvar LD_LIBRARY_PATH "${env_values[@]}"
 
-# OpenMP
-export OMP_NUM_THREADS=$(lscpu | awk -v fac=2 '/^CPU\(s\):/ { print "scale=0;"($2+fac-1)"/"fac }' | bc)
+# OpenMP options
 export OMP_THREAD_LIMIT=$(lscpu | awk '/^CPU\(s\):/ { print $2 }')
-export OMP_SCHEDULE="dynamic,1"
+export OMP_NUM_THREADS=$(echo "$OMP_THREAD_LIMIT/2" | bc)
+#export OMP_NUM_THREADS=$(lscpu | awk -v fac=2 '/^CPU\(s\):/ { print "scale=0;"($2+fac-1)"/"fac }' | bc)
+export OMP_SCHEDULE="dynamic,2"
 
+# Binary paths
 # RISC-V
 export RISCV="/opt/riscv"
 #export PATH="$RISCV/bin${PATH:+:$PATH}"
@@ -250,15 +263,16 @@ export RISCV="/opt/riscv"
 # EPSXE (games)
 #export PATH="$HOME/Documents/games:${PATH:+:$PATH}"
 env_values=(
-"$RISCV/bin"
-"/usr/local/cuda/extras/demo_suite"
-"/usr/local/cuda/bin"
-"/usr/local/SASHome/SASFoundation/9.4"
-"/usr/local/lib/rstudio/bin"
-"$HOME/Documents/games"
-"$HOME/.local/bin"
-"$HOME/bin"
-)
-. ~/bin/set_envvar PATH "${env_values[@]}"
-unset env_values num_cpus
+            "$RISCV/bin"
+            "/usr/local/cuda/extras/demo_suite"
+            "/usr/local/cuda/bin"
+            "/usr/local/SASHome/SASFoundation/9.4"
+            "/usr/local/lib/rstudio/bin"
+            "$HOME/Documents/games"
+            "$HOME/.local/bin"
+            "$HOME/bin"
+           )
+set_envvar PATH "${env_values[@]}"
+
+unset env_values
 

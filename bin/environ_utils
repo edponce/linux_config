@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# NOTE: This script is to be sourced only, not executed.
+# The 'exit' statement should never appear on this code as it is sourced
+# by .bashrc during login, thus exiting the login shell right after user
+# logs in. If this happens, the brute force solution is to press Ctrl+C
+# immediately after user logs in (it may take several attempts).
+
+#usage_set_envvar()
+#{
+#    echo
+#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\"] ..."
+#    echo
+#    echo "Adds a list of values to an environment variable."
+#    echo
+#    echo "If environment variable exists, values are prepended (set option to overwrite)."
+#    echo "Default delimiter symbol is colon, ':'."
+#    echo "Duplicate values are prevented."
+#    echo "This script is to be sourced, not executed."
+#    echo
+#}
+
+set_envvar()
+{
+    # Default options
+    local overwrite=0
+    local delim=":"
+    local env_var
+    local arg_value=()
+    local env_value=()
+    local env_str
+
+    # Get command line options 
+    while [ "$1" ]; do 
+        case "$1" in 
+            #-h | --help)
+            #    usage_set_envvar
+            #    return 0 
+            #    ;;
+            -o | --overwrite)
+                overwrite=1
+                shift
+                ;;
+            -d | --delim)
+                delim="$2"
+                shift 2
+                ;;
+            *)
+                env_var="$1"
+                arg_value=("${@:2}")
+                shift $#
+                ;;
+        esac
+    done
+
+    # Validate
+    if [ -z "$env_var" ]; then
+        echo "Error: missing name of environment variable."
+        return 1
+    fi
+
+    if [ ${#arg_value[@]} -eq 0 ]; then
+        echo "Error: missing value(s) for environment variable."
+        return 1
+    fi
+
+    # Prevent duplicate values to environment variable 
+    for each in "${arg_value[@]}"; do
+        if [[ ! ${!env_var} =~ ($delim)?$each($delim.*)?$ ]]; then
+            env_value+=("$each")
+        fi
+    done
+    [ ${#env_value[@]} -eq 0 ] && return 0
+
+    # Convert values into delimited string
+    env_str=$(IFS="$delim"; echo "${env_value[*]}")
+
+    #Run
+    if [ -z "${!env_var}" ] || [ $overwrite -eq 1 ]; then
+        export "$env_var"="$env_str"
+    else
+        export "$env_var"="$env_str$delim${!env_var}"
+    fi
+}
+

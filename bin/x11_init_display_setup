@@ -15,7 +15,5 @@ fi
 #fi
 
 # Enable numlock
-if [ "$(numlockx status | grep 'off')" ]; then
-    numlockx on
-fi
+[[ $(numlockx status) =~ off$ ]] && numlockx on
 

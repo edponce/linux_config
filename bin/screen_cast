@@ -1,5 +1,8 @@
 #!/bin/bash
 
+. $HOME/bin/error_utils
+. $HOME/bin/custom_utils
+
 usage()
 {
     echo
@@ -11,7 +14,7 @@ usage()
     echo "Default is fullscreen, enabled flag to select specific window."
     echo "Default timer is 5 seconds prior to recording."
     echo "Default frame rate is 30 frames/sec."
-    echo "Default outfile is \"$HOME/screencast_DATE_TIME.avi\""
+    echo "Default outfile is '$HOME/screencast_DATE_TIME.avi'"
     echo "Supported outfile formats: avi, mp4, mpg, mkv"
     echo
     echo "Video codecs:"
@@ -71,36 +74,30 @@ while [ "$1" ]; do
             shift 2
             ;;
         *)
-            echo "Error: invalid command line option, $1"
             usage
-            exit 1
+            error_msg "invalid command line option, $1" 1
             ;;
     esac
 done
-
+ 
 # Validate
 if [ $timer -lt 0 ] || [ $timer -gt 60 ]; then
-    echo "Error: invalid timer value."
-    exit 1 
+    error_msg "invalid timer value" 1
 fi
 
 if [ "$vcodec" != "libx264" ] && [ "$vcodec" != "huffyuv" ] && [ "$vcodec" != "libxvid" ]; then
-    echo "Error: invalid video codec value."
-    exit 1 
+    error_msg "invalid video codec value" 1
 fi
 
 if [ $framerate -lt 20 ] || [ $framerate -gt 75 ]; then
-    echo "Error: invalid framerate value."
-    exit 1 
+    error_msg "invalid framerate value" 1
 fi
 
 if [ $screen_id -lt 0 ] || [ $screen_id -gt 1 ]; then
-    echo "Error: invalid screen value."
-    exit 1 
+    error_msg "invalid screen value" 1
 fi
 
 # Set video dimensions and offsets
-. custom_utils
 if [ $use_window -eq 0 ]; then
     screen_position $((screen_id + 1))
     x_offs=${screen_offs[0]}

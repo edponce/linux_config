@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Print error message, exits if exit code provided
+# Inputs: "error message" [exit code]
+# Outputs: N/A
+# Usage: error_msg "file does not exists." 1 
+error_msg()
+{
+    local errcolor="\033[01;31m" # red
+    local offcolor="\033[00m" # off 
+    echo -e "${errcolor}Error:${offcolor} $1"
+    [[ $2 =~ ^[0-9]+$ ]] && exit $2
+} 
+    
+# Print warning message, exits if error code provided
+# Inputs: "warning message" [exit code]
+# Outputs: N/A
+# Usage: warn_msg "value out of range."
+warn_msg()
+{
+    local errcolor="\033[01;31m" # red
+    local offcolor="\033[00m" # off 
+    echo -e "${errcolor}Warning:${offcolor} $1"
+    [[ $2 =~ ^[0-9]+$ ]] && exit $2
+} 

@@ -4,7 +4,7 @@
 #   0 -> primary, LVDS 
 #  *1 -> lower-left
 #   2 -> second screen
-# Inputs: screen ID (optional)
+# Inputs: [screen ID]
 # Outputs: screen_dims, screen_offs
 # Usage: screen_position 1
 screen_position()
@@ -34,7 +34,7 @@ screen_position()
 }
 
 # Get dimensions and offsets of selected window
-# Inputs: window ID, int or hex value (optional)
+# Inputs: [window ID (int|hex value)]
 # Outputs: win_dims, win_offs
 # Usage: window_position 0x0100004 
 window_position()
@@ -59,49 +59,49 @@ window_position()
 # Inputs: N/A
 # Outputs: N/A
 # Usage: window_restore
-window_restore()
-{
-    return
-
-    local w_list x_offs y_offs move
-    local w_id=() w_desk=() w_offs=() w_dims=()
-
-    # Get details of each visible window
-    readarray -t w_list <<< "$(wmctrl -l)"
-    for each in "${w_list[@]}"; do
-        if [ $(echo "$each" | awk '{ print $2 }') -ne -1 ]; then
-            w_id+=($(echo "$each" | awk '{ print $1 }'))
-            w_desk+=($(echo "$each" | awk '{ print $2 }'))
-            window_position ${w_id[-1]}
-            w_dims+=(${win_dims[@]})
-            w_offs+=(${win_offs[@]})
-        fi
-    done
-
-    # Get details of screen at (0,0) position 
-    screen_position 1
-
-    # Move windows
-    for ((w=0, x=0, y=1; w < ${#w_id[@]}; w++, x+=2, y+=2)); do
-        x_offs=${w_offs[$x]}
-        y_offs=${w_offs[$y]}
-        move=0
-
-        if [ $x_offs -ge ${screen_dims[0]} ]; then
-            x_offs=$((x_offs - screen_dims[0]))
-            move=1
-        fi
-
-        if [ $y_offs -ge ${screen_dims[1]} ]; then
-            y_offs=$((y_offs - screen_dims[1]))
-            move=1
-        fi
-
-        if [ $move -eq 1 ]; then
-            wmctrl -i -r ${w_id[$w]} -t ${w_desk[$w]} -e 0,$x_offs,$y_offs,${w_dims[$x]},${w_dims[$y]}
-        fi
-    done
-}
+#window_restore()
+#{
+#    return
+#
+#    local w_list x_offs y_offs move
+#    local w_id=() w_desk=() w_offs=() w_dims=()
+#
+#    # Get details of each visible window
+#    readarray -t w_list <<< "$(wmctrl -l)"
+#    for each in "${w_list[@]}"; do
+#        if [ $(echo "$each" | awk '{ print $2 }') -ne -1 ]; then
+#            w_id+=($(echo "$each" | awk '{ print $1 }'))
+#            w_desk+=($(echo "$each" | awk '{ print $2 }'))
+#            window_position ${w_id[-1]}
+#            w_dims+=(${win_dims[@]})
+#            w_offs+=(${win_offs[@]})
+#        fi
+#    done
+#
+#    # Get details of screen at (0,0) position 
+#    screen_position 1
+#
+#    # Move windows
+#    for ((w=0, x=0, y=1; w < ${#w_id[@]}; w++, x+=2, y+=2)); do
+#        x_offs=${w_offs[$x]}
+#        y_offs=${w_offs[$y]}
+#        move=0
+#
+#        if [ $x_offs -ge ${screen_dims[0]} ]; then
+#            x_offs=$((x_offs - screen_dims[0]))
+#            move=1
+#        fi
+#
+#        if [ $y_offs -ge ${screen_dims[1]} ]; then
+#            y_offs=$((y_offs - screen_dims[1]))
+#            move=1
+#        fi
+#
+#        if [ $move -eq 1 ]; then
+#            wmctrl -i -r ${w_id[$w]} -t ${w_desk[$w]} -e 0,$x_offs,$y_offs,${w_dims[$x]},${w_dims[$y]}
+#        fi
+#    done
+#}
 
 # Get current cursor row in terminal window
 # Inputs: N/A

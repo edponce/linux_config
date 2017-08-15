@@ -1,5 +1,8 @@
 #!/bin/bash 
 
+. $HOME/bin/error_utils
+. $HOME/bin/common_utils
+
 usage()
 {
     echo
@@ -41,22 +44,20 @@ while [ "$1" ]; do
             shift 2
             ;;
         *)
-            echo "Error: invalid command line option, $1"
             usage
-            exit 1
+            error_msg "invalid command line option, $1" 1
             ;;
     esac
 done
      
 # Validate
 if [ -z "$adffile" ]; then
-    . common_utils
     find_file_ext "$filext" 
     [ $? -eq 0 ] || exit 1
     adffile="$file_list"
-elif [ ! -e "$adffile" ]; then
-    echo "Error: file '$adffile' does not exists."
-    exit 1
+fi
+if [ ! -e "$adffile" ]; then
+    error_msg "file '$adffile' does not exists" 1
 fi
 
 # Commands (compile and view)

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+. $HOME/bin/error_utils
+. $HOME/bin/custom_utils
+
 usage()
 {
     echo
@@ -61,34 +64,29 @@ while [ "$1" ]; do
             shift 2
             ;;
         *)
-            echo "Error: invalid command line option, $1"
             usage
-            exit 1
+            error_msg "invalid command line option, $1" 1
             ;;
     esac
 done
 
 # Validate
 if [ $rel_dist -lt 0 ]; then
-    echo "Error: invalid relative distance value."
-    exit 1 
+    error_msg "invalid relative distance value" 1
 fi
 
 if [ $screen_id -lt 0 ] || [ $screen_id -gt 2 ]; then
-    echo "Error: invalid screen value."
-    exit 1 
+    error_msg "invalid screen value" 1
 fi
 
 if [ $direction_id -lt 0 ] || [ $direction_id -gt 4 ]; then
-    echo "Error: invalid direction value."
-    exit 1 
+    error_msg "invalid direction value" 1
 fi
 
 # Click window located at current mouse position
 if [ ! -z $mouse_click ]; then
     if [ $mouse_click -lt 0 ] || [ $mouse_click -gt 1 ]; then
-        echo "Error: invalid mouse click value."
-        exit 1 
+        error_msg "invalid mouse click value" 1
     fi
 
     # Outputs: X, Y, SCREEN, WINDOW 
@@ -103,7 +101,6 @@ if [ ! -z $mouse_click ]; then
 else
     # Move mouse pointer
     if [ "$movement" = "mousemove" ]; then
-        . custom_utils
 
         # Find screen of current mouse position
         if [ $screen_id -eq 0 ]; then

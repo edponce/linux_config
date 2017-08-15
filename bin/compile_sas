@@ -1,5 +1,8 @@
 #!/bin/bash 
 
+. $HOME/bin/error_utils
+. $HOME/bin/common_utils
+
 usage()
 {
     echo
@@ -37,13 +40,12 @@ done
 
 # Validate
 if [ -z "$sasffile" ]; then
-    . common_utils
     find_file_ext "$filext" 
     [ $? -eq 0 ] || exit 1
     sasffile="$file_list"
-elif [ ! -e "$sasffile" ]; then
-    echo "Error: file '$sasffile' does not exists."
-    exit 1
+fi
+if [ ! -e "$sasffile" ]; then
+    error_msg "file '$sasffile' does not exists" 1
 fi
 
 # Commands (compile) 

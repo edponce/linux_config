@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $HOME/bin/error_utils
+
 usage()
 {
     echo
@@ -24,7 +26,6 @@ usage()
     echo "  2 -> optirun"
     echo
 }
-
 
 # Default options
 x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia" # X11 NVIDIA configuration file
@@ -53,47 +54,40 @@ while [ "$1" ]; do
             shift 2 
             ;;
         *)
-            echo "Error: invalid command line option, $1"
             usage $x11_nvidia_file
-            exit 1
+            error_msg "invalid command line option, $1" 1
             ;;
     esac
 done
 
 # Validate
 if [ -z "$app" ]; then
-    echo "Error: no application was specified."
-    exit 1
+    error_msg "no application was specified" 1
 fi
 
 # app [args]
 appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
 which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Error: application '$appname' was not found."
-    exit 1
+    error_msg "application '$appname' was not found" 1
 fi
 
 if [ $launch_tool -lt 0 ] || [ $launch_tool -gt 2 ]; then
-    echo "Error: invalid launch tool identifier [0-2]."
-    exit 1 
+    error_msg "invalid launch tool identifier [0-2]" 1
 fi
 
 if [ $launch_tool -gt 0 ]; then
     # Check that NVIDIA modules are not loaded/used by other applications 
     if [ $(lsmod | grep -c 'nvidia') -gt 0 ]; then
-        echo "Warning: Please close all applications using NVIDIA modules...exiting."
-        exit 0
+        warn_msg "please close all applications using NVIDIA modules...exiting" 0
     fi
 
     if [ $perf_level -lt 1 ] || [ $perf_level -gt 3 ]; then
-        echo "Error: invalid performance level [1-3]."
-        exit 1 
+        error_msg "invalid performance level [1-3]" 1
     fi
 
     if [ ! -e "$x11_nvidia_file" ]; then
-        echo "Error: X11 NVIDIA configuration file '$x11_nvidia_file' does not exists."
-        exit 1
+        error_msg "X11 NVIDIA configuration file '$x11_nvidia_file' does not exists" 1
     fi
 
     # Get current performance level in X11 NVIDIA configuration file
