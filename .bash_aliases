@@ -24,7 +24,9 @@ alias iotop='sudo iotop'
 alias ntop='sudo ntop -u ntop -P /var/lib/ntop -a /var/log/ntop/access.log -i wlp2s0 -p /etc/ntop/protocol.list -O /var/log/ntop'
 alias powertop='sudo powertop'
 alias imagemagick='display-im6'
-# screen, hack to allow scroll-up with mouse in copy mode
+alias mag1='xmag -source 480x135 -mag 3'
+alias mag2='xmag -source 960x270 -mag 2'
+# screen, hack to allow scroll-up with mouse in copy mode, works only for a single pane
 alias screen='TERM=vt100 screen'
 
 # NVIDIA, settings and visual profiler

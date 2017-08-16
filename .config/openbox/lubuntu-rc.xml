@@ -1262,6 +1262,10 @@
         <height>300</height>
       </size>
     </application>
+    <!-- VirtualBox -->
+    <application name="VirtualBox">
+      <decor>no</decor>
+    </application>
     <!--
   # this is an example with comments through out. use these to make your
   # own rules, but without the comments of course.

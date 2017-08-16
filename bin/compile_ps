@@ -52,7 +52,7 @@ psfile="$(basename $psffile)"
 psbase="${psfile%.*}"
 pspdf="$psbase.pdf"
 pseps="$psbase.eps"
-view_cmd="evince $pspdf"
+view_cmd="evince"
 
 # Change to file directory
 pushd . > /dev/null 2>&1
@@ -64,7 +64,7 @@ epstopdf --outfile="$pspdf" "$pseps"
 rm "$pseps"
 
 # View
-$view_cmd & disown
+[ -e "$pspdf" ] && $view_cmd "$pspdf" &
 
 # Change to initial directory
 popd > /dev/null 2>&1

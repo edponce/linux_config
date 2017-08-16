@@ -34,11 +34,19 @@ sudo dpkg -i PACKAGE
 sudo dpkg -r PACKAGE
 # Remove all, including config files
 sudo dpkg -P PACKAGE
-# Remove orphan packages
-sudo apt-get autoremove 
 
-sudo apt-get clean
-sudo apt-get auto-clean
+# More on apt/dpkg
+dpkg -l
+dpkg --get-selections
+sudo apt autoremove # remove orphan packages
+sudo apt clean
+sudo apt auto-clean
+sudo apt-mark hold PACKAGE # hold package to prevent upgrades
+sudo apt-mark unhold PACKAGE # unhold package a hold package 
+sudo apt install --dry-run PACKAGE # check what will happen
+sudo apt install PACKAGE
+sudo apt remove PACKAGE
+sudo apt remove --purge PACKAGE # sudo apt purge PACKAGE
 
 # HP Linux Imaging and Printing System
 # HPLIP cannot detect a printer, check firewall blocking ports (5353/udp)
@@ -450,3 +458,8 @@ sudo vi /etc/apparmor.d/abstractions/ubuntu-browsers
 #  /mnt/ssd/usr/{,local/}lib*/{,**/}* Pixr,
 #  /mnt/ssd/{,usr/,usr/local/}lib{,32,64}/{,**/}*.so{,.*} m,
 sudo vi /etc/apparmor.d/abstractions/ubuntu-helpers
+
+# Magnifier
+xmag
+xmag -source 960x270 -mag 2
+

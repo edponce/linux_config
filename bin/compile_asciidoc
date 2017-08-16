@@ -67,8 +67,7 @@ adbase="${adfile%.*}"
 adpdf="$adbase.pdf"
 adxml="$adbase.xml"
 dblatex_cmd="dblatex $adxml -T simple"
-view_cmd="evince $adpdf"
-
+view_cmd="evince"
 case $adtype in
     0) ad_cmd="a2x -d article -f pdf $adfile" ;;
     1) ad_cmd="a2x -d book -f pdf $adfile" ;;
@@ -87,9 +86,7 @@ if [ -e "$adxml" ]; then
 fi
 
 # View
-if [ -e "$adpdf" ]; then
-    $view_cmd & disown
-fi
+[ -e "$adpdf" ] && $view_cmd "$adpdf" &
 
 # Change to initial directory
 popd > /dev/null 2>&1

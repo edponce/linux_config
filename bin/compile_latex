@@ -77,6 +77,10 @@ texbase="${texfile%.*}"
 texpdf="$texbase.pdf"
 pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=$workdir $texfile"
 bibtex_cmd="bibtex $workdir/$texbase"
+case $pdfpc in
+    0) view_cmd="evince" ;;
+    *) view_cmd="pdfpc" ;;
+esac
 
 # Change to file directory
 pushd . > /dev/null 2>&1
@@ -100,12 +104,8 @@ else
     mv "$workdir/$texpdf" "$texpdf"
     rm -r "$workdir"
 fi
-if [ $pdfpc -eq 0 ]; then
-    view_cmd="evince $texpdf"
-else
-    view_cmd="pdfpc $texpdf"
-fi
-$view_cmd & disown
+
+[ -e "$texpdf" ] && $view_cmd "$texpdf" &
 
 # Change to initial directory
 popd > /dev/null 2>&1

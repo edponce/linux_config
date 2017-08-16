@@ -57,8 +57,7 @@ dotfile="$(basename $dotffile)"
 dotbase="${dotfile%.*}"
 dotpng="$dotbase.png"
 dottex="$dotbase.tex"
-view_cmd="gpicview $dotpng"
-
+view_cmd="gpicview"
 case $tex in
     0) dot_cmd="dot -Tpng $dotfile -o $dotpng" ;;
     1) dot_cmd="dot -Txdot $dotfile | dot2tex > $dottex" ;;
@@ -72,9 +71,7 @@ cd "$dotdir"
 $dot_cmd
 
 # View
-if [ -e "$dotpng" ]; then
-    $view_cmd & disown
-fi
+[ -e "$dotpng" ] && $view_cmd "$dotpng" &
 
 # Change to initial directory
 popd > /dev/null 2>&1
