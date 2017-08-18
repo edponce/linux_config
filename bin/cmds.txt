@@ -463,3 +463,13 @@ sudo vi /etc/apparmor.d/abstractions/ubuntu-helpers
 xmag
 xmag -source 960x270 -mag 2
 
+# Network configuration files
+/etc/network/interfaces # describes the network interfaces
+/etc/hostname # configures the nameserver credentials
+/etc/hosts # resolve IP addresses to hostnames
+ifdown enp3s0; ifup enp3s0
+
+# Resolve binaries (even with symbolic links)
+# Reference /usr/bin/xdg-open
+readlink -f $(which open)
+

@@ -3,6 +3,7 @@ alias down='cd ~/Downloads'
 alias games='cd ~/Documents/games'
 
 # Work directories 
+alias resume='cd ~/Documents/personal/resume'
 alias dissertation='cd ~/Documents/utk/dissertation/thesis_template'
 alias evidence='cd ~/Documents/utk/sp17/cosc690'
 alias masprng='cd ~/Documents/utk/sprng/masprng'
@@ -13,6 +14,7 @@ alias mri='cd ~/Documents/utk/mri'
 alias rdf='cd ~/Documents/utk/rdf_analysis'
 alias caaqa='cd ~/Documents/caaqa/6ed'
 alias sacnas='cd ~/Documents/utk/sacnas_chapter'
+alias nuc='cd ~/Documents/utk/sp16/COSC\ 575\ HPC\ ModelVisual'
 
 # Commands/utilities
 alias clear='tput clear'
@@ -26,8 +28,6 @@ alias powertop='sudo powertop'
 alias imagemagick='display-im6'
 alias mag1='xmag -source 480x135 -mag 3'
 alias mag2='xmag -source 960x270 -mag 2'
-# screen, hack to allow scroll-up with mouse in copy mode, works only for a single pane
-alias screen='TERM=vt100 screen'
 
 # NVIDIA, settings and visual profiler
 alias nvidia-settingsx='optirun nvidia-settings -c :8' 

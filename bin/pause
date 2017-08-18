@@ -2,11 +2,13 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help]"
-    echo
-    echo "Pause command prompt until a key is pressed."
-    echo
+cat << EOF
+
+Usage: $(basename $0) [--help]
+
+Pause command prompt until a key is pressed.
+
+EOF
 }
 
 # Get command line options

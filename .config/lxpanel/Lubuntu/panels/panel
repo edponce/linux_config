@@ -61,18 +61,21 @@ Plugin {
   Config {
     Size=4
   }
+  expand=0
 }
 Plugin {
   type=space
   Config {
     Size=4
   }
+  expand=0
 }
 Plugin {
   type=space
   Config {
     Size=4
   }
+  expand=0
 }
 Plugin {
   type=taskbar
