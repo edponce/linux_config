@@ -2,13 +2,13 @@
 
 usage()
 {
-cat << EOF
+cat << _EOF_
 
 Usage: $(basename $0) [--help]
 
 Pause command prompt until a key is pressed.
 
-EOF
+_EOF_
 }
 
 # Get command line options

@@ -5,25 +5,27 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--mirror] [--protocol PROTOCOL] [--direction DIRECTION_ID]"
-    echo
-    echo "Change monitor configuration."
-    echo
-    echo "For non-LVDS protocol, default is extended screen."
-    echo "Direction ID is ignored if mirror option is set."
-    echo
-    echo "Protocols:"
-    echo " *0 -> LVDS"
-    echo "  1 -> VGA"
-    echo "  2 -> HDMI"
-    echo
-    echo "Direction IDs for extended mode:"
-    echo " *0 -> left"
-    echo "  1 -> above"
-    echo "  2 -> right"
-    echo "  3 -> below"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--mirror] [--protocol PROTOCOL] [--direction DIRECTION_ID]
+    
+Change monitor configuration.
+    
+For non-LVDS protocol, default is extended screen.
+Direction ID is ignored if mirror option is set.
+    
+Protocols:
+ *0 -> LVDS
+  1 -> VGA
+  2 -> HDMI
+    
+Direction IDs for extended mode:
+ *0 -> left
+  1 -> above
+  2 -> right
+  3 -> below
+
+_EOF_
 }
 
 # Default options
@@ -111,6 +113,12 @@ esac
 
 # Run
 xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga
+
+# Move mouse to center of screen
+case $direction_id in
+    0 | 3) mouse_teleport -s 1 -d 4 ;;
+    1 | 2) mouse_teleport -s 2 -d 4 ;;
+esac
 
 exit 0
 

@@ -43,6 +43,7 @@ Dropbox/
 #.emacs.d/
 .emacs.d/auto-save-list/
 .epsxe/
+.fceux/
 .FreeCAD/
 .gconf/
 .gimp-2.8/
@@ -75,6 +76,7 @@ Music/
 .nvidia-settings-rc
 PDF/
 Pictures/
+.PlayOnLinux/
 .pki/
 #.profile
 .psensor/
@@ -114,6 +116,7 @@ VirtualBox*/
 .weather/datacache/
 .weather/searches
 .wget-hsts
+.wine/
 .Xauthority
 #.xinputrc
 .xpaint/

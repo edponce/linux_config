@@ -5,30 +5,32 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID] [--click CLICK_ID]"
-    echo
-    echo "Moves mouse in the specified direction using preset or relative screen positions." 
-    echo
-    echo "In dual extended screens, a screen number can be provided (w/o relative flag)."
-    echo "Also, left and right mouse clicks can be simulated (all other options are ignored)."
-    echo
-    echo "Screen IDs:"
-    echo " *0 -> current"
-    echo "  1 -> lower-left"
-    echo "  2 -> second"
-    echo
-    echo "Direction IDs:"
-    echo " *0 -> left"
-    echo "  1 -> up"
-    echo "  2 -> right"
-    echo "  3 -> down"
-    echo "  4 -> center (w/o relative flag)"
-    echo
-    echo "Click IDs:"
-    echo " *0 -> left"
-    echo "  1 -> right"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID] [--click CLICK_ID]
+
+Move mouse in the specified direction using preset or relative screen positions.
+
+In dual extended screens, a screen number can be provided (w/o relative flag).
+Also, left and right mouse clicks can be simulated (all other options are ignored).
+
+Screen IDs:
+ *0 -> current
+  1 -> lower-left
+  2 -> second
+
+Direction IDs:
+ *0 -> left
+  1 -> up
+  2 -> right
+  3 -> down
+  4 -> center (relative distance ignored)
+
+Click IDs:
+ *0 -> left
+  1 -> right
+
+_EOF_
 }
 
 # Default options 

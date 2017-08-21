@@ -14,6 +14,8 @@
 #   exit
 
 # ASCII and console codes 
+ascii
+ascii -s "Hello, world!"
 man ascii
 man console_codes
 
@@ -25,9 +27,15 @@ awk 'NR==4' file.txt
 bash -v
 bash +v
 
+# Dialog boxes from shell
+zenity
+dialog
+whiptail
+
 # (GUI) Get detailed system info
 # System profiler and benchmark
 sudo hardinfo
+w # print who is logged in and what is doing
 
 # Install/remove .deb packages
 sudo dpkg -i PACKAGE
@@ -47,6 +55,8 @@ sudo apt install --dry-run PACKAGE # check what will happen
 sudo apt install PACKAGE
 sudo apt remove PACKAGE
 sudo apt remove --purge PACKAGE # sudo apt purge PACKAGE
+# /etc/apt/source.list[.d/]
+sudo apt-key list # list trusted keys, gpg
 
 # HP Linux Imaging and Printing System
 # HPLIP cannot detect a printer, check firewall blocking ports (5353/udp)
@@ -472,4 +482,20 @@ ifdown enp3s0; ifup enp3s0
 # Resolve binaries (even with symbolic links)
 # Reference /usr/bin/xdg-open
 readlink -f $(which open)
+
+# Docker
+sudo docker images
+sudo docker run hello-world
+
+# Wine, Windows on Linux
+# ~/.wine
+wine ~/.wine/drive_c/windows/notepad.exe
+# PlayOnLinux
+# ~/.PlayOnLinux[/wineprefix]
+# Have not installed, winbind and winetricks
+# sh winetricks corefonts
+
+# Run commands with specific scheduling priority
+nice -n -20 echo "hello" # highest priority
+nice -n 19 echo "world" # lowest priority
 
