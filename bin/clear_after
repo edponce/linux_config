@@ -4,11 +4,13 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] \"APPLICATION\""
-    echo
-    echo "Wrapper to invoke an application and clear terminal after its completion."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] "APPLICATION"
+
+Wrapper to invoke an application and clear terminal after its completion.
+
+_EOF_
 }
 
 # Default options

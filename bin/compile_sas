@@ -5,14 +5,16 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--file \"SASFILE\"] [SASOPTIONS]"
-    echo
-    echo "Run SAS script."
-    echo
-    echo "If a SAS file is not provided, current directory is searched for one."
-    echo "All other arguments are passed directly to SAS command line."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--file "SASFILE"] [SASOPTIONS]
+
+Run SAS script.
+
+If a SAS file is not provided, current directory is searched for one.
+All other arguments are passed directly to SAS command line.
+
+_EOF_
 }
 
 # Default options

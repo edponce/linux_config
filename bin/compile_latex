@@ -5,17 +5,19 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--bibtex] [--clean] [--pdfpc] [--workdir \"WORDIR\"] [--file \"TeXFILE\"]"
-    echo
-    echo "Compile a LaTeX file into PDF format."
-    echo
-    echo "If a LaTeX file is not provided, current directory is searched for one."
-    echo "Default working directory is 'build'."
-    echo "To remove working directory after compiling, enable the 'clean' option."
-    echo "To run bibTeX enable the 'bibtex' option."
-    echo "To view as Beamer presentation with pdfpc, enable 'pc' option."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--bibtex] [--clean] [--pdfpc] [--workdir "WORDIR"] [--file "TeXFILE"]
+
+Compile a LaTeX file into PDF format.
+
+If a LaTeX file is not provided, current directory is searched for one.
+Default working directory is 'build'.
+To remove working directory after compiling, enable the 'clean' option.
+To run bibTeX enable the 'bibtex' option.
+To view as Beamer presentation with pdfpc, enable 'pc' option.
+
+_EOF_
 }
 
 # Default options

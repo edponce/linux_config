@@ -499,3 +499,12 @@ wine ~/.wine/drive_c/windows/notepad.exe
 nice -n -20 echo "hello" # highest priority
 nice -n 19 echo "world" # lowest priority
 
+# Video split, ffmpeg
+# starts at ~00:20 for a duration of 00:10
+ffmpeg -y -ss 00:20 -i long_video.avi -vcodec copy -acodec copy -t 00:10 part1.avi
+ffmpeg -y -ss 00:20 -i long_video.avi -codec copy -t 00:10 part1.avi
+# merge videos
+ffmpeg -y -i 'concat:part1.avi|part2.avi' -codec copy merged.avi
+# reduce video size
+ffmpeg -i big_video.avi small_video.mp4
+

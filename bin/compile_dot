@@ -5,13 +5,15 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--tex] [--file=\"DOTFILE\"]"
-    echo
-    echo "Compile a DOT file into PNG or TeX format."
-    echo "If a DOT file is not provided, current directory is search for one."
-    echo "To generate TeX output format, enable 'tex' option."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--tex] [--file="DOTFILE"]
+
+Compile a DOT file into PNG or TeX format.
+If a DOT file is not provided, current directory is search for one.
+To generate TeX output format, enable 'tex' option.
+
+_EOF_
 }
 
 # Default options

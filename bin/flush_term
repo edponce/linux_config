@@ -5,13 +5,15 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--row ROW]"
-    echo
-    echo "Clears terminal window after having the specified empty rows."
-    echo
-    echo "Default is to not leave empty rows."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--row ROW]
+
+Clears terminal window after having the specified empty rows.
+
+Default is to not leave empty rows.
+
+_EOF_
 }
 
 # Default options

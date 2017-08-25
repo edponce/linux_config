@@ -4,21 +4,23 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--wallpaper WALLPAPER_ID]"
-    echo
-    echo "Change wallpaper image."
-    echo
-    echo "Wallpaper IDs:"
-    local wid=0
-    for each in "$@"; do 
-        case $wid in
-            0) echo " *$wid -> $each" ;;
-            *) echo "  $wid -> $each" ;;
-        esac 
-        wid=$((wid + 1))
-    done
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--wallpaper WALLPAPER_ID]
+
+Change wallpaper image.
+
+Wallpaper IDs:
+_EOF_
+local wid=0
+for each in "$@"; do 
+    case $wid in
+        0) echo " *$wid -> $each" ;;
+        *) echo "  $wid -> $each" ;;
+    esac 
+    wid=$((wid + 1))
+done
+echo
 }
 
 # Default options 

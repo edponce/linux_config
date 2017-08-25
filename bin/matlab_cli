@@ -4,14 +4,16 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--jvm] [--run \"COMMAND\"|\"SCRIPT.m\"]"
-    echo
-    echo "Starts MATLAB interpreter without GUI."
-    echo
-    echo "Command is executed during startup and script is executed then exit."
-    echo "Default is disabled Java Virtual Machine."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--jvm] [--run "COMMAND"|"SCRIPT.m"]
+
+Starts MATLAB interpreter without GUI.
+
+Command is executed during startup and script is executed then exit.
+Default is disabled Java Virtual Machine.
+
+_EOF_
 }
 
 # Default options

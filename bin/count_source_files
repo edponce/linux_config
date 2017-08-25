@@ -4,16 +4,18 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--list] [--recursive] [--workdir \"WORKDIR\"] \".EXT1\" [\".EXT2\"] ..."
-    echo
-    echo "Count files that match given extensions."
-    echo
-    echo "Default working directory is current directory."
-    echo "Files are displayed by enabling listing option."
-    echo "Default is to not operate recursively."
-    echo "Hidden/temporary files are ignored."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--list] [--recursive] [--workdir "WORKDIR"] ".EXT1" [".EXT2"] ...
+
+Count files that match given extensions.
+
+Default working directory is current directory.
+Files are displayed by enabling listing option.
+Default is to not operate recursively.
+Hidden/temporary files are ignored.
+
+_EOF_
 }
 
 # Default options

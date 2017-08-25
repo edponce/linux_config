@@ -4,21 +4,23 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--input] [--profile PROFILE_ID]"
-    echo
-    echo "Change sound card configuration."
-    echo
-    echo "Default is to disable input analog stereo."
-    echo "Default is ALSA PCI card with output analog stereo profile."
-    echo
-    echo "Profiles:"
-    echo "  0 -> off"
-    echo " *1 -> analog stereo"
-    echo "  2 -> HDMI stereo"
-    echo "  3 -> HDMI surround"
-    echo "  4 -> HDMI surround 7.1"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--input] [--profile PROFILE_ID]
+
+Change sound card configuration.
+
+Default is to disable input analog stereo.
+Default is ALSA PCI card with output analog stereo profile.
+
+Profiles:
+  0 -> off
+ *1 -> analog stereo
+  2 -> HDMI stereo
+  3 -> HDMI surround
+  4 -> HDMI surround 7.1
+
+_EOF_
 }
 
 # Default options

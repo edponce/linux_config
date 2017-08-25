@@ -4,27 +4,29 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--perf PERF_LEVEL] [--tool LAUNCH_TOOL_ID] --run \"APPLICATION\""
-    echo
-    echo "Runs an application on NVIDIA GPU with power management control."
-    echo "An X11 'Device' configuration file sets NVIDIA PowerMizer options."
-    echo
-    echo "This script may require root privileges to change the performance level"
-    echo "of the X11 NVIDIA configuration file."
-    echo
-    echo "X11 NVIDIA configuration file: $1"
-    echo
-    echo "GPU Performance levels:"
-    echo "  1 -> high"
-    echo "  2 -> medium"
-    echo " *3 -> low"
-    echo
-    echo "GPU launch tools:"
-    echo "  0 -> none"
-    echo " *1 -> primusrun (OpenGL support)"
-    echo "  2 -> optirun"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--perf PERF_LEVEL] [--tool LAUNCH_TOOL_ID] --run "APPLICATION"
+
+Runs an application on NVIDIA GPU with power management control.
+An X11 'Device' configuration file sets NVIDIA PowerMizer options.
+
+This script may require root privileges to change the performance level
+of the X11 NVIDIA configuration file.
+
+X11 NVIDIA configuration file: $1
+
+GPU Performance levels:
+  1 -> high
+  2 -> medium
+ *3 -> low
+
+GPU launch tools:
+  0 -> none
+ *1 -> primusrun (OpenGL support)
+  2 -> optirun
+
+_EOF_
 }
 
 # Default options

@@ -4,16 +4,18 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--click CLICK_ID] --applet \"APPLET\""
-    echo
-    echo "Perform a mouse click to an applet found in desktop panel."
-    echo
-    echo "Mouse click IDs:"
-    echo " *1 - left button"
-    echo "  2 - middle button"
-    echo "  3 - right button"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--click CLICK_ID] --applet "APPLET"
+
+Perform a mouse click to an applet found in desktop panel.
+
+Mouse click IDs:
+ *1 - left button
+  2 - middle button
+  3 - right button
+
+_EOF_
 }
 
 # Default options 

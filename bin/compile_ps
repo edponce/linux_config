@@ -5,13 +5,15 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--file \"PSFILE\"]"
-    echo
-    echo "Compile a PostScript file into PDF format."
-    echo
-    echo "If a PostScript file is not provided, current directory is searched for one."
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--file "PSFILE"]
+
+Compile a PostScript file into PDF format.
+
+If a PostScript file is not provided, current directory is searched for one.
+
+_EOF_
 }
 
 # Default options

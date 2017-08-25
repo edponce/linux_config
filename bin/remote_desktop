@@ -13,29 +13,31 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--master NUC_ID]"
-    echo
-    echo "Connect from Linux machine to Windows 10 machine via Ethernet interface using Remote Desktop Protocol client"
-    echo
-    echo "Prerequisites:"
-    echo "  1. In Windows machine, disable network authentication:"
-    echo "    a. Start -> Settings -> System -> About -> System info -> Advanced system settings -> Remote"
-    echo "    b. Uncheck 'Allow connections only from computers running Remote Desktop with Network Level Authentication (recommended)'"
-    echo "  2. Logout from Windows machine"
-    echo "  3. In Linux machine, install rdesktop (RDP client)"
-    echo "  4. In Linux machine, setup Ethernet network connection:"
-    echo "    a. Click network applet -> Edit Connections... -> Add an Ethernet connection"
-    echo "    b. Give the connection a name"
-    echo "    c. In IPv4 settings, manually set address and netmask"
-    echo 
-    echo "NUC IDs for master node:"
-    echo " *1 -> NUC1"
-    echo "  2 -> NUC2"
-    echo "  3 -> NUC3"
-    echo "  4 -> NUC4"
-    echo "  5 -> NUC5"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--master NUC_ID]
+
+Connect from Linux machine to Windows 10 machine via Ethernet interface using Remote Desktop Protocol client
+
+Prerequisites:
+  1. In Windows machine, disable network authentication:
+    a. Start -> Settings -> System -> About -> System info -> Advanced system settings -> Remote
+    b. Uncheck 'Allow connections only from computers running Remote Desktop with Network Level Authentication (recommended)'
+  2. Logout from Windows machine
+  3. In Linux machine, install rdesktop (RDP client)
+  4. In Linux machine, setup Ethernet network connection:
+    a. Click network applet -> Edit Connections... -> Add an Ethernet connection
+    b. Give the connection a name
+    c. In IPv4 settings, manually set address and netmask
+ 
+NUC IDs for master node:
+ *1 -> NUC1
+  2 -> NUC2
+  3 -> NUC3
+  4 -> NUC4
+  5 -> NUC5
+
+_EOF_
 }
 
 # Default options

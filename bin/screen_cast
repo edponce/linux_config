@@ -5,27 +5,31 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--audio] [--window] [--timer SECONDS] [--vcodec VIDEO_CODEC] [--rate FRAME_RATE] [--screen SCREEN_ID] [--outfile \"OUTFILE\"]"
-    echo
-    echo "Record screen into a video file."
-    echo
-    echo "Default is disabled audio."
-    echo "Default is fullscreen, enabled flag to select specific window."
-    echo "Default timer is 5 seconds prior to recording."
-    echo "Default frame rate is 30 frames/sec."
-    echo "Default outfile is '$HOME/screencast_DATE_TIME.avi'"
-    echo "Supported outfile formats: avi, mp4, mpg, mkv"
-    echo
-    echo "Video codecs:"
-    echo " *libx264 (high)"
-    echo "  huffyuv (normal)"
-    echo "  libxvid (low)"
-    echo
-    echo "Screen IDs:"
-    echo " *0 -> lower-left"
-    echo "  1 -> second"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--audio] [--window] [--timer SECONDS] [--vcodec VIDEO_CODEC] [--rate FRAME_RATE] [--screen SCREEN_ID] [--outfile "OUTFILE"]
+
+Record screen into a video file.
+
+Default is disabled audio.
+Default is fullscreen, enabled flag to select specific window.
+Default timer is 5 seconds prior to recording.
+Default frame rate is 30 frames/sec.
+Default outfile is '$HOME/screencast_DATE_TIME.mp4'
+Supported outfile formats: avi, mp4, mpg, mkv
+Use Ctrl+C to stop recoding.
+
+Video codecs:
+ *libx264 (high)
+  huffyuv (normal)
+  libxvid (low)
+
+Screen IDs:
+  0 -> primary, LVDS
+ *1 -> lower-left
+  2 -> second
+
+_EOF_
 }
 
 # Default options
@@ -35,8 +39,8 @@ timer=5
 vcodec="libx264"
 acodec="pcm_s16le"
 framerate=30
-screen_id=0
-outfile="$HOME/screencast_$(date +%m-%d-%Y_%H-%M).avi"
+screen_id=1
+outfile="$HOME/screencast_$(date +%m-%d-%Y_%H-%M).mp4"
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -89,17 +93,23 @@ if [ "$vcodec" != "libx264" ] && [ "$vcodec" != "huffyuv" ] && [ "$vcodec" != "l
     error_msg "invalid video codec value" 1
 fi
 
+if [ $use_audio -eq 1 ]; then
+    if [ "$acodec" != "pcm_s16le" ]; then
+        error_msg "invalid audio codec value" 1
+    fi
+fi
+
 if [ $framerate -lt 20 ] || [ $framerate -gt 75 ]; then
     error_msg "invalid framerate value" 1
 fi
 
-if [ $screen_id -lt 0 ] || [ $screen_id -gt 1 ]; then
+if [ $screen_id -lt 0 ] || [ $screen_id -gt 2 ]; then
     error_msg "invalid screen value" 1
 fi
 
 # Set video dimensions and offsets
 if [ $use_window -eq 0 ]; then
-    screen_position $((screen_id + 1))
+    screen_position $screen_id
     x_offs=${screen_offs[0]}
     y_offs=${screen_offs[1]}
     x=${screen_dims[0]}
@@ -116,9 +126,9 @@ sleep $timer
 
 # Run
 if [ $use_audio -eq 0 ]; then
-    ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v "$vcodec" -crf 0 -preset:v ultrafast "$outfile"
+    ffmpeg -y -f x11grab -r $framerate -s ${x}x$y -i :0.0+$x_offs,$y_offs -c:v "$vcodec" -crf 0 -preset:v ultrafast "$outfile"
 elif [ $use_audio -eq 1 ]; then
-    ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.$screen_id+$x_offs,$y_offs -c:v "$vcodec" -crf 0 -preset:v ultrafast -c:a "$acodec" -af aresample=async=1:first_pts=0 "$outfile"
+    ffmpeg -y -f alsa -i default -f x11grab -r $framerate -s ${x}x$y -i :0.0+$x_offs,$y_offs -c:v "$vcodec" -crf 0 -preset:v ultrafast -c:a "$acodec" -af aresample=async=1:first_pts=0 "$outfile"
 fi
 
 exit 0

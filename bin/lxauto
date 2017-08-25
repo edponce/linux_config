@@ -4,20 +4,22 @@
 
 usage()
 {
-    echo
-    echo "Usage: $(basename $0) [--help] [--xterm] [--delay DELAY] [--window WINDOW_ID] \"APPLICATION\""
-    echo
-    echo "Run application automatically in an existing terminal session."
-    echo
-    echo "A terminal can be launched if required."
-    echo "The command can be delayed to allow terminal startup."
-    echo "Default delay is 0.5 seconds, allowed range is [0-5]."
-    echo
-    echo "Window IDs:"
-    echo "  0 -> first LXTerminal window given by wmctrl, useful for autostart"
-    echo " *1 -> active window"
-    echo "  # -> specific window"
-    echo
+cat << _EOF_
+
+Usage: $(basename $0) [--help] [--xterm] [--delay DELAY] [--window WINDOW_ID] "APPLICATION"
+
+Run application automatically in an existing terminal session.
+
+A terminal can be launched if required.
+The command can be delayed to allow terminal startup.
+Default delay is 0.5 seconds, allowed range is [0-5].
+
+Window IDs:
+  0 -> first LXTerminal window given by wmctrl, useful for autostart
+ *1 -> active window
+  # -> specific window
+
+_EOF_
 }
 
 # Default
