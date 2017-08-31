@@ -6,7 +6,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--audio] [--window] [--timer SECONDS] [--vcodec VIDEO_CODEC] [--rate FRAME_RATE] [--screen SCREEN_ID] [--outfile "OUTFILE"]
 
 Record screen into a video file.
@@ -28,7 +27,6 @@ Screen IDs:
   0 -> primary, LVDS
  *1 -> lower-left
   2 -> second
-
 _EOF_
 }
 

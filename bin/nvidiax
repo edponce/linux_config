@@ -5,7 +5,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--perf PERF_LEVEL] [--tool LAUNCH_TOOL_ID] --run "APPLICATION"
 
 Runs an application on NVIDIA GPU with power management control.
@@ -25,7 +24,6 @@ GPU launch tools:
   0 -> none
  *1 -> primusrun (OpenGL support)
   2 -> optirun
-
 _EOF_
 }
 

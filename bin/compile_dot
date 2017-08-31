@@ -6,13 +6,11 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--tex] [--file="DOTFILE"]
 
 Compile a DOT file into PNG or TeX format.
 If a DOT file is not provided, current directory is search for one.
 To generate TeX output format, enable 'tex' option.
-
 _EOF_
 }
 

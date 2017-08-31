@@ -5,14 +5,12 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--jvm] [--run "COMMAND"|"SCRIPT.m"]
 
 Starts MATLAB interpreter without GUI.
 
 Command is executed during startup and script is executed then exit.
 Default is disabled Java Virtual Machine.
-
 _EOF_
 }
 

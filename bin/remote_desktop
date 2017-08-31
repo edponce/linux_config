@@ -14,7 +14,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--master NUC_ID]
 
 Connect from Linux machine to Windows 10 machine via Ethernet interface using Remote Desktop Protocol client
@@ -36,7 +35,6 @@ NUC IDs for master node:
   3 -> NUC3
   4 -> NUC4
   5 -> NUC5
-
 _EOF_
 }
 

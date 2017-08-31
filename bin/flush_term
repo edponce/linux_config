@@ -6,13 +6,11 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--row ROW]
 
 Clears terminal window after having the specified empty rows.
 
 Default is to not leave empty rows.
-
 _EOF_
 }
 

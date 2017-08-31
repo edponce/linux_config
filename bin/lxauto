@@ -5,7 +5,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--xterm] [--delay DELAY] [--window WINDOW_ID] "APPLICATION"
 
 Run application automatically in an existing terminal session.
@@ -18,7 +17,6 @@ Window IDs:
   0 -> first LXTerminal window given by wmctrl, useful for autostart
  *1 -> active window
   # -> specific window
-
 _EOF_
 }
 

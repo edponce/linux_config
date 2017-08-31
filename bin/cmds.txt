@@ -94,6 +94,8 @@ sudo parted -l
 sudo fdisk -l
 sudo lsblk -l
 sudo lsblk -lO  # all columns
+sudo lshw -short
+sudo blkid
 df -h
 
 # Firewall

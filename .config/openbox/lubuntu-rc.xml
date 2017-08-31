@@ -506,6 +506,10 @@
         <command>click_applet -c 1 -a "Xpad"</command>
       </action>
     </keybind>
+    <keybind key="W-S-N">
+      <action name="UnmaximizeFull"/>
+      <action name="MoveResizeTo"><x>-0</x><y>0</y><height>100%</height><width>15%</width></action>
+    </keybind>
     <keybind key="W-I">
       <action name="Iconify"/>
     </keybind>
@@ -1236,9 +1240,6 @@
     <application name="xpad">
       <desktop>all</desktop>
       <skip_taskbar>no</skip_taskbar>
-      <size>
-        <width>15%</width>
-      </size>
     </application>
     <!-- LibreOffice apps -->
     <application name="libreoffice">

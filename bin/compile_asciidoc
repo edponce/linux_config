@@ -6,14 +6,12 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--article] [--book] [--docbook] [--file "ADFILE"]
 
 Compile an ASCIIDoc file into PDF format.
 
 If an ASCIIDoc file is not provided, current directory is searched for one.
 Default file type is article.
-
 _EOF_
 }
 

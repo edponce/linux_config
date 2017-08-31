@@ -6,7 +6,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--relative DISTANCE | --screen SCREEN_ID] [--direction DIRECTION_ID] [--click CLICK_ID]
 
 Move mouse in the specified direction using preset or relative screen positions.
@@ -29,7 +28,6 @@ Direction IDs:
 Click IDs:
  *0 -> left
   1 -> right
-
 _EOF_
 }
 

@@ -5,7 +5,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--recursive] [--path "SEARCH_PATH"]
 
 Search given path for dangling symbolic links and prints them.
@@ -18,7 +17,6 @@ _EOF_
 for each in "$@"; do 
     echo "$each"
 done
-echo
 }
 
 # Default options

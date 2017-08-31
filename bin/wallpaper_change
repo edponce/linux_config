@@ -5,7 +5,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--wallpaper WALLPAPER_ID]
 
 Change wallpaper image.
@@ -20,7 +19,6 @@ for each in "$@"; do
     esac 
     wid=$((wid + 1))
 done
-echo
 }
 
 # Default options 

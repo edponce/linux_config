@@ -3,6 +3,7 @@ alias down='cd ~/Downloads'
 alias games='cd ~/Documents/games'
 
 # Work directories 
+alias utk='cd ~/Documents/utk'
 alias resume='cd ~/Documents/personal/resume'
 alias dissertation='cd ~/Documents/utk/dissertation/thesis_template'
 alias cosc530='cd ~/Documents/utk/fa17/cosc530'
@@ -17,8 +18,10 @@ alias rdf='cd ~/Documents/utk/rdf_analysis'
 alias caaqa='cd ~/Documents/caaqa/6ed'
 alias sacnas='cd ~/Documents/utk/sacnas_chapter'
 alias nuc='cd ~/Documents/utk/sp16/COSC\ 575\ HPC\ ModelVisual'
+alias hspwrap='cd ~/Documents/utk/hspwrap/hspwrap'
 
 # Commands/utilities
+alias mykeybinds='evince ~/bin/keybinds/openbox_keybinds.pdf &'
 alias clear='tput clear'
 alias hs='history 15'
 alias hss='history 30'

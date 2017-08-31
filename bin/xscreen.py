@@ -13,16 +13,26 @@ def parse_args():
     '''
     parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-l', '--layout_id', type=int, default=1,
-                        dest='layout_id', help='layout identifier, default=1')
+                        dest='layout_id', help='layout identifier\n'
+                                               '  0 -> h2v1 (3 windows)\n'
+                                               ' *1 -> v1h2 (3 windows)\n'
+                                               '  2 -> v2 (2 windows)\n'
+                                               '  3 -> v3 (3 windows)\n'
+                                               '  4 -> h2v2 (4 windows)\n'
+                                               '  5 -> h2 (2 windows)\n'
+                                               '  6 -> h2v3 (6 windows)\n'
+                                               '  7 -> h3 (3 windows)\n'
+                                               '  8 -> h4v4 (8 windows)\n'
+                                               '  9 -> h1v2 (3 windows)')
     parser.add_argument('-s', '--screen_id', type=int, default=0,
                         dest='screen_id', help='screen/monitor identifier\n'
-                                               '*0 -> screen with active window\n'
-                                               ' 1 -> lower-left screen\n'
-                                               ' 2 -> second screen')
+                                               ' *0 -> screen with active window\n'
+                                               '  1 -> lower-left screen\n'
+                                               '  2 -> second screen')
     parser.add_argument('-w', '--win_select', type=int, default=0,
                         dest='win_select', help='window select identifier\n'
-                                                '*0 -> visible windows in active screen/monitor\n'
-                                                ' 1 -> visible windows in active desktop')
+                                                ' *0 -> visible windows in active screen/monitor\n'
+                                                '  1 -> visible windows in active desktop')
     args = parser.parse_args()
 
     # Validate

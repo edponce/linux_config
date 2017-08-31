@@ -6,7 +6,6 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] [--bibtex] [--clean] [--pdfpc] [--workdir "WORDIR"] [--file "TeXFILE"]
 
 Compile a LaTeX file into PDF format.
@@ -16,7 +15,6 @@ Default working directory is 'build'.
 To remove working directory after compiling, enable the 'clean' option.
 To run bibTeX enable the 'bibtex' option.
 To view as Beamer presentation with pdfpc, enable 'pc' option.
-
 _EOF_
 }
 

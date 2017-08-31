@@ -5,11 +5,9 @@
 usage()
 {
 cat << _EOF_
-
 Usage: $(basename $0) [--help] "APPLICATION"
 
 Wrapper to invoke an application and clear terminal after its completion.
-
 _EOF_
 }
 
