@@ -12,11 +12,11 @@ def parse_args():
     Parse command line arguments
     '''
     parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X', formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-l', '--layout_id', type=int, default=1,
+    parser.add_argument('-l', '--layout_id', type=int, default=2,
                         dest='layout_id', help='layout identifier\n'
                                                '  0 -> h2v1 (3 windows)\n'
-                                               ' *1 -> v1h2 (3 windows)\n'
-                                               '  2 -> v2 (2 windows)\n'
+                                               '  1 -> v1h2 (3 windows)\n'
+                                               ' *2 -> v2 (2 windows)\n'
                                                '  3 -> v3 (3 windows)\n'
                                                '  4 -> h2v2 (4 windows)\n'
                                                '  5 -> h2 (2 windows)\n'
@@ -276,13 +276,16 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
         else:
             win_dict[win_name] = [win_id]
 
-    # LIFO priority queue for arrangement of windows
-    if win_id_active in win_dict.values():
+    # FIFO priority queue for arrangement of windows
+    win_priority = []
+    if [win_id_active] in win_dict.values():
         win_name_active = list(win_dict.keys())[list(win_dict.values()).index([win_id_active])]
-        win_priority = ['libreoffice', 'gedit', 'evince', win_name_active, 'lxterminal']
-    else:
-        #win_priority = ['Navigator', 'libreoffice', 'gedit', 'evince', 'lxterminal']
-        win_priority = ['libreoffice', 'gedit', 'evince', 'lxterminal']
+        win_priority.insert(0, win_name_active)
+    win_priority.insert(0, 'lxterminal')
+    win_priority.insert(0, 'evince')
+    win_priority.insert(0, 'gedit')
+    win_priority.insert(0, 'libreoffice')
+    win_priority.insert(0, 'Navigator')
 
     # Process all windows
     max_wins = len(win_dims)

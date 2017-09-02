@@ -544,6 +544,12 @@
         <command>lxtask</command>
       </action>
     </keybind>
+    <!-- Open keybindings file -->
+    <keybind key="C-A-H">
+      <action name="Execute">
+        <command>evince ~/bin/keybinds/openbox_keybinds.pdf</command>
+      </action>
+    </keybind>
     <!-- Launch terminal -->
     <keybind key="C-A-T">
       <action name="Execute">

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# This script is executed during LightDM X11 display at startup.
+# Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
+
+# Set display to main monitor only
+which xrandr > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    if [ $(xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }') -gt 1 ]; then
+        xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 --off --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 --off 
+    fi
+fi
+
+# Enable horizontal two finger scroll for Synaptic touchpad
+# Creates error in MATLAB, so disable it
+#which synclient > /dev/null 2>&1
+#if [ $? -eq 0 ]; then
+#    if [ $(synclient -l | awk -F'=' '/HorizTwoFingerScroll/ { print $2 }') -eq 0 ]; then
+#        synclient HorizTwoFingerScroll=1
+#    fi
+#fi
+
+# Enable numlock
+which numlockx > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    if [[ $(numlockx status) =~ off$ ]]; then
+        numlockx on
+    fi
+fi
+

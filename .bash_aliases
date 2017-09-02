@@ -21,12 +21,11 @@ alias nuc='cd ~/Documents/utk/sp16/COSC\ 575\ HPC\ ModelVisual'
 alias hspwrap='cd ~/Documents/utk/hspwrap/hspwrap'
 
 # Commands/utilities
-alias mykeybinds='evince ~/bin/keybinds/openbox_keybinds.pdf &'
 alias clear='tput clear'
 alias hs='history 15'
 alias hss='history 30'
 alias hsss='history 50'
-alias dropbox_start='dbus-launch dropbox start'
+alias dropbox_start='dbus-launch dropbox start; sleep 3; [ -f ~/.config/autostart/dropbox.desktop ] && rm ~/.config/autostart/dropbox.desktop'
 alias iotop='sudo iotop'
 alias ntop='ntop -u ntop -P /var/lib/ntop -a /var/log/ntop/access.log -i wlp2s0 -p /etc/ntop/protocol.list -O /var/log/ntop'
 alias powertop='sudo powertop'
@@ -44,7 +43,6 @@ alias reboot='sudo systemctl reboot'
 alias suspend='sudo systemctl suspend'
 alias hibernate='sudo systemctl hibernate'
 
-#alias battery='upower -i `upower -e | grep battery` | grep -E "state|percentage"'
 alias battery='acpi -b -i'
 
 # Computers

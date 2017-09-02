@@ -15,7 +15,7 @@ error_msg()
 # Print warning message, exits if error code provided
 # Inputs: "warning message" [exit code]
 # Outputs: N/A
-# Usage: warn_msg "value out of range"
+# Usage: warn_msg "value out of range" 1
 warn_msg()
 {
     local errcolor="\033[01;31m" # red

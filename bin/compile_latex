@@ -94,8 +94,8 @@ $pdflatex_cmd
 if [ $bibtex -ge 1 ]; then
     $bibtex_cmd
     $pdflatex_cmd
-    $pdflatex_cmd
 fi
+$pdflatex_cmd
 
 # View
 if [ $clean -eq 0 ]; then
