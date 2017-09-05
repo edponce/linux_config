@@ -24,9 +24,9 @@ Video codecs:
   libxvid (low)
 
 Screen IDs:
-  0 -> primary, LVDS
- *1 -> lower-left
-  2 -> second
+  0 -> primary (LVDS, DP, VGA, HDMI)
+ *1 -> lower-left (LVDS, DP, VGA, HDMI)
+  2 -> second (DP, VGA, HDMI)
 _EOF_
 }
 

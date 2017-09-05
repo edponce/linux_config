@@ -10,13 +10,12 @@ Usage: $(basename $0) [--help] [--mirror] [--protocol PROTOCOL] [--direction DIR
     
 Change monitor configuration.
     
-For non-LVDS protocol, default is extended screen.
-Direction ID is ignored if mirror option is set.
+For secondary monitor protocol, default is extended screen.
+Direction ID is not used for primary protocol or if mirror option is set.
     
 Protocols:
- *0 -> LVDS
-  1 -> VGA
-  2 -> HDMI
+ *0 -> Primary (LVDS, DP, VGA, HDMI)
+  1 -> Secondary (DP, VGA, HDMI)
     
 Direction IDs for extended mode:
  *0 -> left
@@ -30,9 +29,6 @@ _EOF_
 mirror=0
 mon_proto=0
 direction_id=0
-vga="--off"
-hdmi="--off" 
-win_restore=0
 
 # Get command line options 
 while [ "$1" ]; do 
@@ -61,7 +57,7 @@ while [ "$1" ]; do
 done
 
 # Validate        
-if [ $mon_proto -lt 0 ] && [ $mon_proto -gt 2 ]; then
+if [ $mon_proto -lt 0 ] || [ $mon_proto -gt 1 ]; then
     error_msg "invalid protocol value" 1
 fi
 
@@ -69,48 +65,50 @@ if [ $direction_id -lt 0 ] || [ $direction_id -gt 3 ]; then
     error_msg "invalid direction value" 1
 fi
 
-# Select monitor relative position
-if [ $mirror -eq 0 ]; then
-    # Extended mode
-    case $direction_id in
-        0) rel_pos="--left-of LVDS1" ;;
-        1) rel_pos="--above LVDS1" ;; 
-        2) rel_pos="--right-of LVDS1" ;; 
-        3) rel_pos="--below LVDS1" ;; 
-    esac
-elif [ $mirror -eq 1 ]; then
-    # Mirror mode
-    rel_pos="--pos 0x0"
+# Get connected monitors
+connected_monitors 2
+primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"
+secondary_opts=
+if [ ${#monitors_select[@]} -gt 1 ]; then
+    secondary_opts="--output ${monitors_select[1]} --off"
+else
+    if [ $mon_proto -eq 1 ]; then
+        error_msg "Secondary monitor was not detected" 1
+    fi
 fi
 
 # Select monitor protocol
-mon_query="$(xrandr)"
 case $mon_proto in
-    0)
-        if [ $(echo "$mon_query" | grep -c '\bconnected\b') -gt 1 ]; then
-            # Restore windows into default screen
-            echo 
-            #window_restore
-        fi
+    0) # Restore windows in primary monitor 
+        #window_restore
         ;;
-    1)
-        if [ $(echo "$mon_query" | grep -c 'VGA1 connected\b') -eq 1 ]; then
-            vga="--auto $rel_pos --rotate normal"
-        else
-            error_msg "VGA connection was not detected" 1
+    1) # Configure secondary monitor
+        # Select monitor relative position
+        if [ $mirror -eq 0 ]; then
+            # Extended mode
+            case $direction_id in
+                0) rel_pos="--left-of ${monitors_select[0]}" ;;
+                1) rel_pos="--above ${monitors_select[0]}" ;; 
+                2) rel_pos="--right-of ${monitors_select[0]}" ;; 
+                3) rel_pos="--below ${monitors_select[0]}" ;; 
+            esac
+        elif [ $mirror -eq 1 ]; then
+            # Mirror mode
+            rel_pos="--pos 0x0"
         fi
-        ;;
-    2)
-        if [ $(echo "$mon_query" | grep -c 'HDMI1 connected\b') -eq 1 ]; then
-            hdmi="--auto $rel_pos --rotate normal"
-        else
-            error_msg "HDMI connection was not detected" 1
-        fi
+        secondary_opts="--output ${monitors_select[1]} --auto $rel_pos --rotate normal"
         ;;
 esac
 
+# Get disconnected monitors
+connected_monitors 3
+disconnect_opts=
+for each in "${monitors_select[@]}"; do
+    disconnect_opts+="--output $each --off "
+done
+
 # Run
-xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 $hdmi --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 $vga
+xrandr $primary_opts $secondary_opts $disconnect_opts
 
 # Move mouse to center of screen
 case $direction_id in

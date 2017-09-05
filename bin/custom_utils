@@ -1,7 +1,56 @@
 #!/bin/bash
 
+# Get list of primary and others [dis]connected monitors
+#  *0 -> primary
+#   1 -> others connected 
+#   2 -> all connected (primary, others)
+#   3 -> all disconnected
+#   4 -> all connected and disconnected (primary, others)
+# Inputs: [monitor ID]
+# Outputs: monitors_select
+# Usage: connected_monitors 0
+connected_monitors()
+{
+    local mid=0
+    local primary_monitor
+    local other_monitors=()
+    local all_monitors=()
+    monitors_select=()
+
+    [ $# -ge 1 ] && mid=$1
+
+    # Get primary monitor
+    primary_monitor="$(xrandr | grep '\bprimary\b' | awk '{ print $1 }')"
+    if [ ! "$primary_monitor" ]; then
+        primary_monitor="$(xrandr | grep '\bconnected\b' | head -n 1 | awk '{ print $1 }')"
+    fi
+
+    case $mid in
+        0) # Primary monitor
+            monitors_select=("$primary_monitor")
+            ;;
+        1) # Others connected monitors
+            all_monitors=($(xrandr | grep '\bconnected\b' | awk '{ print $1 }'))
+            monitors_select=($(comm -23 <(printf '%s\n' "${all_monitors[@]}" | LC_ALL=C sort) <(printf '%s\n' "$primary_monitor")))
+            ;;
+        2) # All connected monitors
+            all_monitors=($(xrandr | grep '\bconnected\b' | awk '{ print $1 }'))
+            other_monitors=($(comm -23 <(printf '%s\n' "${all_monitors[@]}" | LC_ALL=C sort) <(printf '%s\n' "$primary_monitor")))
+            monitors_select=("$primary_monitor" "${other_monitors[@]}")
+            ;;
+        3) # All disconnected monitors
+            monitors_select=($(xrandr | grep '\bdisconnected\b' | awk '{ print $1 }'))
+            ;;
+        4) # All connected and disconnected
+            all_monitors=($(xrandr | grep 'connected\b' | awk '{ print $1 }'))
+            other_monitors=($(comm -23 <(printf '%s\n' "${all_monitors[@]}" | LC_ALL=C sort) <(printf '%s\n' "$primary_monitor")))
+            monitors_select=("$primary_monitor" "${other_monitors[@]}")
+            ;;
+    esac
+}
+
 # Get dimensions and offsets of selected screen
-#   0 -> primary, LVDS 
+#   0 -> primary
 #  *1 -> lower-left
 #   2 -> second screen
 # Inputs: [screen ID]
@@ -18,12 +67,12 @@ screen_position()
     [ $# -ge 1 ] && sid=$1
 
     case $sid in
-        0) # Primary screen, LVDS
+        0) # Primary screen
             screen_regex="primary\W\d+x\d+((\+|-)\d+){2}\W" ;; 
         1) # Lower-left screen
             screen_regex="\W\d+x\d+((\+|-)0){2}\W" ;;
         2) # Second screen
-            [ $(xrandr | grep -c '\bconnected\b') -ge 2 ] || return 0
+            [ $(xrandr | grep -c '\bconnected\b') -eq 2 ] || return 0
             screen_regex="\W\d+x\d+(((\+|-)[1-9][0-9]*){2}|(\+|-)0(\+|-)[1-9][0-9]*|(\+|-)[1-9][0-9]*(\+|-)0)\W" ;;
     esac
 
@@ -63,8 +112,14 @@ window_position()
 #{
 #    return
 #
-#    local w_list x_offs y_offs move
-#    local w_id=() w_desk=() w_offs=() w_dims=()
+#    local w_list
+#    local x_offs
+#    local y_offs
+#    local move
+#    local w_id=()
+#    local w_desk=()
+#    local w_offs=()
+#    local w_dims=()
 #
 #    # Get details of each visible window
 #    readarray -t w_list <<< "$(wmctrl -l)"
@@ -107,40 +162,43 @@ window_position()
 # Inputs: N/A
 # Outputs: "cursor_row cursor_col"
 # Usage: get_cursor_pos 
-get_cursor_pos()
-{
-    local tty_state cursor_pos cursor_row cursor_col
-
-    # Redirect tty to current shell
-    exec < /dev/tty
-
-    # Setting/unsetting raw mode may not put back all the settings that were previously in effect.
-    # Need to save the terminal settings and then restore it.
-    tty_state=$(stty -g)
-
-    # Set terminal to raw mode, disable 'echo back', set 0 chars minimum for a completed read
-    stty raw -echo min 0
-
-    # Send cursor position query command to tty
-    echo -en "\033[6n" > /dev/tty
-    # User string #7
-    #tput u7 > /dev/tty # when TERM=xterm (and relatives)
-
-    # Get cursor position from tty
-    IFS=';' read -r -d R -a cursor_pos
-
-    # Restore terminal settings
-    stty "$tty_state"
-
-    # Get cursor row and column, change from one-based counting to zero-based.
-    # Works with: tput cup $cursor_row $cursor_col
-    #cursor_row=$((${cursor_pos[0]:2} - 1)) # strip off the ESC-[
-    #cursor_col=$((${cursor_pos[1]} - 1))
-
-    # Get cursor row and column
-    cursor_row=$(echo "${cursor_pos[0]}" | sed 's/.*\[//g') # strip off the ESC-[
-    cursor_col=${cursor_pos[1]}
-
-    echo "$cursor_row $cursor_col"
-}
+#get_cursor_pos()
+#{
+#    local tty_state
+#    local cursor_pos
+#    local cursor_row
+#    local cursor_col
+#
+#    # Redirect tty to current shell
+#    exec < /dev/tty
+#
+#    # Setting/unsetting raw mode may not put back all the settings that were previously in effect.
+#    # Need to save the terminal settings and then restore it.
+#    tty_state=$(stty -g)
+#
+#    # Set terminal to raw mode, disable 'echo back', set 0 chars minimum for a completed read
+#    stty raw -echo min 0
+#
+#    # Send cursor position query command to tty
+#    echo -en "\033[6n" > /dev/tty
+#    # User string #7
+#    #tput u7 > /dev/tty # when TERM=xterm (and relatives)
+#
+#    # Get cursor position from tty
+#    IFS=';' read -r -d R -a cursor_pos
+#
+#    # Restore terminal settings
+#    stty "$tty_state"
+#
+#    # Get cursor row and column, change from one-based counting to zero-based.
+#    # Works with: tput cup $cursor_row $cursor_col
+#    #cursor_row=$((${cursor_pos[0]:2} - 1)) # strip off the ESC-[
+#    #cursor_col=$((${cursor_pos[1]} - 1))
+#
+#    # Get cursor row and column
+#    cursor_row=$(echo "${cursor_pos[0]}" | sed 's/.*\[//g') # strip off the ESC-[
+#    cursor_col=${cursor_pos[1]}
+#
+#    echo "$cursor_row $cursor_col"
+#}
 

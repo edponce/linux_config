@@ -446,27 +446,22 @@
     </keybind>
     <keybind key="C-W-2">
       <action name="Execute">
-        <command>monitor_change -p 1 -d 2</command>
+        <command>monitor_change -p 1 -d 1</command>
       </action>
     </keybind>
     <keybind key="C-W-3">
       <action name="Execute">
-        <command>monitor_change -p 1 -m</command>
+        <command>monitor_change -p 1 -d 2</command>
       </action>
     </keybind>
     <keybind key="C-W-4">
       <action name="Execute">
-        <command>monitor_change -p 2 -d 0</command>
+        <command>monitor_change -p 1 -d 3</command>
       </action>
     </keybind>
     <keybind key="C-W-5">
       <action name="Execute">
-        <command>monitor_change -p 2 -d 2</command>
-      </action>
-    </keybind>
-    <keybind key="C-W-6">
-      <action name="Execute">
-        <command>monitor_change -p 2 -m</command>
+        <command>monitor_change -p 1 -m</command>
       </action>
     </keybind>
     <keybind key="C-W-H">        # SendToPrevMonitor

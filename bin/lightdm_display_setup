@@ -2,33 +2,25 @@
 
 # This script is executed during LightDM X11 display at startup.
 # Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
-# If an error occurs here, LightDM X11 may fail to start. 
 
 # Set display to main monitor only
-which xrandr > /dev/null 2>&1
-if [ $? -eq 0 ]; then
+if [ $(command -v xrandr) ]; then
     if [ $(xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }') -gt 1 ]; then
-        xrandr --output VIRTUAL1 --off --output DP1 --off --output HDMI1 --off --output LVDS1 --primary --auto --pos 0x0 --rotate normal --output VGA1 --off 
+        . /home/edponce/bin/custom_utils
+        connected_monitors 4
+        primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"
+        secondary_opts=
+        for each in "${monitors_select[@]:1}"; do
+            secondary_opts+="--output $each --off "
+        done
+        xrandr $primary_opts $secondary_opts
     fi
 fi
 
 # For laptops, enable horizontal two finger scroll (Synaptic touchpad)
-# NOTE: Creates error in MATLAB
-laptop-detect
-if [ $? -eq 0 ]; then
-    which synclient > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        if [ $(synclient -l | awk -F'=' '/HorizTwoFingerScroll/ { print $2 }') -eq 0 ]; then
-            synclient HorizTwoFingerScroll=1
-        fi
-    fi
-fi
+# Creates error in MATLAB, so disable it
+[ $(laptop-detect) ] && [ $(command -v synclient) ] && synclient HorizTwoFingerScroll=1
 
 # Enable numlock
-which numlockx > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    if [[ $(numlockx status) =~ off$ ]]; then
-        numlockx on
-    fi
-fi
+[ $(command -v numlockx) ] && numlockx on
 
