@@ -1,1 +1,0 @@
-.bash_config/.bashrc
