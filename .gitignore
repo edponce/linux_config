@@ -46,7 +46,7 @@
 .config/lxtask.conf
 .config/matplotlib/
 .config/menus/
-.config/mimeapps.list/
+.config/mimeapps.list
 .config/openbox/menu.xml
 .config/pavucontrol.ini
 .config/pcmanfm/
@@ -60,9 +60,9 @@
 .config/Trolltech.conf
 .config/Unknown Organization/
 .config/update-notifier/
-.config/user-dirs.*/
+.config/user-dirs.*
 .config/VirtualBox/
-.config/vlc/
+.config/vlc
 .config/wireshark/
 .config/xfburn/
 .config/xfce4/
@@ -72,7 +72,7 @@
 .cups/
 .dbus/
 Desktop/
-#.dircolors
+.dircolors
 .dmrc
 Documents/
 Downloads/
