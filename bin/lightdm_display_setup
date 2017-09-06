@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# This script is executed during LightDM X11 display at startup.
+# This script is executed during LightDM X11 display at startup (before user login).
 # Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
 
 # Set display to main monitor only
 if [ $(command -v xrandr) ]; then
     if [ $(xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }') -gt 1 ]; then
+        # Need to specify full path since we have not login yet
         . /home/edponce/bin/custom_utils
         connected_monitors 4
         primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"

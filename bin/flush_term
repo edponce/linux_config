@@ -52,7 +52,7 @@ curr_pos=($(get_cursor_pos))
 
 # Run
 if [ $((max_rows - ${curr_pos[0]})) -le $empty_rows ]; then
-    clear
+    tput clear
 fi
 
 exit 0
