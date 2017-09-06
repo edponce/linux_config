@@ -1,6 +1,6 @@
 *.swp
 .adobe/
-#.aspell.conf
+.aspell.conf
 .aspell.en.prepl
 .aspell.en.pws
 .aspell.es.prepl
