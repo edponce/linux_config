@@ -1,8 +1,0 @@
-# This is Git's per-user configuration file.
-[user]
-# Please adapt and uncomment the following lines:
-	name = edponce
-	email = edponce2010@gmail.com
-
-[push]
-	default = nothing
