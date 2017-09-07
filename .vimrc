@@ -25,18 +25,13 @@ syntax on
 " Make Vim jump to the last position when reopening a file
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" Enable filetype detection
-" Load ftplugin.vim and indent.vim for detected filetypes
-"filetype plugin indent on
-"filetype detect
-
 " Change color of specific groups
 highlight Comment ctermfg=darkcyan guifg=darkcyan
 highlight Special ctermfg=magenta guifg=magenta
 highlight ExtraWhitespace ctermbg=red guibg=red
 
 " Show trailing whitespace and spaces before a tab
-match ExtraWhitespace /\s\+$\| \+\ze\t/
+match ExtraWhitespace /\s\+$\|^ \+\ze\t/
 
 set showcmd			" Show (partial) command in status line.
 set showmatch		" Show matching brackets.
@@ -53,8 +48,6 @@ set softtabstop=4	" Set number of columns for a TAB
 set shiftwidth=4	" Set width of indents (<< and >>)
 set noexpandtab		" Do not expand TABs to spaces, still considered '\t'
 set hlsearch		" Enable highlighting during searches
-set statusline+=%f	" Show filename in status line
-set laststatus=2	" Allow filename to show in status line
 
 " Simpler symbol for commands
 nnoremap ; :
