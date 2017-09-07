@@ -13,6 +13,9 @@
 # Resume normal boot
 #   exit
 
+# C code indentation
+man indent
+
 # ASCII and console codes 
 ascii
 ascii -s "Hello, world!"
