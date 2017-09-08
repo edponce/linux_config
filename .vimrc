@@ -1,5 +1,3 @@
-syntax on
-
 " Set color scheme from /usr/share/vim/vim74/colors, ~/.vim/colors
 "colorscheme blue
 "colorscheme darkblue
@@ -21,28 +19,37 @@ colorscheme elflord
 "colorscheme zellner
 "colorscheme dracula
 
+" Enable syntax highlighting
+syntax on
+
+" Make Vim jump to the last position when reopening a file
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
 " Change color of specific groups
-hi Comment ctermfg=darkcyan guifg='darkcyan'
-hi Special ctermfg=magenta guifg='magenta'
+highlight Comment ctermfg=darkcyan guifg=darkcyan
+highlight Special ctermfg=magenta guifg=magenta
+highlight ExtraWhitespace ctermbg=red guibg=red
 
-" Enable modline, vim options at begin/end of files
-set modeline
-"set modelines=5
+" Show trailing whitespace and spaces before a tab
+match ExtraWhitespace /\s\+$\|^ \+\ze\t/
 
-" Set width of TABs, still considered a \t
-" vim will interpret TABs to have this width.
-set tabstop=4
+set showcmd			" Show (partial) command in status line.
+set showmatch		" Show matching brackets.
+set ignorecase		" Do case insensitive matching
+set smartcase		" Do smart case matching
+set incsearch		" Incremental search
+set autowrite		" Automatically save before commands like :next and :make
+set mouse=a			" Enable mouse usage (all modes)
+set ruler			" Show current line/column in status line
+set modeline		" Enable scan for Vim options at end of buffers
+set modelines=5		" Number of mode lines to scan
+set tabstop=4		" Vim will interpret TABs to have this width.
+set softtabstop=4	" Set number of columns for a TAB
+set shiftwidth=4	" Set width of indents (<< and >>)
+set noexpandtab		" Do not expand TABs to spaces, still considered '\t'
+set hlsearch		" Enable highlighting during searches
 
-" Set width of indents
-set shiftwidth=4
-
-" Set number of columns for a TAB
-set softtabstop=4
-
-" Expand TABs to spaces
-set expandtab
-
-" Simpler symbol for commands 
+" Simpler symbol for commands
 nnoremap ; :
 
 " Prevent stupid window from popping up
@@ -55,7 +62,6 @@ nnoremap <silent> <F4> :!clear<CR><CR>
 nnoremap <silent> <F5> :%s//gc<Left><Left><Left>
 
 " Toggle search highlight
-set hlsearch
 nnoremap <silent> <F6> :nohlsearch<CR>
 
 " Enable spell checking

@@ -1,0 +1,27 @@
+This a set of scripts and configuration files used for Linux/GNU systems to
+provide ease-of-use for common tasks, such as:
+  * manage windows/monitors (e.g., switching, tiling)
+  * process/generate markup files (e.g., TeX, ASCIIDoc, dot)
+  * run programming scripts (e.g., MATLAB, SAS)
+  * NVIDIA graphics power management (for Optimus-enable laptops)
+  * screen/window recording
+  * keyboard bindings
+  * and others
+
+These were created for LXDE environment to help for office work and software development.
+The collection of scripts found in the bin/ folder are written in bash, Python3, and Perl5.
+Shell scripts follow a similar structure but are not currently POSIX compliant (eventually).
+The .config/ folder has configuration files for Openbox (window manager) and LXTerminal.
+The Openbox configuration uses custom keybindings to invoke the collection of scripts.
+A manual for the keybinds is included in the bin/keybinds/ folder.
+GNU screen, tmux, and vim configurations are also provided.
+
+Some scripts and configuration files require software dependencies to be met:
+  * xdotool, wmctrl, xwininfo, xprop, xrandr
+  * pcmanfm
+  * pacmd
+  * ffmpeg
+  * rdesktop
+  * NVIDIA drivers, bumblebee, optirun, primusrun
+  * pdflatex, bibtex, dot, dot2tex, asciidoc, a2x, ps2eps, epstopdf
+  * matlab, sas
