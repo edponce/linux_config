@@ -16,7 +16,7 @@
 # C code indentation
 man indent
 
-# ASCII and console codes 
+# ASCII and console codes
 ascii
 ascii -s "Hello, world!"
 man ascii
@@ -53,7 +53,7 @@ sudo apt autoremove # remove orphan packages
 sudo apt clean
 sudo apt auto-clean
 sudo apt-mark hold PACKAGE # hold package to prevent upgrades
-sudo apt-mark unhold PACKAGE # unhold package a hold package 
+sudo apt-mark unhold PACKAGE # unhold package a hold package
 sudo apt install --dry-run PACKAGE # check what will happen
 sudo apt install PACKAGE
 sudo apt remove PACKAGE
@@ -75,7 +75,7 @@ hp-systray -x
 hp-scan
 
 # Enable horizontal scroll for Synaptics touchpad
-synclient -l 
+synclient -l
 synclient HorizTwoFingerScroll=1
 
 # Play VLC without GUI
@@ -104,8 +104,8 @@ df -h
 # Firewall
 sudo ufw reset
 sudo ufw status
-sudo ufw app list 
-sudo ufw app info CUPS 
+sudo ufw app list
+sudo ufw app info CUPS
 sudo ufw allow 22/tcp        # 53/tcp, 80/tcp, 443/tcp
 sudo ufw deny 1:21/tcp       # 1:21/udp
 sudo ufw deny 23:52/tcp      # 23:52/udp
@@ -149,7 +149,7 @@ tlmgr install PACKAGE
 openbox --reconfigure
 
 # Change wallpaper of login screen
-sudo vi /etc/lightdm/lightdm-gtk-greeter.conf.d/30_lubuntu.conf 
+sudo vi /etc/lightdm/lightdm-gtk-greeter.conf.d/30_lubuntu.conf
 
 # Change wallpaper using Desktop preferences
 # In .config/pcmanfm/lubuntu/desktop-items-0.conf
@@ -184,7 +184,7 @@ sudo ntop -u ntop # network, http://localhost:3000, admin (e8l!)
 # Convert/transform/resize image
 # Use larger dimension, keep aspect ratio
 convert -resize 1920x1200 orig.png dest.png
-# Convert to specified dimensions, distorts 
+# Convert to specified dimensions, distorts
 convert -resize 100x200! orig.png dest.png
 # Chop a piece of the image
 convert -chop 50x50+100+50 orig.png dest.png  # offset 100-x, 50-y
@@ -197,7 +197,7 @@ tred
 asciidoc -a toc template.asciidoc
 
 # Compile ASCIIDoc to DocBook, then to PDF (default)
-asciidoc -b docbook template.txt 
+asciidoc -b docbook template.txt
 dblatex template.xml -T simple
 
 # Format a partition
@@ -222,7 +222,7 @@ sudo mount -o loop ISO/FILE.iso /media/edponce/mymount
 
 # Change drive label (ext#)
 sudo e2label /dev/sdc1    # print current
-sudo e2label /dev/sdc1 NEW_LABEL   # set new label 
+sudo e2label /dev/sdc1 NEW_LABEL   # set new label
 sudo fatlabel /dev/sdc1 NEW_LABEL
 sudo ntfslabel /dev/sdc1 NEW_LABEL
 
@@ -252,7 +252,7 @@ cat /etc/services
 sudo service SERVICE start
 sudo service SERVICE stop
 
-# For upstart scripts, remove/restore services 
+# For upstart scripts, remove/restore services
 # upstart, deprecated since 15.04, but still used by some default apps
 # /etc/init
 sudo update-rc.d -f bluetooth remove
@@ -261,7 +261,7 @@ sudo update-rc.d -f bluetooth defaults
 sudo echo 'manual' > /etc/init/bluetooth.override
 
 # For systemd, disable/enable services
-# /etc/init.d 
+# /etc/init.d
 # /lib/systemd/system
 # /usr/local/lib/systemd/system
 sudo systemctl disable ModemManager.service
@@ -284,7 +284,7 @@ webfsd
 systemd-analyze blame
 systemd-analyze critical-chain
 systemd-analyze plot > boottimes.svg
-systemd-analyze plot > boottimes.html 
+systemd-analyze plot > boottimes.html
 systemd-analyze dot | dot -Tsvg > bootdeps.svg
 
 # Shared libraries
@@ -348,7 +348,7 @@ setxkbmap -model pc105 -layout us -variant intl
 
 # Check memory usage for process
 cat /proc/<PROC_ID>/smaps
-valgrind --tool=massif --pages-as-heap=yes --massif-out-file=massif.out a.out 
+valgrind --tool=massif --pages-as-heap=yes --massif-out-file=massif.out a.out
 grep mem_heap_B massif.out | awk -F'=' '{ print $2 }' | sort -g | tail -n 1
 
 # Control external monitors
@@ -439,8 +439,8 @@ lp -n 1 -d Desktjet_3510 file.txt
 
 # Update locale, language (/etc/default/locale)
 locale # show current settings
-locale -a # show available locales 
-locale -a -v # show available locales 
+locale -a # show available locales
+locale -a -v # show available locales
 update-locale LANG=en_US.UTF-8
 update-locale LANG=es_PR.UTF-8
 
@@ -461,10 +461,10 @@ fakeroot alien --to-deb archive.rpm # .rpm to .deb
 rpm2cpio archive.rpm | cpio -i --make-directories
 
 # Apparmor
-sudo apparmor_status 
+sudo apparmor_status
 sudo systemctl reload apparmor.service
 # Add rules for apps/lib located in SSD
-# e.g. evince did not open hyperlinks -> worked after adding these lines 
+# e.g. evince did not open hyperlinks -> worked after adding these lines
 #  /mnt/ssd/usr/bin/firefox Cxr -> sanitized_helper,
 #  /mnt/ssd/usr/lib/firefox*/firefox*.sh Cx -> sanitized_helper,
 sudo vi /etc/apparmor.d/abstractions/ubuntu-browsers
