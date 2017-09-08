@@ -46,7 +46,7 @@ set modelines=5		" Number of mode lines to scan
 set tabstop=4		" Vim will interpret TABs to have this width.
 set softtabstop=4	" Set number of columns for a TAB
 set shiftwidth=4	" Set width of indents (<< and >>)
-set noexpandtab		" Do not expand TABs to spaces, still considered '\t'
+set expandtab		" Expand TABs to spaces
 set hlsearch		" Enable highlighting during searches
 
 " Simpler symbol for commands
@@ -59,7 +59,7 @@ nnoremap q: :q
 nnoremap <silent> <F4> :!clear<CR><CR>
 
 " Search and replace shortcut
-nnoremap <silent> <F5> :%s//gc<Left><Left><Left>
+nnoremap <silent> <F5> :%s//g<Left><Left><Left>
 
 " Toggle search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>
