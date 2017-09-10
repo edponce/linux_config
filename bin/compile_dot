@@ -20,8 +20,8 @@ dotffile=
 filext=".dot"
 
 # Get command line options
-while [ "$1" ]; do 
-    case "$1" in 
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -51,7 +51,7 @@ if [ ! -e "$dotffile" ]; then
     error_msg "file '$dotffile' does not exists" 1
 fi
 
-# Commands (compile and view) 
+# Commands (compile and view)
 dotdir="$(dirname $dotffile)"
 dotfile="$(basename $dotffile)"
 dotbase="${dotfile%.*}"

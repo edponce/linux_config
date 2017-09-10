@@ -2,7 +2,7 @@
 
 # Get list of primary and others [dis]connected monitors
 #  *0 -> primary
-#   1 -> others connected 
+#   1 -> others connected
 #   2 -> all connected (primary, others)
 #   3 -> all disconnected
 #   4 -> all connected and disconnected (primary, others)
@@ -68,7 +68,7 @@ screen_position()
 
     case $sid in
         0) # Primary screen
-            screen_regex="primary\W\d+x\d+((\+|-)\d+){2}\W" ;; 
+            screen_regex="primary\W\d+x\d+((\+|-)\d+){2}\W" ;;
         1) # Lower-left screen
             screen_regex="\W\d+x\d+((\+|-)0){2}\W" ;;
         2) # Second screen
@@ -85,7 +85,7 @@ screen_position()
 # Get dimensions and offsets of selected window
 # Inputs: [window ID (int|hex value)]
 # Outputs: win_dims, win_offs
-# Usage: window_position 0x0100004 
+# Usage: window_position 0x0100004
 window_position()
 {
     local wid
@@ -133,7 +133,7 @@ window_position()
 #        fi
 #    done
 #
-#    # Get details of screen at (0,0) position 
+#    # Get details of screen at (0,0) position
 #    screen_position 1
 #
 #    # Move windows
@@ -161,7 +161,7 @@ window_position()
 # Get current cursor row in terminal window
 # Inputs: N/A
 # Outputs: "cursor_row cursor_col"
-# Usage: get_cursor_pos 
+# Usage: get_cursor_pos
 #get_cursor_pos()
 #{
 #    local tty_state

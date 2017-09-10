@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 . $HOME/bin/custom_utils
@@ -26,7 +26,7 @@ while [ "$1" ]; do
             ;;
         -r | --row)
             empty_rows=$2
-            shift 2 
+            shift 2
             ;;
         *)
             usage

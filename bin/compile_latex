@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 . $HOME/bin/common_utils
@@ -26,9 +26,9 @@ workdir="build"
 texffile=
 filext=".tex"
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -62,7 +62,7 @@ done
 
 # Validate
 if [ -z "$texffile" ]; then
-    find_file_ext "$filext" 
+    find_file_ext "$filext"
     [ $? -eq 0 ] || exit 1
     texffile="$file_list"
 fi
@@ -70,7 +70,7 @@ if [ ! -e "$texffile" ]; then
     error_msg "file '$texffile' does not exists" 1
 fi
 
-# Commands (compile and view) 
+# Commands (compile and view)
 texdir="$(dirname $texffile)"
 texfile="$(basename $texffile)"
 texbase="${texfile%.*}"

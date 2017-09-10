@@ -31,7 +31,7 @@ Click IDs:
 _EOF_
 }
 
-# Default options 
+# Default options
 screen_id=0
 movement="mousemove"
 rel_dist=10
@@ -39,9 +39,9 @@ direction_id=0
 edge_dist=60
 mouse_click=
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -89,10 +89,10 @@ if [ ! -z $mouse_click ]; then
         error_msg "invalid mouse click value" 1
     fi
 
-    # Outputs: X, Y, SCREEN, WINDOW 
+    # Outputs: X, Y, SCREEN, WINDOW
     eval $(xdotool getmouselocation --shell)
     xdotool windowactivate $WINDOW
-    
+
     # Run
     case $mouse_click in
         0) xdotool click 1 ;; # left click
@@ -105,9 +105,9 @@ else
         # Find screen of current mouse position
         if [ $screen_id -eq 0 ]; then
             # Get position of lower-left screen
-            screen_position 1 
+            screen_position 1
 
-            # Outputs: X, Y, SCREEN, WINDOW 
+            # Outputs: X, Y, SCREEN, WINDOW
             eval $(xdotool getmouselocation --shell)
             if [ $X -le ${screen_dims[0]} ]; then
                 screen_id=1
@@ -119,7 +119,7 @@ else
         # Get position of selected screen
         screen_position $((screen_id))
 
-        # Move mouse to preset position 
+        # Move mouse to preset position
         case $direction_id in
             0) # left
                 x=$edge_dist
@@ -129,11 +129,11 @@ else
                 x=$((screen_dims[0] / 2))
                 y=$edge_dist
                 ;;
-            2) # right 
+            2) # right
                 x=$((screen_dims[0] - edge_dist))
                 y=$((screen_dims[1] / 2))
                 ;;
-            3) # down 
+            3) # down
                 x=$((screen_dims[0] / 2))
                 if [ $screen_id -eq 1 ]; then
                     # Show desktop panel
@@ -142,7 +142,7 @@ else
                     y=$((screen_dims[1] - edge_dist))
                 fi
                 ;;
-            4) # center 
+            4) # center
                 x=$((screen_dims[0] / 2))
                 y=$((screen_dims[1] / 2))
                 ;;
@@ -150,7 +150,7 @@ else
         x=$((screen_offs[0] + x))
         y=$((screen_offs[1] + y))
     elif [ "$movement" = "mousemove_relative" ]; then
-        # Move mouse to relative position 
+        # Move mouse to relative position
         x=0
         y=0
         case $direction_id in

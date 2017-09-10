@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 
@@ -23,7 +23,7 @@ while [ "$1" ]; do
             ;;
         *)
             app="$@"
-            shift $# 
+            shift $#
             ;;
     esac
 done
@@ -33,14 +33,14 @@ if [ -z "$app" ]; then
     error_msg "no application was specified" 1
 fi
 
-# app [args] 
+# app [args]
 appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
 which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     error_msg "application '$appname' was not found" 1
 fi
 
-# Run 
+# Run
 $app
 tput clear
 

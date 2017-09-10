@@ -1,4 +1,4 @@
-# Idea: make cmd/GUI program where one can search/select commands from this list 
+# Idea: make cmd/GUI program where one can search/select commands from this list
 # Use a database
 
 # Reset password Ubuntu

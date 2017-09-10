@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 . $HOME/bin/common_utils
@@ -21,8 +21,8 @@ sasopts=
 filext=".sas"
 
 # Get command line options
-while [ "$1" ]; do 
-    case "$1" in 
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -40,7 +40,7 @@ done
 
 # Validate
 if [ -z "$sasffile" ]; then
-    find_file_ext "$filext" 
+    find_file_ext "$filext"
     [ $? -eq 0 ] || exit 1
     sasffile="$file_list"
 fi
@@ -48,7 +48,7 @@ if [ ! -e "$sasffile" ]; then
     error_msg "file '$sasffile' does not exists" 1
 fi
 
-# Commands (compile) 
+# Commands (compile)
 sasdir="$(dirname $sasffile)"
 sasfile="$(basename $sasffile)"
 sas_cmd="sas -nonews $sasopts $sasfile"

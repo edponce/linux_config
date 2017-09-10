@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 . $HOME/bin/common_utils
@@ -20,9 +20,9 @@ adtype=0
 adffile=
 filext=".asciidoc"
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -49,10 +49,10 @@ while [ "$1" ]; do
             ;;
     esac
 done
-     
+
 # Validate
 if [ -z "$adffile" ]; then
-    find_file_ext "$filext" 
+    find_file_ext "$filext"
     [ $? -eq 0 ] || exit 1
     adffile="$file_list"
 fi

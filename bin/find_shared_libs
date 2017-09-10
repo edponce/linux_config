@@ -37,7 +37,7 @@ SHLIBS_TREFS=$(echo "$SHLIBS" | perl -e
         $n += shift @F;
     }
     print $n;
-    ') 
+    ')
 
 # Print info
 if [ ! -z "$SHLIBS" ]; then

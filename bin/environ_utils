@@ -30,12 +30,12 @@ set_envvar()
     local env_value=()
     local env_str
 
-    # Get command line options 
-    while [ "$1" ]; do 
-        case "$1" in 
+    # Get command line options
+    while [ "$1" ]; do
+        case "$1" in
             #-h | --help)
             #    usage_set_envvar
-            #    return 0 
+            #    return 0
             #    ;;
             -o | --overwrite)
                 overwrite=1
@@ -64,7 +64,7 @@ set_envvar()
         return 1
     fi
 
-    # Prevent duplicate values to environment variable 
+    # Prevent duplicate values to environment variable
     for each in "${arg_value[@]}"; do
         if [[ ! ${!env_var} =~ ($delim)?$each($delim.*)?$ ]]; then
             env_value+=("$each")

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 
@@ -19,9 +19,9 @@ deskcmd="-nodesktop -nosplash"
 jvmcmd="-nodisplay -nojvm"
 runcmd=
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -47,7 +47,7 @@ while [ "$1" ]; do
     esac
 done
 
-# Run 
+# Run
 matlab "$deskcmd" "$jvmcmd" "$runcmd"
 
 exit 0

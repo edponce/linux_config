@@ -16,24 +16,24 @@ Mouse click IDs:
 _EOF_
 }
 
-# Default options 
+# Default options
 applet=
 click_id=1
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
             ;;
         -c | --click)
             click_id=$2
-            shift 2 
+            shift 2
             ;;
         -a | --applet)
             applet="$2"
-            shift 2 
+            shift 2
             ;;
         *)
             usage
@@ -62,9 +62,9 @@ if [ -z "$applet_query" ]; then
     error_msg "applet '$applet' was not found in desktop panel" 1
 fi
 
-# Get dimensions and position of applet 
-applet_dims=($(echo "$applet_query" | awk '{ print $(NF-1) }' | sed 's/\([[:digit:]]\+\)x\([[:digit:]]\+\).*/\1 \2/g')) 
-applet_pos=($(echo "$applet_query" | awk '{ print $NF }' | sed -e 's/+/ /g' -e 's/-/ -/g')) 
+# Get dimensions and position of applet
+applet_dims=($(echo "$applet_query" | awk '{ print $(NF-1) }' | sed 's/\([[:digit:]]\+\)x\([[:digit:]]\+\).*/\1 \2/g'))
+applet_pos=($(echo "$applet_query" | awk '{ print $NF }' | sed -e 's/+/ /g' -e 's/-/ -/g'))
 
 # Show panel bar
 x=$((applet_pos[0] + applet_dims[0]/2))
@@ -76,7 +76,7 @@ sleep 0.5 # allow panel to appear
 y=$((applet_pos[1] + applet_dims[1]/2))
 xdotool mousemove --sync -- $x $y
 
-# Click applet 
+# Click applet
 xdotool click $click_id
 
 # Restore initial mouse position and active window

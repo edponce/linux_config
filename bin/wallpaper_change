@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 
@@ -12,16 +12,16 @@ Change wallpaper image.
 Wallpaper IDs:
 _EOF_
 local wid=0
-for each in "$@"; do 
+for each in "$@"; do
     case $wid in
         0) echo " *$wid -> $each" ;;
         *) echo "  $wid -> $each" ;;
-    esac 
+    esac
     wid=$((wid + 1))
 done
 }
 
-# Default options 
+# Default options
 wallid=0
 wallfiles=(
 "$HOME/Documents/wallpapers/1604-lubuntu-default-wallpaper.png"
@@ -30,9 +30,9 @@ wallfiles=(
 "$HOME/Documents/wallpapers/black_1920x1080.png"
 )
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage ${wallfiles[@]}
             exit 0

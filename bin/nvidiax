@@ -34,9 +34,9 @@ perf_level=3
 perf_level_changed=0
 app=
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage $x11_nvidia_file
             exit 0
@@ -51,7 +51,7 @@ while [ "$1" ]; do
             ;;
         -r | --run)
             app="$2"
-            shift 2 
+            shift 2
             ;;
         *)
             usage $x11_nvidia_file
@@ -77,7 +77,7 @@ if [ $launch_tool -lt 0 ] || [ $launch_tool -gt 2 ]; then
 fi
 
 if [ $launch_tool -gt 0 ]; then
-    # Check that NVIDIA modules are not loaded/used by other applications 
+    # Check that NVIDIA modules are not loaded/used by other applications
     if [ $(lsmod | grep -c 'nvidia') -gt 0 ]; then
         warn_msg "please close all applications using NVIDIA modules...exiting" 0
     fi
@@ -99,7 +99,7 @@ if [ $launch_tool -gt 0 ]; then
         echo "Setting NVIDIA GPU performance level to $perf_level."
         sudo sed -i "s/\b\(PowerMizer\(Default\|DefaultAC\)=0x\)[[:digit:]];\?\b/\1$perf_level/g" "$x11_nvidia_file"
         perf_level_changed=1
-        sleep 0.5 
+        sleep 0.5
     fi
 fi
 

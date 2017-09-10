@@ -14,7 +14,7 @@ Hidden directories and files are searched.
 
 These directories are ignored by default:
 _EOF_
-for each in "$@"; do 
+for each in "$@"; do
     echo "$each"
 done
 }
@@ -24,9 +24,9 @@ search_path="."
 recursive=0
 prune_dirs=("help" "icons" "doc" "man") # directory names to ignore
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage ${prune_dirs[@]}
             exit 0
@@ -46,12 +46,12 @@ while [ "$1" ]; do
     esac
 done
 
-# Validate        
+# Validate
 if [ ! -d "$search_path" ]; then
     error_msg "search path does not exists, '$search_path'" 1
 fi
 
-# Set command to prune unwanted directories 
+# Set command to prune unwanted directories
 prune_cmd=
 if [ ${#prune_dirs[@]} -gt 0 ]; then
     prune_cmd="-type d ("

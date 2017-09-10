@@ -88,7 +88,7 @@ def get_active_screen_dims(screen_id = 0):
         if num_monitors > 1:
             str_screen_dims = subprocess.getoutput('. $HOME/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
             screen_all_dims = [int(x) for x in str_screen_dims]
-   
+
     # Screen dimensions and offsets
     screen_dims = screen_all_dims[0:2]
     screen_offs = screen_all_dims[2:4]
@@ -103,7 +103,7 @@ def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs 
     # Window queues
     win_ids = []
     win_names = []
-    
+
     # Check if screens are available
     if not screen_dims or not screen_offs:
         print('Warning: incomplete screen/monitor properties.')
@@ -139,7 +139,6 @@ def get_windows_list(desktop = 1, win_select = 0, screen_dims = [], screen_offs 
 def create_layout(layout_id = 1, screen_dims = [], screen_offs = []):
     '''
     Create layout based on screen dimensions
-    
     '''
     # Window layout coordinates (integers), [[x0,y0],[x1,y1],...]
     win_dims = []
@@ -260,7 +259,7 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
     '''
     Arrange windows based on layout
     '''
-    # Check if windows are available 
+    # Check if windows are available
     if not win_ids or not win_names or not win_dims or not win_offs:
         print('Warning: incomplete windows properties for layout.')
         return 0

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 . $HOME/bin/error_utils
 . $HOME/bin/common_utils
@@ -19,8 +19,8 @@ psffile=
 filext=".ps"
 
 # Get command line options
-while [ "$1" ]; do 
-    case "$1" in 
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -46,7 +46,7 @@ if [ ! -e "$psffile" ]; then
     error_msg "file '$psffile' does not exists" 1
 fi
 
-# Commands (compile and view) 
+# Commands (compile and view)
 psdir="$(dirname $psffile)"
 psfile="$(basename $psffile)"
 psbase="${psfile%.*}"

@@ -54,7 +54,7 @@ sub hasLicense {
 }
 
 
-# Add licensing to file 
+# Add licensing to file
 sub licenseFile {
     my $file = shift;
 
@@ -99,7 +99,7 @@ sub licenseFile {
             open $fh, '<', $file or die "ERROR! failed to open $file: $!\n";
             my @lines;
             while (<$fh>) {
-                next if $. <= $lcount;  # skip existing license 
+                next if $. <= $lcount;  # skip existing license
                 push @lines, $_;
             }
             close $fh;

@@ -28,7 +28,7 @@ Prerequisites:
     a. Click network applet -> Edit Connections... -> Add an Ethernet connection
     b. Give the connection a name
     c. In IPv4 settings, manually set address and netmask
- 
+
 NUC IDs for master node:
  *1 -> NUC1
   2 -> NUC2
@@ -42,9 +42,9 @@ _EOF_
 nuc_master=1
 nuc_ip_domain="192.168.1"
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0

@@ -26,9 +26,9 @@ sound_card="alsa_card.pci-0000_00_1b.0"
 sound_input=0
 profile_id=1
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -48,7 +48,7 @@ while [ "$1" ]; do
     esac
 done
 
-# Validate        
+# Validate
 if [ $profile_id -lt 0 ] && [ $profile_id -gt 4 ]; then
     error_msg "invalid output profile value" 1
 fi
@@ -67,7 +67,7 @@ else
         2) new_sink="hdmi-stereo" ;;
         3) new_sink="hdmi-surround" ;;
         4) new_sink="hdmi-surround71" ;;
-    esac 
+    esac
 
     [ $new_sink = $curr_sink ] && exit 0
     profile="output:$new_sink"

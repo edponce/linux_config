@@ -40,9 +40,9 @@ framerate=30
 screen_id=1
 outfile="$HOME/screencast_$(date +%m-%d-%Y_%H-%M).mp4"
 
-# Get command line options 
-while [ "$1" ]; do 
-    case "$1" in 
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
         -h | --help)
             usage
             exit 0
@@ -81,7 +81,7 @@ while [ "$1" ]; do
             ;;
     esac
 done
- 
+
 # Validate
 if [ $timer -lt 0 ] || [ $timer -gt 60 ]; then
     error_msg "invalid timer value" 1

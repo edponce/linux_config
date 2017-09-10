@@ -47,7 +47,7 @@ while [ "$1" ]; do
             ;;
         *)
             app="$@"
-            shift $# 
+            shift $#
             ;;
     esac
 done
@@ -61,7 +61,7 @@ if [ $(bc <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
     error_msg "invalid delay value" 1
 fi
 
-# app [args] 
+# app [args]
 appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
 which "$appname" > /dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -75,7 +75,7 @@ echo "$appname"
 # Wait
 sleep $delay
 
-# Run commands 
+# Run commands
 if [ "$wid" = "1" ]; then
     # Active window mode
     xdotool type "$app"
