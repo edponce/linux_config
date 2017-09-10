@@ -6,7 +6,7 @@
 #  |  |  |  |
 #  ----------
 # 6
-layout new h2v3 
+layout new h2v3
 select 0
 split -v
 split -v

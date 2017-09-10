@@ -6,15 +6,15 @@
 #  |    |    |
 #  -----------
 # 4
-layout new h2v2 
+layout new h2v2
 select 0
 split -v
 split
-focus down 
+focus down
 select 1
-focus right 
+focus right
 select 2
 split
-focus down 
+focus down
 select 3
 focus
