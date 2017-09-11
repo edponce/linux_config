@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $HOME/bin/error_utils
+. "$HOME/bin/error_utils"
 
 # NUC setup
 # Username: firemodel

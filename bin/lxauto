@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $HOME/bin/error_utils
+. "$HOME/bin/error_utils"
 
 usage()
 {
@@ -63,8 +63,7 @@ fi
 
 # app [args]
 appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
-which "$appname" > /dev/null 2>&1
-if [ $? -ne 0 ]; then
+if [ ! "$(command -v $appname)" ]; then
     error_msg "application '$app' was not found" 1
 fi
 echo "$appname"
@@ -95,7 +94,7 @@ else
     fi
     xdotool type --window "$wid" "$app"
     xdotool key --window "$wid" Return
-    xdotool windowactivate "$wid"
+    xdotool windowactivate --sync "$wid"
 fi
 
 exit 0

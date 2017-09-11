@@ -321,13 +321,13 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
                 if win_dim[0] > 2: win_dim[0] -= 2
 
             # Activate window and arrange
-            subprocess.getoutput('xdotool windowactivate {}'.format(win_id))
+            subprocess.getoutput('xdotool windowactivate --sync {}'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -b remove,maximized_vert,maximized_horz'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -b remove,fullscreen'.format(win_id))
             subprocess.getoutput('wmctrl -i -r {} -e {},{},{},{},{}'.format(win_id, win_grav, win_off[0], win_off[1], win_dim[0], win_dim[1]))
 
     # Activate window
-    subprocess.getoutput('xdotool windowactivate {}'.format(win_id_active))
+    subprocess.getoutput('xdotool windowactivate --sync {}'.format(win_id_active))
 
     return 0
 

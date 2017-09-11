@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. $HOME/bin/error_utils
-. $HOME/bin/custom_utils
+. "$HOME/bin/error_utils"
+. "$HOME/bin/custom_utils"
 
 usage()
 {
@@ -91,7 +91,7 @@ if [ ! -z $mouse_click ]; then
 
     # Outputs: X, Y, SCREEN, WINDOW
     eval $(xdotool getmouselocation --shell)
-    xdotool windowactivate $WINDOW
+    xdotool windowactivate --sync "$WINDOW"
 
     # Run
     case $mouse_click in

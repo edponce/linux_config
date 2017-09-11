@@ -4,24 +4,30 @@
 # Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
 
 # Set display to main monitor only
-if [ $(command -v xrandr) ]; then
+if [ "$(command -v xrandr)" ]; then
     if [ $(xrandr --listactivemonitors | awk -F':' '/Monitors/ { print $2 }') -gt 1 ]; then
         # Need to specify full path since we have not login yet
-        . /home/edponce/bin/custom_utils
-        connected_monitors 4
-        primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"
-        secondary_opts=
-        for each in "${monitors_select[@]:1}"; do
-            secondary_opts+="--output $each --off "
-        done
-        xrandr $primary_opts $secondary_opts
+        if [ -f "/home/edponce/bin/custom_utils" ]; then
+            . "/home/edponce/bin/custom_utils"
+            connected_monitors 4
+            primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"
+            secondary_opts=
+            for each in "${monitors_select[@]:1}"; do
+                secondary_opts+="--output $each --off "
+            done
+            xrandr $primary_opts $secondary_opts
+        fi
     fi
 fi
 
 # For laptops, enable horizontal two finger scroll (Synaptic touchpad)
-# Creates error in MATLAB, so disable it
-[ $(laptop-detect) ] && [ $(command -v synclient) ] && synclient HorizTwoFingerScroll=1
+# NOTE: creates errors in MATLAB GUI
+if [ "$(command -v laptop-detect)" ]; then
+    if [ "$(laptop-detect)" ]; then
+        [ "$(command -v synclient)" ] && synclient HorizTwoFingerScroll=1
+    fi
+fi
 
 # Enable numlock
-[ $(command -v numlockx) ] && numlockx on
+[ "$(command -v numlockx)" ] && numlockx on
 
