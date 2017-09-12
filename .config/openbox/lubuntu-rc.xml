@@ -252,17 +252,17 @@
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>-0</y><width>100%</width><height>50%</height></action>
     </keybind>
-    <keybind key="W-A-H">        # HalfLowerLeftScreen
+    <keybind key="W-A-H">        # HalfUpperLeftScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>-0</y><height>50%</height><width>50%</width></action>
+      <action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>50%</height></action>
     </keybind>
     <keybind key="W-A-L">        # HalfLowerRightScreen
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>-0</x><y>-0</y><width>50%</width><height>50%</height></action>
     </keybind>
-    <keybind key="W-A-J">        # HalfUpperLeftScreen
+    <keybind key="W-A-J">        # HalfLowerLeftScreen
       <action name="UnmaximizeFull"/>
-      <action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>50%</height></action>
+      <action name="MoveResizeTo"><x>0</x><y>-0</y><height>50%</height><width>50%</width></action>
     </keybind>
     <keybind key="W-A-K">        # HalfUpperRightScreen
       <action name="UnmaximizeFull"/>
