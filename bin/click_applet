@@ -70,7 +70,7 @@ applet_pos=($(echo "$applet_query" | awk '{ print $NF }' | sed -e 's/+/ /g' -e '
 x=$((applet_pos[0] + applet_dims[0]/2))
 y=$((applet_pos[1] + applet_dims[1]))
 xdotool mousemove --sync -- $x $y
-sleep 0.5 # allow panel to appear
+sleep 1 # allow panel to appear
 
 # Move mouse on top of applet
 y=$((applet_pos[1] + applet_dims[1]/2))
