@@ -495,6 +495,18 @@
       <action name="UnmaximizeFull"/>
       <action name="MoveResizeTo"><x>0</x><y>0</y><height>100%</height><width>85%</width></action>
     </keybind>
+    <keybind key="W-S">
+        <action name="if">
+          <shaded>no</shaded>
+          <then>
+            <action name="Shade"/>
+          </then>
+          <else>
+            <action name="Unshade"/>
+            <action name="Raise"/>
+          </else>
+        </action>
+    </keybind>
     <!-- Toggle Xpad notes -->
     <keybind key="W-N">
       <action name="Execute">
@@ -747,67 +759,67 @@
       <action name="Execute">
         <command>mouse_teleport -r 15 -d 0</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-Right">
       <action name="Execute">
         <command>mouse_teleport -r 15 -d 2</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-Up">
       <action name="Execute">
         <command>mouse_teleport -r 15 -d 1</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-Down">
       <action name="Execute">
         <command>mouse_teleport -r 15 -d 3</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-S-Left">
       <action name="Execute">
         <command>mouse_teleport -d 0</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-S-Right">
       <action name="Execute">
         <command>mouse_teleport -d 2</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-S-Up">
       <action name="Execute">
         <command>mouse_teleport -d 1</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-S-Down">
       <action name="Execute">
         <command>mouse_teleport -d 3</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="A-S-space">
       <action name="Execute">
         <command>mouse_teleport -d 4</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="W-A-Left">
       <action name="Execute">
         <command>mouse_teleport -c 0</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="W-A-Right">
       <action name="Execute">
         <command>mouse_teleport -c 1</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="W-A-Up">
       <action name="Execute">
         <command>xdotool click 4</command>
       </action>
-    </keybind> 
+    </keybind>
     <keybind key="W-A-Down">
       <action name="Execute">
         <command>xdotool click 5</command>
       </action>
-    </keybind> 
+    </keybind>
   </keyboard>
   <mouse>
     <dragThreshold>8</dragThreshold>
@@ -1305,7 +1317,7 @@
   # order that they appear in this list
 
 
-    # each rule element can be left out or set to 'default' to specify to not 
+    # each rule element can be left out or set to 'default' to specify to not
     # change that attribute of the window
 
     <decor>yes</decor>
