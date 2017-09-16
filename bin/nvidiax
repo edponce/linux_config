@@ -22,14 +22,14 @@ GPU Performance levels:
 
 GPU launch tools:
   0 -> none
- *1 -> primusrun (OpenGL support)
-  2 -> optirun
+  1 -> primusrun
+ *2 -> optirun
 _EOF_
 }
 
 # Default options
 x11_nvidia_file="/etc/bumblebee/xorg.conf.nvidia" # X11 NVIDIA configuration file
-launch_tool=1
+launch_tool=2
 perf_level=3
 perf_level_changed=0
 app=
