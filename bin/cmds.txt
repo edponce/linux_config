@@ -513,3 +513,8 @@ ffmpeg -y -i 'concat:part1.avi|part2.avi' -codec copy merged.avi
 # reduce video size
 ffmpeg -i big_video.avi small_video.mp4
 
+# git
+# compare hash of local and remote repos
+git rev-parse master # local
+git ls-remote --heads --exit-code origin master # remote
+
