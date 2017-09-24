@@ -61,10 +61,10 @@ nnoremap <silent> <F4> :!clear<CR><CR>
 " Search and replace shortcut
 nnoremap <silent> <F5> :%s//g<Left><Left><Left>
 
-" Toggle search highlight
+" Remove search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>
 
-" Enable spell checking
+" Toggle spell checking
 nnoremap <silent> <F7> :set spell! spelllang=en<CR>
 nnoremap <silent> <S-F7> :set spell! spelllang=es<CR>
 
