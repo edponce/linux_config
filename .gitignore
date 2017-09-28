@@ -139,6 +139,7 @@ R/
 #.screen/
 .screenlayout/
 #.screenrc
+.scala_history
 .scribus/
 .selected_editor
 .smpd
