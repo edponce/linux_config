@@ -59,7 +59,7 @@ nnoremap q: :q
 nnoremap <silent> <F4> :!clear<CR><CR>
 
 " Search and replace shortcut
-nnoremap <silent> <F5> :%s//g<Left><Left><Left>
+nnoremap <silent> <F5> :%s//g<Left><Left>
 
 " Remove search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>

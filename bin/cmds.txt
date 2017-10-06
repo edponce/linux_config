@@ -54,6 +54,7 @@ sudo apt clean
 sudo apt auto-clean
 sudo apt-mark hold PACKAGE # hold package to prevent upgrades
 sudo apt-mark unhold PACKAGE # unhold package a hold package
+sudo apt-mark showhold # show packages hold
 sudo apt install --dry-run PACKAGE # check what will happen
 sudo apt install PACKAGE
 sudo apt remove PACKAGE
