@@ -61,6 +61,9 @@ nnoremap <silent> <F4> :!clear<CR><CR>
 " Search and replace shortcut
 nnoremap <silent> <F5> :%s//g<Left><Left>
 
+" Delete trailing whitespaces
+nnoremap <silent> <S-F5> :%s/ \+$//g<CR>
+
 " Remove search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>
 
