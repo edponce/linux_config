@@ -61,8 +61,8 @@ if [ ! -e "$adffile" ]; then
 fi
 
 # Commands (compile and view)
-addir="$(dirname $adffile)"
-adfile="$(basename $adffile)"
+addir="$(dirname "$adffile")"
+adfile="$(basename "$adffile")"
 adbase="${adfile%.*}"
 adpdf="$adbase.pdf"
 adxml="$adbase.xml"

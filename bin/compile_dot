@@ -52,8 +52,8 @@ if [ ! -e "$dotffile" ]; then
 fi
 
 # Commands (compile and view)
-dotdir="$(dirname $dotffile)"
-dotfile="$(basename $dotffile)"
+dotdir="$(dirname "$dotffile")"
+dotfile="$(basename "$dotffile")"
 dotbase="${dotfile%.*}"
 dotpng="$dotbase.png"
 dottex="$dotbase.tex"

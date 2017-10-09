@@ -47,8 +47,8 @@ if [ ! -e "$psffile" ]; then
 fi
 
 # Commands (compile and view)
-psdir="$(dirname $psffile)"
-psfile="$(basename $psffile)"
+psdir="$(dirname "$psffile")"
+psfile="$(basename "$psffile")"
 psbase="${psfile%.*}"
 pspdf="$psbase.pdf"
 pseps="$psbase.eps"

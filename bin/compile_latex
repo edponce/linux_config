@@ -71,8 +71,8 @@ if [ ! -e "$texffile" ]; then
 fi
 
 # Commands (compile and view)
-texdir="$(dirname $texffile)"
-texfile="$(basename $texffile)"
+texdir="$(dirname "$texffile")"
+texfile="$(basename "$texffile")"
 texbase="${texfile%.*}"
 texpdf="$texbase.pdf"
 pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=$workdir $texfile"

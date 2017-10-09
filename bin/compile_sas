@@ -49,8 +49,8 @@ if [ ! -e "$sasffile" ]; then
 fi
 
 # Commands (compile)
-sasdir="$(dirname $sasffile)"
-sasfile="$(basename $sasffile)"
+sasdir="$(dirname "$sasffile")"
+sasfile="$(basename "$sasffile")"
 sas_cmd="sas -nonews $sasopts $sasfile"
 
 # Change to file directory
