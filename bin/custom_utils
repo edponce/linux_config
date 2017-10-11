@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Get list of primary and others [dis]connected monitors
+# Get list of primary and other [dis]connected monitors
 #  *0 -> primary
 #   1 -> others connected
 #   2 -> all connected (primary, others)

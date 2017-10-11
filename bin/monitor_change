@@ -77,38 +77,36 @@ else
     fi
 fi
 
-# Select monitor protocol
-case $mon_proto in
-    0) # Restore windows in primary monitor
-        #window_restore
-        ;;
-    1) # Configure secondary monitor
-        # Select monitor relative position
-        if [ $mirror -eq 0 ]; then
-            # Extended mode
-            case $direction_id in
-                0) rel_pos="--left-of ${monitors_select[0]}" ;;
-                1) rel_pos="--above ${monitors_select[0]}" ;;
-                2) rel_pos="--right-of ${monitors_select[0]}" ;;
-                3) rel_pos="--below ${monitors_select[0]}" ;;
-            esac
-        elif [ $mirror -eq 1 ]; then
-            # Mirror mode
-            rel_pos="--pos 0x0"
-        fi
-        secondary_opts="--output ${monitors_select[1]} --auto $rel_pos --rotate normal"
-        ;;
-esac
+# Restore windows in primary monitor
+xrandr $primary_opts $secondary_opts
 
-# Get disconnected monitors
-connected_monitors 3
-disconnect_opts=
-for each in "${monitors_select[@]}"; do
-    disconnect_opts+="--output $each --off "
-done
+# Configure secondary monitor
+if [ $mon_proto -eq 1 ]; then
+    # Select monitor relative position
+    if [ $mirror -eq 0 ]; then
+        # Extended mode
+        case $direction_id in
+            0) rel_pos="--left-of ${monitors_select[0]}" ;;
+            1) rel_pos="--above ${monitors_select[0]}" ;;
+            2) rel_pos="--right-of ${monitors_select[0]}" ;;
+            3) rel_pos="--below ${monitors_select[0]}" ;;
+        esac
+    elif [ $mirror -eq 1 ]; then
+        # Mirror mode
+        rel_pos="--pos 0x0"
+    fi
+    secondary_opts="--output ${monitors_select[1]} --auto $rel_pos --rotate normal"
 
-# Run
-xrandr $primary_opts $secondary_opts $disconnect_opts
+    # Get disconnected monitors
+    connected_monitors 3
+    disconnect_opts=
+    for each in "${monitors_select[@]}"; do
+        disconnect_opts+="--output $each --off "
+    done
+
+    # Run
+    xrandr $primary_opts $secondary_opts $disconnect_opts
+fi
 
 # Move mouse to center of screen
 case $direction_id in
