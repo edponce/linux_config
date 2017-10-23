@@ -22,12 +22,7 @@ fi
 
 # For laptops, enable horizontal two finger scroll (Synaptic touchpad)
 # NOTE: creates errors in MATLAB GUI
-if [ "$(command -v laptop-detect)" ]; then
-    laptop-detect
-    if [ $? -eq 0 ]; then
-        [ "$(command -v synclient)" ] && synclient HorizTwoFingerScroll=1
-    fi
-fi
+[ "$(command -v synclient)" ] && synclient HorizTwoFingerScroll=1
 
 # Enable numlock
 [ "$(command -v numlockx)" ] && numlockx on
