@@ -58,7 +58,10 @@ nnoremap q: :q
 " Clear terminal
 nnoremap <silent> <F4> :!clear<CR><CR>
 
-" Search and replace shortcut
+" Search with mouse double-click
+nnoremap <silent> <2-LeftMouse> /<C-R><C-W><CR>
+
+" Search and replace
 nnoremap <silent> <F5> :%s//g<Left><Left>
 
 " Delete trailing whitespaces
