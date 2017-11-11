@@ -75,6 +75,7 @@ sleep 1 # allow panel to appear
 # Move mouse on top of applet
 y=$((applet_pos[1] + applet_dims[1]/2))
 xdotool mousemove --sync -- $x $y
+sleep 0.5 # wait for app detection
 
 # Click applet
 xdotool click $click_id
