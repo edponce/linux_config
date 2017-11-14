@@ -59,7 +59,7 @@ nnoremap q: :q
 nnoremap <silent> <F4> :!clear<CR><CR>
 
 " Search with mouse double-click
-nnoremap <silent> <2-LeftMouse> /<C-R><C-W><CR>
+nnoremap <silent> <2-LeftMouse> /<C-R><C-W><CR><S-n>
 
 " Search and replace
 nnoremap <silent> <F5> :%s//g<Left><Left>
