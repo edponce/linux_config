@@ -165,6 +165,7 @@ VirtualBox*/
 .weather/
 .wget-hsts
 .wine/
+.wine32/
 .Xauthority
 .xinputrc
 .xpaint/
