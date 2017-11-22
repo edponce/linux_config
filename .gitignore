@@ -24,6 +24,7 @@
 .config/d-feet/
 .config/enchant/
 .config/evince/
+.config/filezilla/
 .config/FreeCAD/
 .config/galculator/
 .config/gedit/
@@ -126,6 +127,7 @@ Pictures/
 .psensor/
 .pulse-cookie
 .purple/
+.putty/
 .python_history
 .QtWebEngineProcess/
 R/

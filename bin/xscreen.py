@@ -11,7 +11,9 @@ def parse_args():
     '''
     Parse command line arguments
     '''
-    parser = argparse.ArgumentParser(prog='xscreen', description='Layouts for arranging windows in X', formatter_class=RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(prog=__file__, description='xscreen:\n'
+             'Layouts for arranging windows in X',
+             formatter_class=RawTextHelpFormatter)
     parser.add_argument('-l', '--layout_id', type=int, default=2,
                         dest='layout_id', help='layout identifier\n'
                                                '  0 -> h2v1 (3 windows)\n'
@@ -35,15 +37,21 @@ def parse_args():
                                                 '  1 -> visible windows in active desktop')
     args = parser.parse_args()
 
-    # Validate
+    # Validate options
+    err = 0
     if args.layout_id < 0 or args.layout_id > 9:
         print('Error: invalid layout value.')
-        sys.exit(os.EX_USAGE)
+        err = 1
     if args.screen_id < 0 or args.screen_id > 2:
         print('Error: invalid screen value.')
-        sys.exit(os.EX_USAGE)
+        err = 1
     if args.win_select < 0 or args.win_select > 1:
         print('Error: invalid window select value.')
+        err = 1
+
+    if err != 0:
+        print
+        parser.print_help()
         sys.exit(os.EX_USAGE)
 
     return args
@@ -332,6 +340,9 @@ def set_layout(win_id_active = '', win_ids = [], win_names = [], win_dims = [], 
     return 0
 
 
+'''
+Main entry point
+'''
 if __name__ == '__main__':
     args = parse_args()
     desktop, win_id_active, screen_dims, screen_offs = get_active_screen_dims(args.screen_id)
