@@ -494,12 +494,27 @@ sudo docker images
 sudo docker run hello-world
 
 # Wine, Windows on Linux
-# ~/.wine
-wine ~/.wine/drive_c/windows/notepad.exe
-# PlayOnLinux
-# ~/.PlayOnLinux[/wineprefix]
-# Have not installed, winbind and winetricks
-# sh winetricks corefonts
+# PlayOnLinux (~/.PlayOnLinux)
+# Battle.net (requires wine-staging)
+# 32-bit
+export WINEPREFIX=$HOME/.wine32
+export WINEARCH=win32
+# 64-bit
+export WINEPREFIX=$HOME/.wine
+export WINEARCH=
+# Create Wine folder for an app
+wineboot
+# Configure
+winetricks -q corefonts msxml3 vcrun2005 vcrun2008 dotnet40
+winetricks fontsmooth=rgb
+# Run
+wine your/prog.exe
+wine ~/.wine32/drive_c/windows/notepad.exe
+wine start /unix your/prog.exe
+# Wine and bumblebee
+primusrun wine your/64bit/prog.exe
+# Shutdown
+wineserver -k
 
 # Run commands with specific scheduling priority
 nice -n -20 echo "hello" # highest priority
