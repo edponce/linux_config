@@ -74,7 +74,7 @@
 .cups/
 .dbus/
 Desktop/
-.dircolors
+#.dircolors
 .dmrc
 Documents/
 Downloads/
@@ -102,9 +102,7 @@ Dropbox/
 .java/
 .jupyter/
 .lesshst
-
 .local/
-
 .macromedia/
 .mailrc
 .matlab/
@@ -171,7 +169,7 @@ VirtualBox*/
 .Xauthority
 .xinputrc
 .xpaint/
-.Xresources
+#.Xresources
 .xscreensaver
 .xsession-errors
 .xsession-errors.old

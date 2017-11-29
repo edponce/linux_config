@@ -1,0 +1,24 @@
+! Disable 'Alt' modifier, behave normal
+XTerm*metaSendsEscape: true
+XTerm*eightBitInput: false
+
+! Save scrollback lines
+XTerm*saveLines: 4096
+
+! Change font and size
+XTerm*faceName: Monospace:antialias=false
+XTerm*faceSize: 12
+
+! Enable normal copy/paste key sequences
+Ctrl Shift <Key>C: copy-selection(CLIPBOARD)
+Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
+
+! Make default copy to CLIPBOARD, not PRIMARY buffer
+! Normally, selected text is stored in PRIMARY, to be pasted with Shift+Insert
+! or by using the middle mouse button. By toggling this option to on, selected
+! text will use CLIPBOARD, allowing you to paste the text selected in an xterm
+! window into a GUI application using Ctrl+v
+!XTerm*selectToClipboard: true
+
+*customization: -color
+XTerm*termName: xterm-256color
