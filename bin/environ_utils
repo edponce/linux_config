@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-# NOTE: This script is to be sourced only, not executed.
-# The 'exit' statement should never appear on this code as it is sourced
-# by .bashrc during login, thus exiting the login shell right after user
-# logs in. If this happens, the brute force solution is to press Ctrl+C
-# immediately after user logs in (it may take several attempts).
+# NOTE: This script is to be POSIX comliant and sourced only. The 'exit' statement
+# should never appear in this code as it is sourced from .bashrc or .profile
+# during login, thus exiting the login shell right after user logs in. If this
+# happens, the brute force solution is to press Ctrl+C immediately after user
+# logs and with luck cancel before exiting (several attempts may be required).
 
 #usage_set_envvar()
 #{
@@ -23,7 +23,7 @@
 set_envvar()
 {
     # Default options
-    local overwrite=0
+    local -i overwrite=0
     local delim=":"
     local env_var
     local arg_value=()
@@ -75,7 +75,7 @@ set_envvar()
     # Convert values into delimited string
     env_str=$(IFS="$delim"; echo "${env_value[*]}")
 
-    #Run
+    #Set environment variable
     if [ -z "${!env_var}" ] || [ $overwrite -eq 1 ]; then
         export "$env_var"="$env_str"
     else
