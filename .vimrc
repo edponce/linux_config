@@ -22,13 +22,22 @@ colorscheme elflord
 " Enable syntax highlighting
 syntax on
 
-" Make Vim jump to the last position when reopening a file
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" Get last cursor position
+function! LastCursorPos()
+    if (line("'\"") > 1) && (line("'\"") <= line("$"))
+        exe "normal! g'\""
+    endif
+endfunction
+
+" Jump to the last position when reopening a file
+autocmd BufReadPost * call LastCursorPos()
 
 " Change color of specific groups
-highlight Comment ctermfg=darkcyan guifg=darkcyan
-highlight Special ctermfg=magenta guifg=magenta
+"highlight Comment ctermfg=darkcyan guifg=darkcyan
+"highlight Special ctermfg=magenta guifg=magenta
 highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ColorColumn ctermbg=232 guibg=grey3
+highlight Visual ctermfg=white guifg=white
 
 " Show trailing whitespace and spaces before a tab
 match ExtraWhitespace /\s\+$\|^ \+\ze\t/
@@ -39,6 +48,7 @@ set ignorecase		" Do case insensitive matching
 set smartcase		" Do smart case matching
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
+set autoread        " Automatically load changes
 set mouse=a			" Enable mouse usage (all modes)
 set ruler			" Show current line/column in status line
 set modeline		" Enable scan for Vim options at end of buffers
@@ -48,6 +58,7 @@ set softtabstop=4	" Set number of columns for a TAB
 set shiftwidth=4	" Set width of indents (<< and >>)
 set expandtab		" Expand TABs to spaces
 set hlsearch		" Enable highlighting during searches
+let &colorcolumn="81,".join(range(95,999),",")  " Color column limit
 
 " Simpler symbol for commands
 nnoremap ; :
@@ -55,17 +66,17 @@ nnoremap ; :
 " Prevent stupid window from popping up
 nnoremap q: :q
 
-" Clear terminal
-nnoremap <silent> <F4> :!clear<CR><CR>
+" Delete trailing whitespaces
+nnoremap <silent> <F4> :%s/\(\t\\| \)\+$//g<CR>
 
-" Search with mouse double-click
-nnoremap <silent> <2-LeftMouse> /<C-R><C-W><CR><S-n>
+" Clear terminal
+nnoremap <silent> <S-F4> :!clear<CR><CR>
+
+" Search highlighted word
+nnoremap <silent> <F5> /<C-R><C-W><CR><S-n>
 
 " Search and replace
-nnoremap <silent> <F5> :%s//g<Left><Left>
-
-" Delete trailing whitespaces
-nnoremap <silent> <S-F5> :%s/\(\t\\| \)\+$//g<CR>
+nnoremap <silent> <S-F5> :%s//g<Left><Left>
 
 " Remove search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>

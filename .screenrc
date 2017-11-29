@@ -1,4 +1,4 @@
-# Eduardo custom: system-wide options in /etc/screenrc
+# System-wide options in /etc/screenrc
 
 # ------------------------------------------------------------------------------
 # GENERAL SETTINGS
@@ -120,6 +120,18 @@ termcapinfo xterm "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
 # following termcapinfo line which tells xterm to use the normal screen buffer
 # (which has scrollback), not the alternate screen buffer.
 termcapinfo xterm ti@:te@
+
+# Tell screen how to set colors (AB = background, AF = foreground)
+termcapinfo xterm "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
+
+# Allow bold colors
+attrcolor b ".I"
+
+# Use current bg color for erased chars
+defbce "on"
+
+# Set TERM with color support
+term screen-256color
 
 
 # ------------------------------------------------------------------------------
