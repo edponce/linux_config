@@ -5,11 +5,13 @@
 .aspell.en.pws
 .aspell.es.prepl
 .aspell.es.pws
-.bash_aliases
+#.bash_aliases
+.bash_aliases2
 .bash_config/
+.bash_environ
 .bash_history
-.bash_logout
-.bashrc
+#.bash_logout
+#.bashrc
 #bin/
 .cache/
 .cinelerra-cv/
@@ -121,7 +123,7 @@ PDF/
 Pictures/
 .pki/
 .PlayOnLinux/
-.profile
+#.profile
 .psensor/
 .pulse-cookie
 .purple/
