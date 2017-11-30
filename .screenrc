@@ -131,7 +131,7 @@ attrcolor b ".I"
 defbce "on"
 
 # Set TERM with color support
-#term screen.xterm-256color
+term screen.xterm-256color
 
 
 # ------------------------------------------------------------------------------
