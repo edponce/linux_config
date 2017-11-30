@@ -130,9 +130,6 @@ attrcolor b ".I"
 # Use current bg color for erased chars
 defbce "on"
 
-# Set TERM with color support
-term screen-256color
-
 
 # ------------------------------------------------------------------------------
 # STARTUP SCREENS
