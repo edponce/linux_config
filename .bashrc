@@ -31,7 +31,7 @@ fi
 
 # Set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    *xterm-color* | *xterm-256color*) color_prompt=yes ;;
+    *xterm-*color*) color_prompt=yes ;;
 esac
 
 # Uncomment for a colored prompt, if the terminal has the capability
@@ -70,8 +70,9 @@ HISTCONTROL=ignoreboth
 HISTSIZE=10000
 HISTFILESIZE=100000
 HISTTIMEFORMAT="[%F %T] "
-HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd ..:"
-HISTIGNORE+="exit:clear:history:env:date:ps:vi:vim:cal:calendar:"
+# Commands to ignore and not save in history (make sure it ends with ':')
+HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd ..:ps:ps -A:"
+HISTIGNORE+="exit:clear:history:env:date:vi:vim:cal:calendar:"
 if [ -f $HOME/.bash_aliases ]; then
     HISTIGNORE+="$(grep '^\W*alias' $HOME/.bash_aliases | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
 fi
@@ -151,13 +152,10 @@ prompt_command() {
     fi
 
     # Set prompt symbol depending on terminal
-    if [ -z "$STY" ]; then
-        # LXTerminal
-        prompt_symbol="${green_c}\$${off_c}"
-    else
-        # GNU Screen
-        prompt_symbol="${yellow_c}\$${off_c}"
-    fi
+    case "$TERM" in
+        screen*) prompt_symbol="${yellow_c}\$${off_c}" ;; # GNU Screen
+        *) prompt_symbol="${green_c}\$${off_c}" ;; # LXTerminal
+    esac
 
     # Set default interactive prompt
     PS1="${history_curr}${err_cmd}${git_branch} \W${prompt_symbol} "

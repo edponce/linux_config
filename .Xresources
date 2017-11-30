@@ -1,5 +1,6 @@
 ! Use color application resources
 *customization: -color
+XTerm.termName: xterm-256color
 
 ! Save scrollback lines
 *vt100.saveLines: 4096
@@ -12,13 +13,4 @@
 *vt100.translations: #override \n\
     Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
     Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
-
-! Make default copy to CLIPBOARD, not PRIMARY buffer
-! Normally, selected text is stored in PRIMARY, to be pasted with Shift+Insert
-! or by using the middle mouse button. By toggling this option to on, selected
-! text will use CLIPBOARD, allowing you to paste the text selected in an xterm
-! window into a GUI application using Ctrl+V
-!*vt100.selectToClipboard: true
-
-XTerm.termName: xterm-256color
 
