@@ -36,7 +36,7 @@ autocmd BufReadPost * call LastCursorPos()
 "highlight Comment ctermfg=darkcyan guifg=darkcyan
 "highlight Special ctermfg=magenta guifg=magenta
 highlight ExtraWhitespace ctermbg=red guibg=red
-highlight ColorColumn ctermbg=232 guibg=grey3
+highlight ColorColumn ctermbg=233 guibg=grey7
 highlight Visual ctermfg=white guifg=white
 
 " Show trailing whitespace and spaces before a tab
@@ -58,7 +58,7 @@ set softtabstop=4	" Set number of columns for a TAB
 set shiftwidth=4	" Set width of indents (<< and >>)
 set expandtab		" Expand TABs to spaces
 set hlsearch		" Enable highlighting during searches
-let &colorcolumn="81,".join(range(95,999),",")  " Color column limit
+let &colorcolumn="".join(range(80,999),",")  " Color column limit
 
 " Simpler symbol for commands
 nnoremap ; :
