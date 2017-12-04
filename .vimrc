@@ -58,7 +58,7 @@ set softtabstop=4	" Set number of columns for a TAB
 set shiftwidth=4	" Set width of indents (<< and >>)
 set expandtab		" Expand TABs to spaces
 set hlsearch		" Enable highlighting during searches
-let &colorcolumn="".join(range(80,999),",")  " Color column limit
+let &colorcolumn="".join(range(81,999),",")  " Color column limit
 
 " Simpler symbol for commands
 nnoremap ; :
@@ -69,9 +69,6 @@ nnoremap q: :q
 " Delete trailing whitespaces
 nnoremap <silent> <F4> :%s/\(\t\\| \)\+$//g<CR>
 
-" Clear terminal
-nnoremap <silent> <S-F4> :!clear<CR><CR>
-
 " Search highlighted word
 nnoremap <silent> <F5> /<C-R><C-W><CR><S-n>
 
@@ -81,6 +78,9 @@ nnoremap <silent> <S-F5> :%s//g<Left><Left>
 " Remove search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>
 
+" Remove overlaid terminal messages
+nnoremap <silent> <S-F6> :!<CR><CR>
+
 " Toggle spell checking
 nnoremap <silent> <F7> :set spell! spelllang=en<CR>
 nnoremap <silent> <S-F7> :set spell! spelllang=es<CR>
@@ -89,13 +89,13 @@ nnoremap <silent> <S-F7> :set spell! spelllang=es<CR>
 nnoremap <silent> <F8> :w!<CR>:!aspell -l en_US -c %<CR>:e! %<CR>
 nnoremap <silent> <S-F8> :w!<CR>:!aspell -l es -c %<CR>:e! %<CR>
 
+" Toggle line numbers
+nnoremap <silent> <F10> :set number!<CR>
+
 " Toggle hidden characters
 " eol:U+23ce,tab:U+25b6-,space:U+00b7,extends:U+25b6,precedes:U+25c0,nbsp:U+23b5
 set listchars=eol:⏎,tab:▶-,space:·,trail:~,extends:▶,precedes:◀,nbsp:⎵
-nnoremap <silent> <F9> :set list!<CR>
-
-" Toggle line numbers
-nnoremap <silent> <F10> :set number!<CR>
+nnoremap <silent> <S-F10> :set list!<CR>
 
 " Move between buffers in normal mode
 nnoremap <silent> <F11> :bp<CR>

@@ -97,15 +97,14 @@ if [ $bibtex -ge 1 ]; then
 fi
 $pdflatex_cmd
 
-# View
+# Clean and view
 if [ $clean -eq 0 ]; then
     texpdf="$workdir/$texpdf"
+    [ -e "$texpdf" ] && $view_cmd "$texpdf" &
 else
     mv "$workdir/$texpdf" "$texpdf"
     rm -r "$workdir"
 fi
-
-[ -e "$texpdf" ] && $view_cmd "$texpdf" &
 
 # Change to initial directory
 popd > /dev/null 2>&1
