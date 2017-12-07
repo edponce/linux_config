@@ -14,6 +14,8 @@
 .clamtk/
 .config/*
 !.config/lxterminal/
+!.config/lxsession/
+!.config/lxsession-default-apps/
 !.config/openbox/
 !.config/pcmanfm/
 .cups/
@@ -23,12 +25,12 @@ Desktop/
 .dmrc
 Documents/
 Downloads/
-.dropbox/
+.dropbox*/
 Dropbox/
-.dropbox-dist/
 .eclipse/
-#.emacs.d/
-.emacs.d/auto-save-list/
+.emacs.d/*
+!.emacs.d/init.el
+!.emacs.d/themes/
 .epsxe/
 .fceux/
 .FreeCAD/
@@ -107,8 +109,9 @@ texmf/
 #.tmux.conf
 .units_history
 Videos/
-#.vim/
-.vim/.netrwhist
+.vim/*
+!.vim/after/
+!.vim/colors/
 .viminfo
 #.vimrc
 VirtualBox*/
@@ -117,7 +120,7 @@ VirtualBox*/
 .wine/
 .wine32/
 .Xauthority
-#.xinputrc
+.xinputrc
 .xpaint/
 #.Xresources
 #.xscreensaver

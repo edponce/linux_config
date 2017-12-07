@@ -1,5 +1,8 @@
-This a set of scripts and configuration files used for Linux/GNU systems to
-provide ease-of-use for common tasks, such as:
+Linux Config
+============
+
+This a collection of scripts and configuration files used for GNU/Linux systems
+(based on LXDE/Ubuntu) to provide ease-of-use for common tasks, such as:
   * manage windows/monitors (e.g., switching, tiling)
   * process/generate markup files (e.g., TeX, ASCIIDoc, dot)
   * run programming scripts (e.g., MATLAB, SAS)
@@ -8,13 +11,15 @@ provide ease-of-use for common tasks, such as:
   * keyboard bindings
   * and others
 
-These were created for LXDE environment to help for office work and software development.
-The collection of scripts found in the bin/ folder are written in bash, Python3, and Perl5.
-Shell scripts follow a similar structure but are not currently POSIX compliant (eventually).
-The .config/ folder has configuration files for Openbox (window manager) and LXTerminal.
-The Openbox configuration uses custom keybindings to invoke the collection of scripts.
-A manual for the keybinds is included in the bin/keybinds/ folder.
-GNU screen, tmux, and vim configurations are also provided.
+These were created with the idea of minimizing mouse usage and increase productivity
+in personal tasks, office work, and software development.
+Scripts are written in bash, Python3, and Perl.
+Shell scripts follow a similar structure but are not currently POSIX compliant (coming soon).
+Included are configuration files for Vim, gedit, GNU Emacs, GNU Screen, tmux, X,
+Openbox, PCManFM, and LXTerminal.
+The Openbox configuration uses custom keybindings to invoke user-defined actions
+and invoke scripts.
+A manual for the keybinds is included in 'bin/keybinds' folder.
 
 Some scripts and configuration files require software dependencies to be met:
   * xdotool, wmctrl, xwininfo, xprop, xrandr
@@ -25,3 +30,4 @@ Some scripts and configuration files require software dependencies to be met:
   * NVIDIA drivers, bumblebee, optirun, primusrun
   * pdflatex, bibtex, dot, dot2tex, asciidoc, a2x, ps2eps, epstopdf
   * matlab, sas
+  * and others
