@@ -1,0 +1,24 @@
+# Environment utilities (e.g., set_envvar)
+. "$HOME/bin/environ_utils"
+
+# Java VM environment
+export JAVA_HOME="/usr/lib/jvm/default-java"
+export JRE_HOME="$JAVA_HOME/jre"
+
+# OpenMP options
+export OMP_THREAD_LIMIT=$(lscpu | awk '/^CPU\(s\):/ { print $2 }')
+export OMP_NUM_THREADS=$(echo "$OMP_THREAD_LIMIT / 2" | bc)
+
+# Linker library paths
+#env_values=()
+#set_envvar LD_LIBRARY_PATH "${env_values[@]}"
+
+# User private bin paths
+env_values=(
+            "$HOME/bin"
+            "$HOME/.local/bin"
+           )
+set_envvar PATH "${env_values[@]}"
+
+unset env_values
+

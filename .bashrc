@@ -22,31 +22,31 @@ shopt -s globstar
 set -o ignoreeof
 
 # Make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x "/usr/bin/lesspipe" ] && eval "$(SHELL="/bin/sh" lesspipe)"
 
 # Try to force terminal to use 256 color in X sessions
-if [ -n "$DISPLAY" ] && [ "$TERM" = xterm ]; then
-    export TERM=xterm-256color
+if [ -n "$DISPLAY" ] && [ "$TERM" = "xterm" ]; then
+    export TERM="xterm-256color"
 fi
 
 # Set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    *xterm-*color*) color_prompt=yes ;;
+    *xterm-*color*) color_prompt="yes" ;;
 esac
 
 # Uncomment for a colored prompt, if the terminal has the capability
 #force_color_prompt=yes
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >& /dev/null; then
+    if [ -x "/usr/bin/tput" ] && tput setaf 1 >& /dev/null; then
         # We have color support; assume it's compliant with Ecma-48
         # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
         # a case would tend to support setf rather than setaf.)
-        color_prompt=yes
+        color_prompt="yes"
     fi
 fi
 
 # Set colors
-if [ "$color_prompt" = yes ]; then
+if [ "$color_prompt" = "yes" ]; then
     typeset -r off_c="\[\033[00m\]"
     typeset -r black_c="\[\033[01;30m\]"
     typeset -r red_c="\[\033[01;31m\]"
@@ -57,14 +57,18 @@ if [ "$color_prompt" = yes ]; then
     typeset -r cyan_c="\[\033[01;36m\]"
     typeset -r white_c="\[\033[01;37m\]"
 
-    # colored GCC warnings and errors
-    export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+    # Colors for GCC warnings and errors
+    export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 fi
-unset color_prompt force_color_prompt
+
+# Colorize files
+if [ -x "/usr/bin/dircolors" ]; then
+    test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
+fi
 
 # Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL="ignoreboth"
 
 # Settings for history length, see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
@@ -73,12 +77,11 @@ HISTTIMEFORMAT="[%F %T] "
 # Commands to ignore and not save in history (make sure it ends with ':')
 HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd ..:ps:ps -A:"
 HISTIGNORE+="exit:clear:history:env:date:vi:vim:cal:calendar:"
-if [ -f $HOME/.bash_aliases ]; then
-    HISTIGNORE+="$(grep '^\W*alias' $HOME/.bash_aliases | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
-fi
-if [ -f $HOME/.bash_aliases2 ]; then
-    HISTIGNORE+="$(grep '^\W*alias' $HOME/.bash_aliases2 | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
-fi
+for each in "$HOME/.shell_aliases" "$HOME/.shell_aliases2"; do
+    if [ -f "$each" ]; then
+        HISTIGNORE+="$(grep '^\W*alias' "$each" | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
+    fi
+done
 
 # Controls for sync_history function, do not unset these variables
 history_last_sync_seconds=$SECONDS
@@ -121,7 +124,7 @@ prompt_command() {
         else
             file_num=0
         fi
-        history_basefile=$(basename "$HISTFILE")
+        history_basefile="$(basename "$HISTFILE")"
         history_backupfile="$history_backup_dir/${history_basefile#*.}.$file_num"
         grep -v "^#" "$HISTFILE" > "$history_backupfile"
         gzip "$history_backupfile"
@@ -176,25 +179,23 @@ prompt_234_command
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+  if [ -f "/usr/share/bash-completion/bash_completion" ]; then
+    . "/usr/share/bash-completion/bash_completion"
+  elif [ -f "/etc/bash_completion" ]; then
+    . "/etc/bash_completion"
   fi
 fi
 
-# Private environment settings
-if [ -f $HOME/.bash_environ ]; then
-    . $HOME/.bash_environ
-fi
-
-# General alias definitions
-if [ -f $HOME/.bash_aliases ]; then
-    . $HOME/.bash_aliases
-fi
-
-# Private alias definitions
-if [ -f $HOME/.bash_aliases2 ]; then
-    . $HOME/.bash_aliases2
-fi
+# General/local environment and alias settings
+config_files=(
+"$HOME/.shell_environ"
+"$HOME/.shell_environ2"
+"$HOME/.shell_aliases"
+"$HOME/.shell_aliases2"
+)
+for each in "${config_files[@]}"; do
+    if [ -f "$each" ]; then
+        . "$each"
+    fi
+done
 

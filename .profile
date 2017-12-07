@@ -17,24 +17,17 @@ if [ "$(command -v xrandr)" ]; then
     fi
 fi
 
+# General environment settings
+export VISUAL="/usr/bin/vim"
+export EDITOR="$VISUAL"
+#export MAIL="/var/spool/mail/$USER"
+export MAILPATH=/var/spool/mail/$USER?"You have mail!":/var/spool/mail/mail?"Root has mail!"
+export PAGER="/usr/bin/less"
+
 # If running bash, include .bashrc if it exists
 if [ -n "$BASH_VERSION" ]; then
-    if [ -f $HOME/.bashrc ]; then
-        . $HOME/.bashrc
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
     fi
 fi
-
-# Environment utilities (e.g., set_envvar)
-. $HOME/bin/environ_utils
-
-# User private bin paths
-#export PATH="$HOME/bin:${PATH:+:$PATH}"
-#export PATH="$HOME/.local/bin:${PATH:+:$PATH}"
-env_values=(
-            $HOME/bin
-            $HOME/.local/bin
-           )
-set_envvar PATH "${env_values[@]}"
-
-unset env_values
 

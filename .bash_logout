@@ -2,6 +2,6 @@
 
 # Clear screen when leaving the console to increase privacy
 if [ "$SHLVL" = 1 ]; then
-    [ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
+    [ -x "/usr/bin/clear_console" ] && "/usr/bin/clear_console" -q
 fi
 

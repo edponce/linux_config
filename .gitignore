@@ -1,10 +1,11 @@
 *.swp
 .adobe/
 .aspell*
-#.bash_aliases
-.bash_aliases2
-.bash_config/
-.bash_environ
+#.shell_aliases
+#.shell_environ
+.local_config/
+.shell_aliases2
+.shell_environ2
 .bash_history
 #.bash_logout
 #.bashrc
@@ -55,9 +56,11 @@ Dropbox/
 .macromedia/
 .mailrc
 .matlab/
+Mail/
 .mozilla
 .mplayer/
 .mtpaint
+.mutt/
 Music/
 .mysql_history
 .nano/

@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-# NOTE: This script is to be POSIX comliant and sourced only. The 'exit' statement
+# NOTE: This script is to be POSIX compliant and sourced only. The 'exit' statement
 # should never appear in this code as it is sourced from .bashrc or .profile
 # during login, thus exiting the login shell right after user logs in. If this
 # happens, the brute force solution is to press Ctrl+C immediately after user
@@ -9,7 +9,7 @@
 #usage_set_envvar()
 #{
 #    echo
-#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\"] ..."
+#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR "VALUE1" ["VALUE2"] ..."
 #    echo
 #    echo "Adds a list of values to an environment variable."
 #    echo
@@ -33,10 +33,10 @@ set_envvar()
     # Get command line options
     while [ "$1" ]; do
         case "$1" in
-            #-h | --help)
+            -h | --help)
             #    usage_set_envvar
-            #    return 0
-            #    ;;
+                return 0
+                ;;
             -o | --overwrite)
                 overwrite=1
                 shift
@@ -66,7 +66,7 @@ set_envvar()
 
     # Prevent duplicate values to environment variable
     for each in "${arg_value[@]}"; do
-        if [[ ! ${!env_var} =~ ($delim)?$each($delim.*)?$ ]]; then
+        if [[ ! "${!env_var}" =~ ($delim)?$each($delim.*)?$ ]]; then
             env_value+=("$each")
         fi
     done
