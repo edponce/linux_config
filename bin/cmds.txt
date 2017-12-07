@@ -1,5 +1,4 @@
-# Idea: make cmd/GUI program where one can search/select commands from this list
-# Use a database
+# NOTE: make cmd/GUI program where one can search/select commands from this list
 
 # Reset password Ubuntu
 # Boot in recovery mode (hold <SHIFT> to access boot menu)
@@ -80,10 +79,10 @@ synclient -l
 synclient HorizTwoFingerScroll=1
 
 # Play VLC without GUI
-cvlc -I cli -Z /home/edponce/Music/Random/*
-cvlc -I ncurses -Z -L /home/edponce/Music/Random/*
-cvlc -I http -Z /home/edponce/Music/Random/*
-cvlc -I rc -Z /home/edponce/Music/Random/*
+cvlc -I cli -Z $HOME/Music/*
+cvlc -I ncurses -Z -L $HOME/Music/*
+cvlc -I http -Z $HOME/Music/*
+cvlc -I rc -Z $HOME/Music/*
 
 # Change VLC output device to HDMI
 open, right-click -> Audio -> Audio Device -> HDMI
@@ -217,9 +216,9 @@ sudo mkfs.fat -F 32 -I /dev/sdc1
 sudo mkfs.ntfs /dev/sdc1
 
 # Mounting media
-sudo mkdir /media/edponce/mymount
-sudo mount /dev/sdc1 /media/edponce/mymount
-sudo mount -o loop ISO/FILE.iso /media/edponce/mymount
+sudo mkdir /media/$USER/mymount
+sudo mount /dev/sdc1 /media/$USER/mymount
+sudo mount -o loop ISO/FILE.iso /media/$USER/mymount
 
 # Change drive label (ext#)
 sudo e2label /dev/sdc1    # print current
@@ -230,11 +229,11 @@ sudo ntfslabel /dev/sdc1 NEW_LABEL
 # Backup partition
 # Use a live OS, umount read partition, mount write partition
 sudo -i
-dd if=/dev/sda1 conv=sync,noerror bs=64K | gzip -c | split -b4G - /media/edponce/MY_HDD/backup.img.gz
+dd if=/dev/sda1 conv=sync,noerror bs=64K | gzip -c | split -b4G - /media/$USER/MY_HDD/backup.img.gz
 # To restore
-cat /media/edponce/MY_HDD/backup.img.gz* | gzip -c | dd of=/dev/sda1
+cat /media/$USER/MY_HDD/backup.img.gz* | gzip -c | dd of=/dev/sda1
 # Restore boot loader (512 B or 448 MBR)
-cat /media/edponce/MY_HDD/backup.img.gz* | gzip -c | count -c=1 dd of=/dev/sda1
+cat /media/$USER/MY_HDD/backup.img.gz* | gzip -c | count -c=1 dd of=/dev/sda1
 
 # View terminal special character settings
 # lnext = ^V, enters the next character quoted so literally
@@ -417,7 +416,7 @@ pacmd set-card-profile alsa_card.pci-0000_00_1b.0 "output:hdmi-surround71"
 
 # Send email
 # Type '.' to end email body
-#mail -v -s "Subject blah 5" -S smtp=smtp.gmail.com:587 -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user=edponce2010@gmail.com -S smtp-auth-password=12345 -S ssl-verify=ignore -S from=edponce2010@gmail.com edponce00@hotmail.com
+#mail -v -s "Subject blah 5" -S smtp=smtp.gmail.com:587 -S smtp-use-starttls -S smtp-auth=login -S smtp-auth-user=myemail@gmail.com -S smtp-auth-password=12345 -S ssl-verify=ignore -S from=myemail@gmail.com myemail@hotmail.com
 mail -A utk -s "This is the subject" sendto@email.com
 
 # Xfinity gateway
@@ -448,11 +447,11 @@ update-locale LANG=es_PR.UTF-8
 # Setup autologin in LightDM
 # user must be part of 'autologin' group
 groupadd -r autologin
-gpasswd -a edponce autologin
+gpasswd -a $USER autologin
 # In /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf, add
 #pam-service=lightdm
 #pam-autologin-service=lightdm-autologin
-autologin-user=edponce
+autologin-user=myusername
 autologin-user-timeout=0
 
 # Convert between package formats

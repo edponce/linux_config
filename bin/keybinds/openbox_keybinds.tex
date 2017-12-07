@@ -1,11 +1,6 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Report Template by Eduardo Ponce %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%----------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------%
 %  PACKAGES AND DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
-
+%-----------------------------------------------------------------------------%
 % Document styles
 \documentclass[letterpaper,12pt]{article}
 
@@ -13,21 +8,21 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[hmargin=0.5in, vmargin=1.0in]{geometry}  % Document margins
+\usepackage{float}  % Options for floating objects
 \usepackage{array}  % Row and column types
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash\hspace{0pt}}m{#1}}
-\usepackage{amsmath}  % Math
-\usepackage{booktabs}  % Rule lines
-\usepackage{float}  % Options for floating objects
 
 % Custom automatic indentation
 \setlength\parindent{0pt}
-%----------------------------------------------------------------------------------------
+%-----------------------------------------------------------------------------%
 
 
 \begin{document}
 
+
+%-----------------------------------------------------------------------------%
 {\centering\textbf{\Large OpenBox Keybindings} \par}
 
 \section*{Desktops management}
@@ -42,7 +37,10 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
 
+
+%-----------------------------------------------------------------------------%
 \section*{Extras}
 \begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
@@ -62,7 +60,10 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
 
+
+%-----------------------------------------------------------------------------%
 \section*{Mouse (keyboard)}
 \begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
@@ -87,7 +88,10 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
 
+
+%-----------------------------------------------------------------------------%
 \section*{Windows management}
 \begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
@@ -138,7 +142,10 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
 
+
+%-----------------------------------------------------------------------------%
 \begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
     \hline
@@ -157,7 +164,10 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
 
+
+%-----------------------------------------------------------------------------%
 \section*{Applications}
 \begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
@@ -186,7 +196,10 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
 
+
+%-----------------------------------------------------------------------------%
 \section*{Sound management}
 \begin{table}[H]
   \begin{tabular}{|C{5cm}|L{10cm}|}
@@ -201,6 +214,8 @@
     \hline
   \end{tabular}
 \end{table}
+%-----------------------------------------------------------------------------%
+
 
 \end{document}
 
