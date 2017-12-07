@@ -14,8 +14,6 @@
 .clamtk/
 .config/*
 !.config/lxterminal/
-!.config/lxsession/
-!.config/lxsession-default-apps/
 !.config/openbox/
 !.config/pcmanfm/
 .cups/
