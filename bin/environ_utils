@@ -55,12 +55,12 @@ set_envvar()
 
     # Validate
     if [ -z "$env_var" ]; then
-        echo "Error: missing name of environment variable."
+        #echo "Error: missing name of environment variable."
         return 1
     fi
 
     if [ ${#arg_value[@]} -eq 0 ]; then
-        echo "Error: missing value(s) for environment variable."
+        #echo "Error: missing value(s) for environment variable."
         return 1
     fi
 

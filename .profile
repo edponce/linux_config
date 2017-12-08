@@ -21,7 +21,7 @@ fi
 export VISUAL="/usr/bin/vim"
 export EDITOR="$VISUAL"
 #export MAIL="/var/spool/mail/$USER"
-export MAILPATH=/var/spool/mail/$USER?"You have mail!":/var/spool/mail/mail?"Root has mail!"
+export MAILPATH=/var/spool/mail/$USER?"$USER, you've got mail!":/var/spool/mail/mail?"Root, you've got mail!"
 export PAGER="/usr/bin/less"
 
 # If running bash, include .bashrc if it exists

@@ -45,7 +45,7 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# Set colors
+# Set colors, do not unset these variables
 if [ "$color_prompt" = "yes" ]; then
     typeset -r off_c="\[\033[00m\]"
     typeset -r black_c="\[\033[01;30m\]"
@@ -187,15 +187,17 @@ if ! shopt -oq posix; then
 fi
 
 # General/local environment and alias settings
-config_files=(
-"$HOME/.shell_environ"
-"$HOME/.shell_environ2"
-"$HOME/.shell_aliases"
-"$HOME/.shell_aliases2"
-)
-for each in "${config_files[@]}"; do
+shell_files=(
+              "$HOME/.shell_environ"
+              "$HOME/.shell_environ2"
+              "$HOME/.shell_aliases"
+              "$HOME/.shell_aliases2"
+             )
+for each in "${shell_files[@]}"; do
     if [ -f "$each" ]; then
         . "$each"
     fi
 done
+
+unset color_prompt shell_files
 

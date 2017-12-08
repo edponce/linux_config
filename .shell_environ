@@ -1,6 +1,3 @@
-# Environment utilities (e.g., set_envvar)
-. "$HOME/bin/environ_utils"
-
 # Java VM environment
 export JAVA_HOME="/usr/lib/jvm/default-java"
 export JRE_HOME="$JAVA_HOME/jre"
@@ -9,11 +6,18 @@ export JRE_HOME="$JAVA_HOME/jre"
 export OMP_THREAD_LIMIT=$(lscpu | awk '/^CPU\(s\):/ { print $2 }')
 export OMP_NUM_THREADS=$(echo "$OMP_THREAD_LIMIT / 2" | bc)
 
-# Linker library paths
-#env_values=()
-#set_envvar LD_LIBRARY_PATH "${env_values[@]}"
+# Environment utilities (e.g., set_envvar)
+[ -f "$HOME/bin/environ_utils" ] || return
+. "$HOME/bin/environ_utils"
 
-# User private bin paths
+# Linker library paths
+env_values=(
+           )
+set_envvar LD_LIBRARY_PATH "${env_values[@]}"
+
+# Binary paths
+#  Python local bin directory (required for Jupyter notebook)
+#   .local/bin
 env_values=(
             "$HOME/bin"
             "$HOME/.local/bin"
