@@ -42,7 +42,7 @@ Dropbox/
 .gnuplot_history
 .gstreamer-*/
 .hardinfo/
-.history/
+.local_history/
 .hplip/
 .ICAClient/
 .ipython/

@@ -21,13 +21,22 @@ fi
 export VISUAL="/usr/bin/vim"
 export EDITOR="$VISUAL"
 #export MAIL="/var/spool/mail/$USER"
-export MAILPATH=/var/spool/mail/$USER?"$USER, you've got mail!":/var/spool/mail/mail?"Root, you've got mail!"
+export MAILPATH=/var/spool/mail/$USER?"$USER, you've got mail!":/var/spool/mail/mail?"root, you've got mail!"
 export PAGER="/usr/bin/less"
 
 # If running bash, include .bashrc if it exists
 if [ -n "$BASH_VERSION" ]; then
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-    fi
+    [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 fi
+
+# General/local environment settings
+environ_files=(
+"$HOME/.shell_environ"
+"$HOME/.shell_environ2"
+)
+for each in "${environ_files[@]}"; do
+    [ -f "$each" ] && . "$each"
+done
+
+unset environ_files each
 

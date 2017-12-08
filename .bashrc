@@ -4,7 +4,7 @@
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
-      *) return;;
+      *) return ;;
 esac
 
 # Append to the history file, don't overwrite it
@@ -47,15 +47,15 @@ fi
 
 # Set colors, do not unset these variables
 if [ "$color_prompt" = "yes" ]; then
-    typeset -r off_c="\[\033[00m\]"
-    typeset -r black_c="\[\033[01;30m\]"
-    typeset -r red_c="\[\033[01;31m\]"
-    typeset -r green_c="\[\033[01;32m\]"
-    typeset -r yellow_c="\[\033[01;33m\]"
-    typeset -r blue_c="\[\033[01;34m\]"
-    typeset -r magenta_c="\[\033[01;35m\]"
-    typeset -r cyan_c="\[\033[01;36m\]"
-    typeset -r white_c="\[\033[01;37m\]"
+    declare -r off_c="\[\033[00m\]"
+    declare -r black_c="\[\033[01;30m\]"
+    declare -r red_c="\[\033[01;31m\]"
+    declare -r green_c="\[\033[01;32m\]"
+    declare -r yellow_c="\[\033[01;33m\]"
+    declare -r blue_c="\[\033[01;34m\]"
+    declare -r magenta_c="\[\033[01;35m\]"
+    declare -r cyan_c="\[\033[01;36m\]"
+    declare -r white_c="\[\033[01;37m\]"
 
     # Colors for GCC warnings and errors
     export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
@@ -85,24 +85,24 @@ done
 
 # Controls for sync_history function, do not unset these variables
 history_last_sync_seconds=$SECONDS
-typeset -ir history_max_sync_seconds=90
-typeset -r history_backup_dir="$HOME/.history"
+declare -ir history_max_sync_seconds=90
+declare -r history_backup_dir="$HOME/.local_history"
 
 prompt_command() {
-    local -ir err_cmd_val=$? # get error from last command
-    local err_cmd
-    local history_last
-    local file_num
-    local history_basefile
-    local history_backupfile
-    local -i history_val
-    local history_curr
-    local git_toplevel
-    local git_project
-    local git_branch
-    local git_branch_str
-    local -i git_branch_cnt
-    local prompt_symbol
+    declare -ir err_cmd_val=$? # get error from last command
+    declare err_cmd
+    declare history_last
+    declare file_num
+    declare history_basefile
+    declare history_backupfile
+    declare -i history_val
+    declare history_curr
+    declare git_toplevel
+    declare git_project
+    declare git_branch
+    declare git_branch_str
+    declare -i git_branch_cnt
+    declare prompt_symbol
 
     # History consistency between shells
     if [ $((SECONDS - history_last_sync_seconds)) -gt $history_max_sync_seconds ]; then
@@ -157,7 +157,7 @@ prompt_command() {
     # Set prompt symbol depending on terminal
     case "$TERM" in
         screen*) prompt_symbol="${yellow_c}\$${off_c}" ;; # GNU Screen
-        *) prompt_symbol="${green_c}\$${off_c}" ;; # LXTerminal
+        *) prompt_symbol="${green_c}\$${off_c}" ;;
     esac
 
     # Set default interactive prompt
@@ -179,25 +179,21 @@ prompt_234_command
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f "/usr/share/bash-completion/bash_completion" ]; then
-    . "/usr/share/bash-completion/bash_completion"
-  elif [ -f "/etc/bash_completion" ]; then
-    . "/etc/bash_completion"
-  fi
+    if [ -f "/usr/share/bash-completion/bash_completion" ]; then
+        . "/usr/share/bash-completion/bash_completion"
+    elif [ -f "/etc/bash_completion" ]; then
+        . "/etc/bash_completion"
+    fi
 fi
 
-# General/local environment and alias settings
-shell_files=(
-              "$HOME/.shell_environ"
-              "$HOME/.shell_environ2"
-              "$HOME/.shell_aliases"
-              "$HOME/.shell_aliases2"
-             )
-for each in "${shell_files[@]}"; do
-    if [ -f "$each" ]; then
-        . "$each"
-    fi
+# General/local alias settings
+alias_files=(
+"$HOME/.shell_aliases"
+"$HOME/.shell_aliases2"
+)
+for each in "${alias_files[@]}"; do
+    [ -f "$each" ] && . "$each"
 done
 
-unset color_prompt shell_files
+unset color_prompt alias_files each
 

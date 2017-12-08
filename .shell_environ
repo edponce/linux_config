@@ -11,17 +11,16 @@ export OMP_NUM_THREADS=$(echo "$OMP_THREAD_LIMIT / 2" | bc)
 . "$HOME/bin/environ_utils"
 
 # Linker library paths
-env_values=(
-           )
-set_envvar LD_LIBRARY_PATH "${env_values[@]}"
+#env_values=()
+#set_envvar LD_LIBRARY_PATH "${env_values[@]}"
 
 # Binary paths
 #  Python local bin directory (required for Jupyter notebook)
 #   .local/bin
 env_values=(
-            "$HOME/bin"
-            "$HOME/.local/bin"
-           )
+"$HOME/bin"
+"$HOME/.local/bin"
+)
 set_envvar PATH "${env_values[@]}"
 
 unset env_values

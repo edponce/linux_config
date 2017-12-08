@@ -9,7 +9,7 @@
 #usage_set_envvar()
 #{
 #    echo
-#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR "VALUE1" ["VALUE2"] ..."
+#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\"] ..."
 #    echo
 #    echo "Adds a list of values to an environment variable."
 #    echo
@@ -23,44 +23,41 @@
 set_envvar()
 {
     # Default options
-    local -i overwrite=0
-    local delim=":"
-    local env_var
-    local arg_value=()
-    local env_value=()
-    local env_str
+    declare -i overwrite=0
+    declare delim=":"
+    declare env_var
+    declare arg_value=()
+    declare env_value=()
+    declare env_str
+    declare each
 
     # Get command line options
     while [ "$1" ]; do
         case "$1" in
             -h | --help)
             #    usage_set_envvar
-                return 0
-                ;;
+                return ;;
             -o | --overwrite)
                 overwrite=1
-                shift
-                ;;
+                shift ;;
             -d | --delim)
                 delim="$2"
-                shift 2
-                ;;
+                shift 2 ;;
             *)
                 env_var="$1"
                 arg_value=("${@:2}")
-                shift $#
-                ;;
+                shift $# ;;
         esac
     done
 
     # Validate
     if [ -z "$env_var" ]; then
-        #echo "Error: missing name of environment variable."
+        echo "Error: missing name of environment variable."
         return 1
     fi
 
     if [ ${#arg_value[@]} -eq 0 ]; then
-        #echo "Error: missing value(s) for environment variable."
+        echo "Error: missing value(s) for environment variable."
         return 1
     fi
 
@@ -70,7 +67,7 @@ set_envvar()
             env_value+=("$each")
         fi
     done
-    [ ${#env_value[@]} -eq 0 ] && return 0
+    [ ${#env_value[@]} -eq 0 ] && return
 
     # Convert values into delimited string
     env_str=$(IFS="$delim"; echo "${env_value[*]}")

@@ -6,9 +6,9 @@
 # Usage: error_msg "file does not exists" 1
 error_msg()
 {
-    local errcolor="\033[01;31m" # red
-    local offcolor="\033[00m" # off
-    echo -e "${errcolor}Error:${offcolor} $1"
+    declare -r errcolor="\033[01;31m" # red
+    declare -r offcolor="\033[00m" # off
+    echo -e "${errcolor}ERROR:${offcolor} $1"
     [[ $2 =~ ^[0-9]+$ ]] && exit $2
 }
 
@@ -18,9 +18,9 @@ error_msg()
 # Usage: warn_msg "value out of range" 1
 warn_msg()
 {
-    local errcolor="\033[01;31m" # red
-    local offcolor="\033[00m" # off
-    echo -e "${errcolor}Warning:${offcolor} $1"
+    declare -r errcolor="\033[01;31m" # red
+    declare -r offcolor="\033[00m" # off
+    echo -e "${errcolor}WARNING:${offcolor} $1"
     [[ $2 =~ ^[0-9]+$ ]] && exit $2
 }
 
