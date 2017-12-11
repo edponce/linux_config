@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-. "$HOME/bin/error_utils"
 . "$HOME/bin/common_utils"
+errmsg="\033[01;31mERROR\033[00m"
+warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
@@ -22,39 +23,33 @@ _EOF_
 
 # Default options
 adtype=0
-adffile=
+adffile=""
 filext=".asciidoc"
 
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
-        -h | --help)
-            usage
-            exit 0
-            ;;
-        -t | --type)
-            adtype=$2
-            shift 2
-            ;;
-        -f | --file)
-            adffile="$2"
-            shift 2
-            ;;
-        *)
-            usage
-            error_msg "invalid command line option, $1" 1
-            ;;
+        -h | --help) usage
+            exit 0 ;;
+        -t | --type) adtype=$2
+            shift 2 ;;
+        -f | --file) adffile="$2"
+            shift 2 ;;
+        *) usage
+            echo -e "$errmsg: invalid command line option, $1"
+            exit 1 ;;
     esac
 done
 
 # Validate
-if [ -z "$adffile" ]; then
-    find_file_ext "$filext"
-    [ $? -eq 0 ] || exit 1
-    adffile="$file_list"
+if [ $adtype -lt 0 ] || [ $adtype -gt 2 ]; then
+    echo -e "$errmsg: invalid document type value"
+    exit 1
 fi
-if [ ! -e "$adffile" ]; then
-    error_msg "file '$adffile' does not exists" 1
+[ -z "$adffile" ] && adffile="$(find_file_ext "$filext")"
+if [ ! -f "$adffile" ]; then
+    echo -e "$errmsg: file '$adffile' does not exists"
+    exit 1
 fi
 
 # Commands (compile and view)
@@ -63,12 +58,12 @@ adfile="$(basename "$adffile")"
 adbase="${adfile%.*}"
 adpdf="$adbase.pdf"
 adxml="$adbase.xml"
-dblatex_cmd="dblatex $adxml -T simple"
-view_cmd="evince"
+dblatex_cmd="dblatex \"$adxml\" -T simple"
+view_cmd="evince \"$adpdf\""
 case $adtype in
-    0) ad_cmd="a2x -d article -f pdf $adfile" ;;
-    1) ad_cmd="a2x -d book -f pdf $adfile" ;;
-    2) ad_cmd="asciidoc -b docbook $adfile" ;;
+    0) ad_cmd="a2x -d article -f pdf \"$adfile\"" ;;
+    1) ad_cmd="a2x -d book -f pdf \"$adfile\"" ;;
+    2) ad_cmd="asciidoc -b docbook \"$adfile\"" ;;
 esac
 
 # Change to file directory
@@ -76,17 +71,15 @@ pushd . > /dev/null 2>&1
 cd "$addir"
 
 # Run
-$ad_cmd
-if [ -e "$adxml" ]; then
-    $dblatex_cmd
+eval $ad_cmd; [ $? -eq 0 ] || exit 1
+if [ -f "$adxml" ]; then
+    eval $dblatex_cmd; [ $? -eq 0 ] || exit 1
     rm "$adxml"
 fi
 
 # View
-[ -e "$adpdf" ] && $view_cmd "$adpdf" &
+[ -f "$adpdf" ] && eval $view_cmd &
 
 # Change to initial directory
 popd > /dev/null 2>&1
-
-exit 0
 

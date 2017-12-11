@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 usage()
 {
@@ -12,27 +12,19 @@ _EOF_
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
-        -h | --help)
-            usage
-            exit 0
-            ;;
-        *)
-            usage
-            echo "Error: invalid command line option, $1"
-            exit 1
-            ;;
+        -h | --help) usage
+            exit 0 ;;
+        *) shift ;;
     esac
 done
 
-# Wait for pressed key
+# Wait for a key press
 ukey=
-read -r -n 1 -p 'Press any key to continue ... ' ckey
+read -r -n 1 -p 'Press any key to continue ... ' ukey
 
 # Print newline if pressed key is not '\n' or '\r'
-#dkey=$(echo "$ckey" | od -An -t uC | awk '{ print $1 }')
-#if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
-echo
-#fi
-
-exit 0
+dkey=$(echo "$ukey" | od -An -t uC | awk '{ print $1 }')
+if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
+    echo
+fi
 

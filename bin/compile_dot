@@ -1,12 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
-. "$HOME/bin/error_utils"
 . "$HOME/bin/common_utils"
+errmsg="\033[01;31mERROR\033[00m"
+warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
 cat << _EOF_
-Usage: $(basename $0) [--help] [--tex] [--file="DOTFILE"]
+Usage: $(basename $0) [--help] [--tex] [--file "DOTFILE"]
 
 Compile a DOT file into PNG or TeX format.
 If a DOT file is not provided, current directory is search for one.
@@ -16,39 +17,29 @@ _EOF_
 
 # Default options
 tex=0
-dotffile=
+dotffile=""
 filext=".dot"
 
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
-        -h | --help)
-            usage
-            exit 0
-            ;;
-        -t | --tex)
-            tex=1
-            shift
-            ;;
-        -f | --file)
-            dotffile="$2"
-            shift 2
-            ;;
-        *)
-            usage
-            error_msg "invalid command line option, $1" 1
-            ;;
+        -h | --help) usage
+            exit 0 ;;
+        -t | --tex) tex=1
+            shift ;;
+        -f | --file) dotffile="$2"
+            shift 2 ;;
+        *) usage
+            echo -e "$errmsg: invalid command line option, $1"
+            exit 1 ;;
     esac
 done
 
 # Validate
-if [ -z "$dotffile" ]; then
-    find_file_ext "$filext"
-    [ $? -eq 0 ] || exit 1
-    dotffile="$file_list"
-fi
-if [ ! -e "$dotffile" ]; then
-    error_msg "file '$dotffile' does not exists" 1
+[ -z "$dotffile" ] && dotffile="$(find_file_ext "$filext")"
+if [ ! -f "$dotffile" ]; then
+    echo -e "$errmsg: file '$dotffile' does not exists"
+    exit 1
 fi
 
 # Commands (compile and view)
@@ -57,10 +48,10 @@ dotfile="$(basename "$dotffile")"
 dotbase="${dotfile%.*}"
 dotpng="$dotbase.png"
 dottex="$dotbase.tex"
-view_cmd="gpicview"
+view_cmd="gpicview \"$dotpng\""
 case $tex in
-    0) dot_cmd="dot -Tpng $dotfile -o $dotpng" ;;
-    1) dot_cmd="dot -Txdot $dotfile | dot2tex > $dottex" ;;
+    0) dot_cmd="dot -Tpng \"$dotfile\" -o \"$dotpng\"" ;;
+    1) dot_cmd="dot -Txdot \"$dotfile\" | dot2tex > \"$dottex\"" ;;
 esac
 
 # Change to file directory
@@ -68,13 +59,11 @@ pushd . > /dev/null 2>&1
 cd "$dotdir"
 
 # Run
-$dot_cmd
+eval $dot_cmd; [ $? -eq 0 ] || exit 1
 
 # View
-[ -e "$dotpng" ] && $view_cmd "$dotpng" &
+[ -f "$dotpng" ] && eval $view_cmd &
 
 # Change to initial directory
 popd > /dev/null 2>&1
-
-exit 0
 

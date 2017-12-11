@@ -4,6 +4,9 @@ alias doc='cd $HOME/Documents'
 
 # Commands/utilities
 alias clear='tput clear'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 alias h='history 25'
 alias hh='history 50'
 alias hhh='history 100'

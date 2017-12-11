@@ -1,47 +1,44 @@
-#!/bin/bash
+#!/bin/sh
 
-. "$HOME/bin/error_utils"
+errmsg="\033[01;31mERROR\033[00m"
+warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
 cat << _EOF_
-Usage: $(basename $0) [--help] "APPLICATION"
+Usage: $(basename $0) [--help] "APPLICATION" "ARGS"
 
 Wrapper to invoke an application and clear terminal after its completion.
 _EOF_
 }
 
 # Default options
-app=
+app=""
 
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
-        -h | --help)
-            usage
-            exit 0
-            ;;
-        *)
-            app="$@"
-            shift $#
-            ;;
+        -h | --help) usage
+            exit 0 ;;
+        *) app="$@"
+            shift $# ;;
     esac
 done
 
 # Validate
 if [ -z "$app" ]; then
-    error_msg "no application was specified" 1
+    echo -e "$errmsg: no application was specified"
+    exit 1
 fi
 
-# app [args]
-appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
-if [ ! "$(command -v $appname)" ]; then
-    error_msg "application '$appname' was not found" 1
+# [ENV_VAR=value] app [args]
+appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//g' | awk '{ print $1 }')"
+if [ ! "$(command -v "$appname")" ] && [ ! -x "$appname" ]; then
+    echo -e "$errmsg: application '$appname' was not found"
+    exit 1
 fi
 
 # Run
-$app
+eval $app
 tput clear
-
-exit 0
 

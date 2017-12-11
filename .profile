@@ -34,9 +34,9 @@ environ_files=(
 "$HOME/.shell_environ"
 "$HOME/.shell_environ2"
 )
-for each in "${environ_files[@]}"; do
-    [ -f "$each" ] && . "$each"
+for f in "${environ_files[@]}"; do
+    [ -f "$f" ] && . "$f"
 done
 
-unset environ_files each
+unset environ_files f
 
