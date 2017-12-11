@@ -33,8 +33,8 @@ endfunction
 autocmd BufReadPost * call LastCursorPos()
 
 " Change color of specific groups
-"highlight Comment ctermfg=darkcyan guifg=darkcyan
-"highlight Special ctermfg=magenta guifg=magenta
+highlight Comment ctermfg=darkcyan guifg=darkcyan
+highlight Special ctermfg=magenta guifg=magenta
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight ColorColumn ctermbg=233 guibg=grey7
 highlight Visual ctermfg=white guifg=white
@@ -42,23 +42,23 @@ highlight Visual ctermfg=white guifg=white
 " Show trailing whitespace and spaces before a tab
 match ExtraWhitespace /\s\+$\|^ \+\ze\t/
 
-set showcmd			" Show (partial) command in status line.
-set showmatch		" Show matching brackets.
-set ignorecase		" Do case insensitive matching
-set smartcase		" Do smart case matching
-set incsearch		" Incremental search
-set autowrite		" Automatically save before commands like :next and :make
-set autoread        " Automatically load changes
-set mouse=a			" Enable mouse usage (all modes)
-set ruler			" Show current line/column in status line
-set modeline		" Enable scan for Vim options at end of buffers
-set modelines=5		" Number of mode lines to scan
-set tabstop=4		" Vim will interpret TABs to have this width.
-set softtabstop=4	" Set number of columns for a TAB
-set shiftwidth=4	" Set width of indents (<< and >>)
-set expandtab		" Expand TABs to spaces
-set hlsearch		" Enable highlighting during searches
-let &colorcolumn="".join(range(81,999),",")  " Color column limit
+set showcmd			" show (partial) command in status line
+set showmatch		" show matching brackets
+set ignorecase		" do case insensitive matching
+set smartcase		" do smart case matching
+set incsearch		" incremental search
+set autowrite		" automatically save before commands like :next and :make
+set autoread        " automatically load changes
+set mouse=a			" enable mouse usage (all modes)
+set ruler			" show current line/column in status line
+set modeline		" enable scan for Vim options at end of buffers
+set modelines=5		" number of mode lines to scan
+set tabstop=4		" Vim will interpret TABs to have this width
+set softtabstop=4	" set number of columns for a TAB
+set shiftwidth=4	" set width of indents (<< and >>)
+set expandtab		" expand TABs to spaces
+set hlsearch		" enable highlighting during searches
+let &colorcolumn="".join(range(81,999),",")  " color column limit
 
 " Simpler symbol for commands
 nnoremap ; :

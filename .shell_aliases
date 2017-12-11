@@ -3,13 +3,6 @@ alias down='cd $HOME/Downloads'
 alias doc='cd $HOME/Documents'
 
 # Commands/utilities
-alias clear='tput clear'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias h='history 25'
-alias hh='history 50'
-alias hhh='history 100'
 alias dropbox_start='dbus-launch dropbox start; sleep 3'
 alias iotop='sudo iotop'
 alias powertop='sudo powertop'
@@ -33,6 +26,14 @@ alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias clear='tput clear'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias h='history 25'
+alias hh='history 50'
+alias hhh='history 100'
+alias open='xdg-open'
 
 # Add an "alert" alias for long running commands
 # Usage: sleep 10; alert
