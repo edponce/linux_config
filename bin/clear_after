@@ -27,14 +27,14 @@ done
 
 # Validate
 if [ -z "$app" ]; then
-    echo -e "$errmsg: no application was specified"
+    printf "%b\n" "$errmsg: no application was specified"
     exit 1
 fi
 
 # [ENV_VAR=value] app [args]
 appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//g' | awk '{ print $1 }')"
 if [ ! "$(command -v "$appname")" ] && [ ! -x "$appname" ]; then
-    echo -e "$errmsg: application '$appname' was not found"
+    printf "%b\n" "$errmsg: application '$appname' was not found"
     exit 1
 fi
 

@@ -1,26 +1,36 @@
-#!/bin/bash
+#!/bin/sh
 
 # Print error message, exits if exit code provided
+#
 # Inputs: "error message" [exit code]
 # Outputs: N/A
 # Usage: error_msg "file does not exists" 1
 error_msg()
 {
-    declare -r errcolor="\033[01;31m" # red
-    declare -r offcolor="\033[00m" # off
-    echo -e "${errcolor}ERROR:${offcolor} $1"
-    [[ $2 =~ ^[0-9]+$ ]] && exit $2
+    errcolor="\033[01;31m" # red
+    offcolor="\033[00m" # off
+    printf "%b\n" "${errcolor}ERROR:${offcolor} $1"
+    case ${2#[-+]} in
+        *[!0-9]* | "") ;;
+        *) exit $2 ;;
+    esac
+    unset errcolor offcolor
 }
 
 # Print warning message, exits if error code provided
+#
 # Inputs: "warning message" [exit code]
 # Outputs: N/A
 # Usage: warn_msg "value out of range" 1
 warn_msg()
 {
-    declare -r errcolor="\033[01;31m" # red
-    declare -r offcolor="\033[00m" # off
-    echo -e "${errcolor}WARNING:${offcolor} $1"
-    [[ $2 =~ ^[0-9]+$ ]] && exit $2
+    errcolor="\033[01;31m" # red
+    offcolor="\033[00m" # off
+    printf "%b\n" "${errcolor}WARNING:${offcolor} $1"
+    case ${2#[-+]} in
+        *[!0-9]* | "") ;;
+        *) exit $2 ;;
+    esac
+    unset errcolor offcolor
 }
 

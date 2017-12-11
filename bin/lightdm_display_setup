@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This script is executed during LightDM X11 display at startup (before user login).
 # Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
@@ -11,9 +11,9 @@ if [ "$(command -v xrandr)" ]; then
             . "/home/edponce/bin/custom_utils"
             connected_monitors 4
             primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"
-            secondary_opts=
-            for each in "${monitors_select[@]:1}"; do
-                secondary_opts+="--output $each --off "
+            secondary_opts=""
+            for m in "${monitors_select[@]:1}"; do
+                secondary_opts="$secondary_opts --output $m --off"
             done
             xrandr $primary_opts $secondary_opts
         fi

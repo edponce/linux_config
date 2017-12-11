@@ -6,22 +6,23 @@
 #   2 -> all connected (primary, others)
 #   3 -> all disconnected
 #   4 -> all connected and disconnected (primary, others)
+#
 # Inputs: [monitor ID]
 # Outputs: monitors_select
 # Usage: connected_monitors 0
 connected_monitors()
 {
-    local mid=0
-    local primary_monitor
-    local other_monitors=()
-    local all_monitors=()
+    mid=0
+    primary_monitor=""
+    other_monitors=()
+    all_monitors=()
     monitors_select=()
 
     [ $# -ge 1 ] && mid=$1
 
     # Get primary monitor
     primary_monitor="$(xrandr | grep '\bprimary\b' | awk '{ print $1 }')"
-    if [ ! "$primary_monitor" ]; then
+    if [ -z "$primary_monitor" ]; then
         primary_monitor="$(xrandr | grep '\bconnected\b' | head -n 1 | awk '{ print $1 }')"
     fi
 
@@ -47,20 +48,23 @@ connected_monitors()
             monitors_select=("$primary_monitor" "${other_monitors[@]}")
             ;;
     esac
+
+    unset mid primary_monitor other_monitors all_monitors
 }
 
 # Get dimensions and offsets of selected screen
 #   0 -> primary
 #  *1 -> lower-left
 #   2 -> second screen
+#
 # Inputs: [screen ID]
 # Outputs: screen_dims, screen_offs
 # Usage: screen_position 1
 screen_position()
 {
-    local sid=1
-    local screen_regex
-    local screen_query
+    sid=1
+    screen_regex=""
+    screen_query=""
     screen_dims=()
     screen_offs=()
 
@@ -80,16 +84,19 @@ screen_position()
     screen_query="$(xrandr | grep -P -o $screen_regex | head -n 1 | sed -e 's/ //' -e 's/primary//' -e 's/x/:/' -e 's/+/:/g' -e 's/-/:-/g')"
     screen_dims=($(echo "$screen_query" | awk -F':' '{ print $1 " " $2 }'))
     screen_offs=($(echo "$screen_query" | awk -F':' '{ print $3 " " $4 }'))
+
+    unset sid screen_regex screen_query
 }
 
 # Get dimensions and offsets of selected window
+#
 # Inputs: [window ID (int|hex value)]
 # Outputs: win_dims, win_offs
 # Usage: window_position 0x0100004
 window_position()
 {
-    local wid
-    local win_values
+    wid=""
+    win_values=()
     win_dims=()
     win_offs=()
 
@@ -102,18 +109,21 @@ window_position()
     win_values=($(xwininfo $wid | grep -E '(X|Y|Width|Height):' | awk -F':' '{ print $2 }'))
     win_offs=($((win_values[0] - win_values[2])) $((win_values[1] - win_values[3])))
     win_dims=(${win_values[4]} ${win_values[5]})
+
+    unset wid win_values
 }
 
 # Get current cursor row in terminal window
 # Inputs: N/A
+#
 # Outputs: "cursor_row cursor_col"
 # Usage: get_cursor_pos
 #get_cursor_pos()
 #{
-#    local tty_state
-#    local cursor_pos
-#    local cursor_row
-#    local cursor_col
+#    tty_state
+#    cursor_pos
+#    cursor_row
+#    cursor_col
 #
 #    # Redirect tty to current shell
 #    exec < /dev/tty
@@ -146,5 +156,7 @@ window_position()
 #    cursor_col=${cursor_pos[1]}
 #
 #    echo "$cursor_row $cursor_col"
+#
+#    unset tty_state cursor_pos cursor_row cursor_col
 #}
 

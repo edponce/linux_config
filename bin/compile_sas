@@ -36,7 +36,7 @@ done
 # Validate
 [ -z "$sasffile" ] && sasffile="$(find_file_ext "$filext")"
 if [ ! -f "$sasffile" ]; then
-    echo -e "$errmsg: file '$sasffile' does not exists"
+    printf "%b\n" "$errmsg: file '$sasffile' does not exists"
     exit 1
 fi
 

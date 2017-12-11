@@ -43,7 +43,7 @@ while [ "$1" ]; do
         -f | --file) texffile="$2"
             shift 2 ;;
         *) usage
-            echo -e "$errmsg: invalid command line option, $1"
+            printf "%b\n" "$errmsg: invalid command line option, $1"
             exit 1 ;;
     esac
 done
@@ -51,7 +51,7 @@ done
 # Validate
 [ -z "$texffile" ] && texffile="$(find_file_ext "$filext")"
 if [ ! -f "$texffile" ]; then
-    echo -e "$errmsg: file '$texffile' does not exists"
+    printf "%b\n" "$errmsg: file '$texffile' does not exists"
     exit 1
 fi
 

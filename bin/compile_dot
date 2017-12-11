@@ -30,7 +30,7 @@ while [ "$1" ]; do
         -f | --file) dotffile="$2"
             shift 2 ;;
         *) usage
-            echo -e "$errmsg: invalid command line option, $1"
+            printf "%b\n" "$errmsg: invalid command line option, $1"
             exit 1 ;;
     esac
 done
@@ -38,7 +38,7 @@ done
 # Validate
 [ -z "$dotffile" ] && dotffile="$(find_file_ext "$filext")"
 if [ ! -f "$dotffile" ]; then
-    echo -e "$errmsg: file '$dotffile' does not exists"
+    printf "%b\n" "$errmsg: file '$dotffile' does not exists"
     exit 1
 fi
 
