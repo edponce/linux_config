@@ -1,5 +1,5 @@
 # Java VM environment
-export JAVA_HOME="/usr/lib/jvm/default-java"
+export JAVA_HOME=/usr/lib/jvm/default-java
 export JRE_HOME="$JAVA_HOME/jre"
 
 # OpenMP options

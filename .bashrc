@@ -22,53 +22,53 @@ shopt -s globstar
 set -o ignoreeof
 
 # Make less more friendly for non-text input files, see lesspipe(1)
-[ -x "/usr/bin/lesspipe" ] && eval "$(SHELL="/bin/sh" lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Try to force terminal to use 256 color in X sessions
-if [ -n "$DISPLAY" ] && [ "$TERM" = "xterm" ]; then
-    export TERM="xterm-256color"
+if [ -n "$DISPLAY" ] && [ "$TERM" = xterm ]; then
+    export TERM=xterm-256color
 fi
 
 # Set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    *xterm-*color*) color_prompt="yes" ;;
+    *xterm-*color*) color_prompt=yes ;;
 esac
 
 # Uncomment for a colored prompt, if the terminal has the capability
 #force_color_prompt=yes
 if [ -n "$force_color_prompt" ]; then
-    if [ -x "/usr/bin/tput" ] && tput setaf 1 >& /dev/null; then
-        # We have color support; assume it's compliant with Ecma-48
-        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-        # a case would tend to support setf rather than setaf.)
-        color_prompt="yes"
+    if [ -x /usr/bin/tput ] && tput setaf 1 > /dev/null 2>&1; then
+        # We have color support, assume it's compliant with ECMA-48 (ISO/IEC-6429).
+        # Lack of such support is extremely rare,
+        # and such a case would tend to support setf rather than setaf.
+        color_prompt=yes
     fi
 fi
 
 # Set colors, do not unset these variables
-if [ "$color_prompt" = "yes" ]; then
-    declare -r off_c="\[\033[00m\]"
-    declare -r black_c="\[\033[01;30m\]"
-    declare -r red_c="\[\033[01;31m\]"
-    declare -r green_c="\[\033[01;32m\]"
-    declare -r yellow_c="\[\033[01;33m\]"
-    declare -r blue_c="\[\033[01;34m\]"
-    declare -r magenta_c="\[\033[01;35m\]"
-    declare -r cyan_c="\[\033[01;36m\]"
-    declare -r white_c="\[\033[01;37m\]"
+if [ "$color_prompt" = yes ]; then
+    off_c="\[\033[00m\]"
+    black_c="\[\033[01;30m\]"
+    red_c="\[\033[01;31m\]"
+    green_c="\[\033[01;32m\]"
+    yellow_c="\[\033[01;33m\]"
+    blue_c="\[\033[01;34m\]"
+    magenta_c="\[\033[01;35m\]"
+    cyan_c="\[\033[01;36m\]"
+    white_c="\[\033[01;37m\]"
 
     # Colors for GCC warnings and errors
     export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 fi
 
 # Colorize files
-if [ -x "/usr/bin/dircolors" ]; then
+if [ -x /usr/bin/dircolors ]; then
     test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
 fi
 
 # Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL="ignoreboth"
+HISTCONTROL=ignoreboth
 
 # Settings for history length, see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
@@ -77,91 +77,95 @@ HISTTIMEFORMAT="[%F %T] "
 # Commands to ignore and not save in history (make sure it ends with ':')
 HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd ..:ps:ps -A:"
 HISTIGNORE+="exit:clear:history:env:date:vi:vim:cal:calendar:"
-for each in "$HOME/.shell_aliases" "$HOME/.shell_aliases2"; do
-    if [ -f "$each" ]; then
-        HISTIGNORE+="$(grep '^\W*alias' "$each" | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
+for f in "$HOME/.shell_aliases" "$HOME/.shell_aliases2"; do
+    if [ -f "$f" ]; then
+        HISTIGNORE+="$(grep '^\W*alias' "$f" | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
     fi
 done
 
 # Controls for sync_history function, do not unset these variables
-history_last_sync_seconds=$SECONDS
-declare -ir history_max_sync_seconds=90
-declare -r history_backup_dir="$HOME/.local_history"
+hist_last_sync_sec=$SECONDS
+hist_max_sync_sec=90
+hist_backup_dir="$HOME/.local_history"
 
 prompt_command() {
-    declare -ir err_cmd_val=$? # get error from last command
-    declare err_cmd
-    declare history_last
-    declare file_num
-    declare history_basefile
-    declare history_backupfile
-    declare -i history_val
-    declare history_curr
-    declare git_toplevel
-    declare git_project
-    declare git_branch
-    declare git_branch_str
-    declare -i git_branch_cnt
-    declare prompt_symbol
+    last_cmd_val=$? # get error from last command
+    last_cmd_str=""
+    hist_last_val=0
+    hist_file_num=0
+    hist_base_file=""
+    hist_backup_file=""
+    hist_curr_val=0
+    hist_curr_str=""
+    git_toplevel=""
+    git_project=""
+    git_branch=""
+    git_branch_str=""
+    git_branch_cnt=0
+    prompt_symbol_str=""
 
     # History consistency between shells
-    if [ $((SECONDS - history_last_sync_seconds)) -gt $history_max_sync_seconds ]; then
+    if [ $((SECONDS - hist_last_sync_sec)) -gt $hist_max_sync_sec ]; then
         history -a
         history -c
         history -r
     fi
 
     # Get number of last history command
-    history_last=$(history 1 | awk '{ print $1 }')
-    if [[ ! $history_last = *[[:digit:]] ]]; then
-        history_last=0
-    elif [ $history_last -ge $HISTSIZE ]; then
-        history_last=0
-        [ -d "$history_backup_dir" ] || mkdir "$history_backup_dir"
-        file_num=$(ls "$history_backup_dir" | awk -F. '{ print $2 }' | sort | tail -n 1)
-        if [[ $file_num = *[[:digit:]] ]]; then
-            file_num=$((file_num + 1))
+    hist_last_val=$(history 1 | awk '{ print $1 }')
+    if [[ ! $hist_last_val = *[[:digit:]] ]]; then
+        hist_last_val=0
+    elif [ $hist_last_val -ge $HISTSIZE ]; then
+        hist_last_val=0
+        [ -d "$hist_backup_dir" ] || mkdir "$hist_backup_dir"
+        hist_file_num=$(ls "$hist_backup_dir" | awk -F. '{ print $2 }' | sort | tail -n 1)
+        if [[ $hist_file_num = *[[:digit:]] ]]; then
+            hist_file_num=$((hist_file_num + 1))
         else
-            file_num=0
+            hist_file_num=0
         fi
-        history_basefile="$(basename "$HISTFILE")"
-        history_backupfile="$history_backup_dir/${history_basefile#*.}.$file_num"
-        grep -v "^#" "$HISTFILE" > "$history_backupfile"
-        gzip "$history_backupfile"
+        hist_base_file="$(basename "$HISTFILE")"
+        hist_backup_file="$hist_backup_dir/${hist_base_file#*.}.$hist_file_num"
+        grep -v "^#" "$HISTFILE" > "$hist_backup_file"
+        gzip "$hist_backup_file"
         cat /dev/null > "$HISTFILE"
         history -c
         history -r
     fi
 
-    history_val=$((history_last + 1))
-    history_curr="(${cyan_c}${history_val}${off_c})"
+    hist_curr_val=$((hist_last_val + 1))
+    hist_curr_str="(${cyan_c}${hist_curr_val}${off_c})"
 
     # Check if current dir is part of a .git repo, but hide $HOME git repo
     git_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)"
     if [ $? -eq 0 ] && [ "$git_toplevel" != "$HOME" ]; then
-        git_project=$(grep -v 'Unnamed' "$git_toplevel/.git/description")
-        git_branch_str="$(git branch | grep '^\*' | awk '{ print $NF }')"
+        git_project=$(grep -iv 'unnamed' "$git_toplevel/.git/description" | head -n 1)
+        git_branch="$(git branch | grep '^\*' | awk '{ print $NF }')"
         git_branch_cnt=$(git branch | wc -l)
         if [ $git_branch_cnt -eq 1 ]; then
-            git_branch="[${cyan_c}${git_project:-?}${off_c}:${green_c}${git_branch_str:-?}${off_c}]"
+            git_branch_str="[${cyan_c}${git_project:-?}${off_c}:${green_c}${git_branch:-?}${off_c}]"
         else
-            git_branch="[${cyan_c}${git_project:-?}${off_c}:${yellow_c}${git_branch_str:-?}${off_c}]"
+            git_branch_str="[${cyan_c}${git_project:-?}${off_c}:${yellow_c}${git_branch:-?}${off_c}]"
         fi
     fi
 
     # Check if error occurred from last command
-    if [ $err_cmd_val -ne 0 ]; then
-        err_cmd="[${red_c}${err_cmd_val}${off_c}]"
+    if [ $last_cmd_val -ne 0 ]; then
+        last_cmd_str="[${red_c}${last_cmd_val}${off_c}]"
     fi
 
     # Set prompt symbol depending on terminal
     case "$TERM" in
-        screen*) prompt_symbol="${yellow_c}\$${off_c}" ;; # GNU Screen
-        *) prompt_symbol="${green_c}\$${off_c}" ;;
+        screen*) prompt_symbol_str="${yellow_c}\$${off_c}" ;; # GNU Screen
+        *) prompt_symbol_str="${green_c}\$${off_c}" ;;
     esac
 
     # Set default interactive prompt
-    PS1="${history_curr}${err_cmd}${git_branch} \W${prompt_symbol} "
+    PS1="${hist_curr_str}${last_cmd_str}${git_branch_str} \W${prompt_symbol_str} "
+
+    unset last_cmd_val last_cmd_str prompt_symbol_str
+    unset hist_last_val hist_file_num hist_base_file hist_backup_file hist_curr_val hist_curr_str 
+    unset git_toplevel git_project git_branch git_branch_str git_branch_cnt
 }
 
 prompt_234_command() {
@@ -179,10 +183,10 @@ prompt_234_command
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-    if [ -f "/usr/share/bash-completion/bash_completion" ]; then
-        . "/usr/share/bash-completion/bash_completion"
-    elif [ -f "/etc/bash_completion" ]; then
-        . "/etc/bash_completion"
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
     fi
 fi
 
@@ -191,9 +195,9 @@ alias_files=(
 "$HOME/.shell_aliases"
 "$HOME/.shell_aliases2"
 )
-for each in "${alias_files[@]}"; do
-    [ -f "$each" ] && . "$each"
+for f in "${alias_files[@]}"; do
+    [ -f "$f" ] && . "$f"
 done
 
-unset color_prompt alias_files each
+unset color_prompt alias_files f
 
