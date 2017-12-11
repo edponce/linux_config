@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script is executed during LightDM X11 display at startup (before user login).
 # Used in: /usr/share/lightdm/lightdm.conf.d/20-lubuntu.conf
