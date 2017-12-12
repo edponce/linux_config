@@ -5,7 +5,7 @@ warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] [--input] [--profile PROFILE_ID]
 
 Change sound card configuration.
@@ -19,7 +19,7 @@ Profiles:
   2 -> HDMI stereo
   3 -> HDMI surround
   4 -> HDMI surround 7.1
-_EOF_
+_USAGE_
 }
 
 # Default options

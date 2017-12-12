@@ -5,11 +5,11 @@ warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] "APPLICATION" "ARGS"
 
 Wrapper to invoke an application and clear terminal after its completion.
-_EOF_
+_USAGE_
 }
 
 # Default options
@@ -32,13 +32,13 @@ if [ -z "$app" ]; then
 fi
 
 # [ENV_VAR=value] app [args]
-appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//g' | awk '{ print $1 }')"
+appname="$(printf "$app" | sed 's/\b\w\+=\S*\s\b//g' | awk '{ print $1 }')"
 if [ ! "$(command -v "$appname")" ] && [ ! -x "$appname" ]; then
     printf "%b\n" "$errmsg: application '$appname' was not found"
     exit 1
 fi
 
 # Run
-eval $app
+eval $app; [ $? -eq 0 ] || exit 1
 tput clear
 

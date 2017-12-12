@@ -6,13 +6,13 @@ warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] [--tex] [--file "DOTFILE"]
 
 Compile a DOT file into PNG or TeX format.
 If a DOT file is not provided, current directory is search for one.
 To generate TeX output format, enable 'tex' option.
-_EOF_
+_USAGE_
 }
 
 # Default options

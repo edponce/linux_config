@@ -5,14 +5,14 @@ warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] [--jvm] [--run "COMMAND"|"SCRIPT.m"]
 
 Starts MATLAB interpreter without GUI.
 
 Command is executed during startup and script is executed then exit.
 Default is disabled Java Virtual Machine.
-_EOF_
+_USAGE_
 }
 
 # Default options
@@ -43,5 +43,6 @@ while [ "$1" ]; do
 done
 
 # Run
-matlab "$deskcmd" "$jvmcmd" "$runcmd"
+matlab_cmd="matlab $deskcmd $jvmcmd $runcmd"
+eval $matlab_cmd; [ $? -eq 0 ] || exit 1
 

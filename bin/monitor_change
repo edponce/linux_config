@@ -5,7 +5,7 @@
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] [--mirror] [--protocol PROTOCOL] [--direction DIRECTION_ID]
 
 Change monitor configuration.
@@ -22,7 +22,7 @@ Direction IDs for extended mode:
   1 -> above
   2 -> right
   3 -> below
-_EOF_
+_USAGE_
 }
 
 # Default options

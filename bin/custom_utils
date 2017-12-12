@@ -103,7 +103,7 @@ window_position()
     if [ $# -ge 1 ]; then
         wid="-id $1"
     else
-        echo "Please click on a window to get its position and geometry information..."
+        echo "Please click on a window to get its position and geometry information ..."
     fi
 
     win_values=($(xwininfo $wid | grep -E '(X|Y|Width|Height):' | awk -F':' '{ print $2 }'))

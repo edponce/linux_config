@@ -11,21 +11,21 @@
 #        find_file_ext .TAR.gz
 find_file_ext()
 {
-    file_ext="$(echo "$1" | tr '[:upper:]' '[:lower:]')"
+    file_ext="$(printf "$1" | tr '[:upper:]' '[:lower:]')"
     file_list=""
     file_cnt=0
 
     # If necessary, prepend '.'
-    [ "$(echo "$file_ext" | cut -c1)" != "." ] && file_ext=".$file_ext"
+    [ "$(printf "$file_ext" | cut -c1)" != "." ] && file_ext=".$file_ext"
 
     # Escape '.'
-    file_ext="$(echo "$file_ext" | sed 's/\./\\\./g')"
+    file_ext="$(printf "$file_ext" | sed 's/\./\\\./g')"
 
     # Search for readable files that match extension
     for f in *; do
         [ "$f" = "*" ] && break
         [ ! -f "$f" ] && continue
-        if [ $(expr "$(echo "$f" | tr '[:upper:]' '[:lower:]')" : ".\+$file_ext$") -gt 0 ]; then
+        if [ $(expr "$(printf "$f" | tr '[:upper:]' '[:lower:]')" : ".\+$file_ext$") -gt 0 ]; then
             file_list="$f"
             file_cnt=$((file_cnt + 1))
         fi
@@ -33,7 +33,7 @@ find_file_ext()
 
     # Allow only a single file
     [ $file_cnt -eq 1 ] || file_list=""
-    echo "$file_list"
+    printf "$file_list\n"
 
     unset file_ext file_list file_cnt f
 }

@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
-. "$HOME/bin/error_utils"
+errmsg="\033[01;31mERROR\033[00m"
+warnmsg="\033[01;33mWARNING\033[00m"
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] [--recursive] [--path "SEARCH_PATH"]
 
 Search given path for dangling symbolic links and prints them.
@@ -12,72 +13,71 @@ Search given path for dangling symbolic links and prints them.
 Default is to search current directory non-recursively.
 Hidden directories and files are searched.
 
-These directories are ignored by default:
-_EOF_
-for each in "$@"; do
-    echo "$each"
+Directories with these names are ignored by default:
+_USAGE_
+IFS=','
+for d in $@; do
+    printf "$d\n"
 done
+IFS=$(printf ' \t\n')
 }
 
 # Default options
-search_path="."
 recursive=0
-prune_dirs=("help" "icons" "doc" "man") # directory names to ignore
+search_path="$PWD"
+prune_dirs="help,icons,doc,man" # directory names to ignore
 
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
-        -h | --help)
-            usage ${prune_dirs[@]}
-            exit 0
-            ;;
-        -r | --recursive)
-            recursive=1
-            shift
-            ;;
-        -p | --path)
-            search_path="$2"
-            shift 2
-            ;;
-        *)
-            usage ${prune_dirs[@]}
-            error_msg "invalid command line option, $1" 1
-            ;;
+        -h | --help) usage "$prune_dirs"
+            exit 0 ;;
+        -r | --recursive) recursive=1
+            shift ;;
+        -p | --path) search_path="$2"
+            shift 2 ;;
+        *) usage "$prune_dirs"
+            printf "%b\n" "$errmsg: invalid command line option, $1"
+            exit 1 ;;
     esac
 done
 
 # Validate
 if [ ! -d "$search_path" ]; then
-    error_msg "search path does not exists, '$search_path'" 1
+    printf "%b\n" "$errmsg: search path does not exists, '$search_path'"
+    exit 1
 fi
 
+# Check if recursive search
+max_depth=""
+[ $recursive -eq 0 ] && max_depth="-maxdepth 1"
+
 # Set command to prune unwanted directories
-prune_cmd=
-if [ ${#prune_dirs[@]} -gt 0 ]; then
-    prune_cmd="-type d ("
+prune_opts=""
+if [ ! -z "$prune_dirs" ]; then
+    prune_opts="-type d \("
     cnt=0
-    for each in "${prune_dirs[@]}"; do
-        if [ $cnt -eq 0 ]; then
-            prune_cmd+=" -name $each "
-        else
-            prune_cmd+="-o -name $each "
-        fi
+    IFS=','
+    for d in $prune_dirs; do
+        [ $cnt -gt 0 ] && prune_opts="$prune_opts -o"
+        prune_opts="$prune_opts -name \"$d\" "
         cnt=$((cnt + 1))
     done
-    prune_cmd+=") -prune -o"
+    IFS=$(printf ' \t\n')
+    prune_opts="$prune_opts \) -prune -o"
 fi
 
 # Run
-if [ $recursive -eq 0 ]; then
-    symlinks=($(find "$search_path" -maxdepth 1 $prune_cmd -type l -exec test ! -e "{}" \; -print))
-elif [ $recursive -eq 1 ]; then
-    symlinks=($(find "$search_path" $prune_cmd -type l -exec test ! -e "{}" \; -print))
+find_cmd="find $search_path $max_depth $prune_opts -type l -exec test ! -f {} \; -print"
+symlinks="$(printf "$(eval $find_cmd; [ $? -eq 0 ] || exit 1)" | tr '\n' ',')"
+if [ ! -z "$symlinks" ]; then
+    cnt=0
+    IFS=',';
+    for l in $symlinks; do
+        printf "$l\n"
+        cnt=$((cnt + 1))
+    done
+    IFS=$(printf ' \t\n')
+    printf "Dangling symbolic links: $cnt\n"
 fi
-
-if [ ${#symlinks[@]} -gt 0 ]; then
-    printf '%s\n' "${symlinks[@]}"
-    echo "Dangling symbolic links: ${#symlinks[@]}"
-fi
-
-exit 0
 

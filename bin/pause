@@ -2,11 +2,11 @@
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help]
 
 Pause command prompt until a key is pressed.
-_EOF_
+_USAGE_
 }
 
 # Get command line options
@@ -19,12 +19,14 @@ while [ "$1" ]; do
 done
 
 # Wait for a key press
-ukey=
+ukey=""
 read -r -n 1 -p 'Press any key to continue ... ' ukey
 
+dkey=$(printf "$ukey" | od -An -t uC | awk '{ print $1 }')
+[ -z "$dkey" ] && dkey=0
+
 # Print newline if pressed key is not '\n' or '\r'
-dkey=$(echo "$ukey" | od -An -t uC | awk '{ print $1 }')
 if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
-    echo
+    printf '\n'
 fi
 

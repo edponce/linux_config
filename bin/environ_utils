@@ -8,28 +8,28 @@
 
 #usage_set_envvar()
 #{
-#    echo
-#    echo "Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR \"VALUE1\" [\"VALUE2\"] ..."
-#    echo
-#    echo "Adds a list of values to an environment variable."
-#    echo
-#    echo "If environment variable exists, values are prepended (set option to overwrite)."
-#    echo "Default delimiter symbol is colon, ':'."
-#    echo "Duplicate values are prevented."
-#    echo "This script is to be sourced, not executed."
-#    echo
+#cat << _USAGE_
+#Usage: $(basename $0) [--help] [--overwrite] [--delim DELIMITER] ENV_VAR "VALUE1" ["VALUE2" ...]
+#
+#Adds a list of values to an environment variable.
+#
+#If environment variable exists, values are prepended (set option to overwrite).
+#Default delimiter symbol is colon, ':'.
+#Duplicate values are prevented.
+#This script is to be sourced, not executed.
+#_USAGE_
 #}
 
 set_envvar()
 {
     # Default options
-    declare -i overwrite=0
-    declare delim=":"
-    declare env_var
-    declare arg_value=()
-    declare env_value=()
-    declare env_str
-    declare each
+    overwrite=0
+    delim=":"
+    env_var=""
+    arg_value=()
+    env_value=()
+    env_str=""
+    v=""
 
     # Get command line options
     while [ "$1" ]; do
@@ -62,9 +62,9 @@ set_envvar()
     fi
 
     # Prevent duplicate values to environment variable
-    for each in "${arg_value[@]}"; do
-        if [[ ! "${!env_var}" =~ ($delim)?$each($delim.*)?$ ]]; then
-            env_value+=("$each")
+    for v in "${arg_value[@]}"; do
+        if [[ ! "${!env_var}" =~ ($delim)?$v($delim.*)?$ ]]; then
+            env_value+=("$v")
         fi
     done
     [ ${#env_value[@]} -eq 0 ] && return
@@ -78,5 +78,7 @@ set_envvar()
     else
         export "$env_var"="$env_str$delim${!env_var}"
     fi
+
+    unset overwrite delim env_var arg_value env_value env_str v
 }
 

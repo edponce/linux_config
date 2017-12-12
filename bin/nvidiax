@@ -4,7 +4,7 @@
 
 usage()
 {
-cat << _EOF_
+cat << _USAGE_
 Usage: $(basename $0) [--help] [--perf PERF_LEVEL] [--tool LAUNCH_TOOL_ID] --run "APPLICATION"
 
 Runs an application on NVIDIA GPU with power management control.
@@ -24,7 +24,7 @@ GPU launch tools:
   0 -> none
   1 -> primusrun
  *2 -> optirun
-_EOF_
+_USAGE_
 }
 
 # Default options
@@ -78,7 +78,7 @@ fi
 if [ $launch_tool -gt 0 ]; then
     # Check that NVIDIA modules are not loaded/used by other applications
     if [ $(lsmod | grep -c 'nvidia') -gt 0 ]; then
-        warn_msg "please close all applications using NVIDIA modules...exiting" 0
+        warn_msg "please close all applications using NVIDIA modules ... exiting" 0
     fi
 
     if [ $perf_level -lt 1 ] || [ $perf_level -gt 3 ]; then
