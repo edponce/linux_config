@@ -32,6 +32,16 @@ while [ "$1" ]; do
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in ps2eps epstopdf xdg-open; do
+    if [ ! "$(command -v "$a")" ]; then
+        printf "%b\n" "$errmsg: application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
 [ -z "$psffile" ] && psffile="$(find_file_ext "$filext")"
 if [ ! -f "$psffile" ]; then
@@ -47,7 +57,7 @@ pspdf="$psbase.pdf"
 pseps="$psbase.eps"
 ps1_cmd="ps2eps --force --ignoreBB --rotate=+ \"$psfile\""
 ps2_cmd="epstopdf --outfile=\"$pspdf\" \"$pseps\""
-view_cmd="evince \"$pspdf\""
+view_cmd="xdg-open \"$pspdf\""
 
 # Change to file directory
 pushd . > /dev/null 2>&1
@@ -56,7 +66,7 @@ cd "$psdir"
 # Run
 eval $ps1_cmd; [ $? -eq 0 ] || exit 1
 eval $ps2_cmd; [ $? -eq 0 ] || exit 1
-rm "$pseps"
+[ -f "$pseps" ] && rm "$pseps"
 
 # View
 [ -f "$pspdf" ] && eval $view_cmd &

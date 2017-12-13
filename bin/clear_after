@@ -1,4 +1,5 @@
 #!/bin/sh
+# NOTE: unsafe use of 'eval' as it allows user inputs without sanity checks.
 
 errmsg="\033[01;31mERROR\033[00m"
 warnmsg="\033[01;33mWARNING\033[00m"
@@ -13,32 +14,32 @@ _USAGE_
 }
 
 # Default options
-app=""
+app_cmd=""
 
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
         -h | --help) usage
             exit 0 ;;
-        *) app="$@"
+        *) app_cmd="$@"
             shift $# ;;
     esac
 done
 
 # Validate
-if [ -z "$app" ]; then
+if [ -z "$app_cmd" ]; then
     printf "%b\n" "$errmsg: no application was specified"
     exit 1
 fi
 
-# [ENV_VAR=value] app [args]
-appname="$(printf "$app" | sed 's/\b\w\+=\S*\s\b//g' | awk '{ print $1 }')"
-if [ ! "$(command -v "$appname")" ] && [ ! -x "$appname" ]; then
-    printf "%b\n" "$errmsg: application '$appname' was not found"
+# [ENV_VAR=value] app_name [args]
+app_name="$(printf "$app_cmd" | sed 's/\b\w\+=\S*\s\b//g' | cut -d ' ' -f 1)"
+if [ ! "$(command -v "$app_name")" ]; then
+    printf "%b\n" "$errmsg: application '$app_name' was not found"
     exit 1
 fi
 
 # Run
-eval $app; [ $? -eq 0 ] || exit 1
+eval $app_cmd
 tput clear
 

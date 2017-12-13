@@ -14,7 +14,9 @@ while [ "$1" ]; do
     case "$1" in
         -h | --help) usage
             exit 0 ;;
-        *) shift ;;
+        *) usage
+            printf "%b\n" "$errmsg: invalid command line option, $1"
+            exit 1 ;;
     esac
 done
 
@@ -22,11 +24,9 @@ done
 ukey=""
 read -r -n 1 -p 'Press any key to continue ... ' ukey
 
-dkey=$(printf "$ukey" | od -An -t uC | awk '{ print $1 }')
-[ -z "$dkey" ] && dkey=0
-
-# Print newline if pressed key is not '\n' or '\r'
-if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
+#dkey=$(printf "$ukey" | od -An -t uC | cut -f 1)
+# Print newline if pressed key is not '\r\n'
+#if [ $dkey -ne 10 ] && [ $dkey -ne 13 ]; then
     printf '\n'
-fi
+#fi
 

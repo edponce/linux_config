@@ -1,4 +1,5 @@
 #!/bin/sh
+# NOTE: unsafe use of 'eval' as it allows user inputs without sanity checks.
 
 errmsg="\033[01;31mERROR\033[00m"
 warnmsg="\033[01;33mWARNING\033[00m"
@@ -69,7 +70,7 @@ fi
 
 # Run
 find_cmd="find $search_path $max_depth $prune_opts -type l -exec test ! -f {} \; -print"
-symlinks="$(printf "$(eval $find_cmd; [ $? -eq 0 ] || exit 1)" | tr '\n' ',')"
+symlinks="$(printf "$(eval $find_cmd)" | tr '\n' ',')"
 if [ ! -z "$symlinks" ]; then
     cnt=0
     IFS=',';

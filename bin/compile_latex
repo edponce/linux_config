@@ -48,6 +48,16 @@ while [ "$1" ]; do
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in pdflatex bibtex pdfpc xdg-open; do
+    if [ ! "$(command -v "$a")" ]; then
+        printf "%b\n" "$errmsg: application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
 [ -z "$texffile" ] && texffile="$(find_file_ext "$filext")"
 if [ ! -f "$texffile" ]; then
@@ -63,7 +73,7 @@ texpdf="$texbase.pdf"
 pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=\"$workdir\" \"$texfile\""
 bibtex_cmd="bibtex \"$workdir/$texbase\""
 case $pdfpc in
-    0) view_cmd="evince \"$workdir/$texpdf\"" ;;
+    0) view_cmd="xdg-open \"$workdir/$texpdf\"" ;;
     1) view_cmd="pdfpc \"$workdir/$texpdf\"" ;;
 esac
 

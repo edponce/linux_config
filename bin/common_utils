@@ -1,40 +1,41 @@
 #!/bin/sh
 
-# Find single file on current directory containing the given extension.
+# Find a regular file on current directory containing the given extension.
 # Links and directories are not considered.
 # If none or multiple files are found, an empty string is returned.
 #
-# Inputs: file_ext
-# Outputs: echo "${file_list[@]}"
+# Inputs: "file_ext"
+# Outputs: "$file_name"
 # Usage: find_file_ext .cpp
 #        find_file_ext cpp
 #        find_file_ext .TAR.gz
 find_file_ext()
 {
+    [ -z "$1" ] && return
+
     file_ext="$(printf "$1" | tr '[:upper:]' '[:lower:]')"
-    file_list=""
+    file_name=""
     file_cnt=0
 
     # If necessary, prepend '.'
-    [ "$(printf "$file_ext" | cut -c1)" != "." ] && file_ext=".$file_ext"
+    [ "$(printf "$file_ext" | cut -c 1)" != . ] && file_ext=".$file_ext"
 
     # Escape '.'
     file_ext="$(printf "$file_ext" | sed 's/\./\\\./g')"
 
-    # Search for readable files that match extension
+    # Search for regular files that match extension
     for f in *; do
         [ "$f" = "*" ] && break
         [ ! -f "$f" ] && continue
         if [ $(expr "$(printf "$f" | tr '[:upper:]' '[:lower:]')" : ".\+$file_ext$") -gt 0 ]; then
-            file_list="$f"
+            file_name="$f"
             file_cnt=$((file_cnt + 1))
         fi
     done
 
     # Allow only a single file
-    [ $file_cnt -eq 1 ] || file_list=""
-    printf "$file_list\n"
+    [ $file_cnt -eq 1 ] && printf "$file_name"
 
-    unset file_ext file_list file_cnt f
+    unset file_ext file_name file_cnt f
 }
 

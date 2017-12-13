@@ -41,6 +41,16 @@ while [ "$1" ]; do
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in asciidoc a2x dblatex xdg-open; do
+    if [ ! "$(command -v "$a")" ]; then
+        printf "%b\n" "$errmsg: application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
 if [ $adtype -lt 0 ] || [ $adtype -gt 2 ]; then
     printf "%b\n" "$errmsg: invalid document type value"
@@ -59,7 +69,7 @@ adbase="${adfile%.*}"
 adpdf="$adbase.pdf"
 adxml="$adbase.xml"
 dblatex_cmd="dblatex \"$adxml\" -T simple"
-view_cmd="evince \"$adpdf\""
+view_cmd="xdg-open \"$adpdf\""
 case $adtype in
     0) ad_cmd="a2x -d article -f pdf \"$adfile\"" ;;
     1) ad_cmd="a2x -d book -f pdf \"$adfile\"" ;;

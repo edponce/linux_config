@@ -35,6 +35,16 @@ while [ "$1" ]; do
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in dot xdg-open; do
+    if [ ! "$(command -v "$a")" ]; then
+        printf "%b\n" "$errmsg: application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
 [ -z "$dotffile" ] && dotffile="$(find_file_ext "$filext")"
 if [ ! -f "$dotffile" ]; then
@@ -48,7 +58,7 @@ dotfile="$(basename "$dotffile")"
 dotbase="${dotfile%.*}"
 dotpng="$dotbase.png"
 dottex="$dotbase.tex"
-view_cmd="gpicview \"$dotpng\""
+view_cmd="xdg-open \"$dotpng\""
 case $tex in
     0) dot_cmd="dot -Tpng \"$dotfile\" -o \"$dotpng\"" ;;
     1) dot_cmd="dot -Txdot \"$dotfile\" | dot2tex > \"$dottex\"" ;;
