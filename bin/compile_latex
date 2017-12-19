@@ -7,12 +7,13 @@ warnmsg="\033[01;33mWARNING\033[00m"
 usage()
 {
 cat << _USAGE_
-Usage: $(basename $0) [--help] [--bibtex] [--clean] [--pdfpc] [--workdir "WORDIR"] [--file "TeXFILE"]
+Usage: $(basename $0) [--help] [--graphic [GRAPHIC_DENSITY]] [--bibtex] [--clean] [--pdfpc] [--workdir "WORDIR"] [--file "TeXFILE"]
 
-Compile a LaTeX file into PDF format.
+Compile a LaTeX file into PDF/PNG format.
 
 If a LaTeX file is not provided, current directory is searched for one.
 Default working directory is 'build'.
+To compile into PNG format, enable the 'graphic' option (default density is 300).
 To remove working directory after compiling, enable the 'clean' option.
 To run bibTeX enable the 'bibtex' option.
 To view as Beamer presentation with pdfpc, enable 'pc' option.
@@ -21,6 +22,8 @@ _USAGE_
 
 # Default options
 bibtex=0
+graphic=0
+graphic_density=300
 clean=0
 pdfpc=0
 workdir="build"
@@ -33,6 +36,12 @@ while [ "$1" ]; do
         -h | --help) usage
             exit 0 ;;
         -b | --bibtex) bibtex=1
+            shift ;;
+        -g | --graphic) graphic=1
+            if [ $2 -eq $2 ] 2> /dev/null; then
+                graphic_density=$2
+                shift
+            fi
             shift ;;
         -c | --clean) clean=1
             shift ;;
@@ -64,17 +73,24 @@ if [ ! -f "$texffile" ]; then
     printf "%b\n" "$errmsg: file '$texffile' does not exists"
     exit 1
 fi
+if [ $graphic_density -le 0 ] || [ $graphic_density -gt 600 ]; then
+    printf "%b\n" "$errmsg: invalid density value [1-600]"
+    exit 1
+fi
 
 # Commands (compile and view)
 texdir="$(dirname "$texffile")"
 texfile="$(basename "$texffile")"
 texbase="${texfile%.*}"
 texpdf="$texbase.pdf"
+texpng="$texbase.png"
 pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=\"$workdir\" \"$texfile\""
 bibtex_cmd="bibtex \"$workdir/$texbase\""
+graphic_cmd="convert -density $graphic_density -units PixelsPerInch -quality 90 \"$workdir/$texpdf\" \"$texpng\""
+view_png="xdg-open \"$texpng\""
 case $pdfpc in
-    0) view_cmd="xdg-open \"$workdir/$texpdf\"" ;;
-    1) view_cmd="pdfpc \"$workdir/$texpdf\"" ;;
+    0) view_pdf="xdg-open \"$workdir/$texpdf\"" ;;
+    1) view_pdf="pdfpc \"$workdir/$texpdf\"" ;;
 esac
 
 # Change to file directory
@@ -85,15 +101,23 @@ cd "$texdir"
 
 # Run
 eval $pdflatex_cmd; [ $? -eq 0 ] || exit 1
-if [ $bibtex -ge 1 ]; then
+if [ $bibtex -eq 1 ]; then
     eval $bibtex_cmd; [ $? -eq 0 ] || exit 1
     eval $pdflatex_cmd; [ $? -eq 0 ] || exit 1
 fi
 eval $pdflatex_cmd; [ $? -eq 0 ] || exit 1
 
+# Compile into graphics document
+if [ $graphic -eq 1 ]; then
+    [ -f "$workdir/$texpdf" ] && eval $graphic_cmd; [ $? -eq 0 ] || exit 1
+fi
+
 # Clean and view
 if [ $clean -eq 0 ]; then
-    [ -f "$workdir/$texpdf" ] && eval $view_cmd &
+    case $graphic in
+        0) [ -f "$workdir/$texpdf" ] && eval $view_pdf & ;;
+        1) [ -f "$texpng" ] && eval $view_png & ;;
+    esac
 else
     mv "$workdir/$texpdf" "$texpdf"
     rm -r "$workdir"
