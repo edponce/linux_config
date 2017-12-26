@@ -1,7 +1,6 @@
 #!/bin/sh
 
-errmsg="\033[01;31mERROR\033[00m"
-warnmsg="\033[01;33mWARNING\033[00m"
+. "$HOME/bin/error_utils"
 
 usage()
 {
@@ -28,17 +27,19 @@ while [ "$1" ]; do
         -j | --jvm) jvmcmd=""
             shift ;;
         -r | --run)
-            if [ "${2##*.}" = "m" ]; then
-                # Script
-                runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end, exit(0);\""
-            else
-                # Command
-                runcmd="-r \"try, $2, catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end\""
-            fi
+            case "$2" in
+                "") error_msg "incomplete command line option, $1" 1 ;;
+                *)  if [ "${2##*.}" = "m" ]; then
+                        # Script
+                        runcmd="-r \"try, run('$2'); catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end, exit(0);\""
+                    else
+                        # Command
+                        runcmd="-r \"try, $2, catch me, fprintf(2, '%s / %s\\n', me.identifier, me.message); exit(1); end\""
+                    fi ;;
+            esac
             shift 2 ;;
         *) usage
-            printf "%b\n" "$errmsg: invalid command line option, $1"
-            exit 1 ;;
+            error_msg "invalid command line option, $1" 1 ;;
     esac
 done
 
@@ -46,7 +47,7 @@ done
 missing_apps=0
 for a in matlab; do
     if [ ! "$(command -v "$a")" ]; then
-        printf "%b\n" "$errmsg: application '$a' was not found"
+        error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))
     fi
 done

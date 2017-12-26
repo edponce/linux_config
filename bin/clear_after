@@ -1,8 +1,7 @@
 #!/bin/sh
-# NOTE: unsafe use of 'eval' as it allows user inputs without sanity checks.
+# NOTE: unsafe use of 'eval' as it allows inputs without sanity checks
 
-errmsg="\033[01;31mERROR\033[00m"
-warnmsg="\033[01;33mWARNING\033[00m"
+. "$HOME/bin/error_utils"
 
 usage()
 {
@@ -28,15 +27,13 @@ done
 
 # Validate
 if [ -z "$app_cmd" ]; then
-    printf "%b\n" "$errmsg: no application was specified"
-    exit 1
+    error_msg "no application was specified" 1
 fi
 
 # [ENV_VAR=value] app_name [args]
 app_name="$(printf "$app_cmd" | sed 's/\b\w\+=\S*\s\b//g' | cut -d ' ' -f 1)"
 if [ ! "$(command -v "$app_name")" ]; then
-    printf "%b\n" "$errmsg: application '$app_name' was not found"
-    exit 1
+    error_msg "application '$app_name' was not found" 1
 fi
 
 # Run

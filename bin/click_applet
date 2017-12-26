@@ -1,7 +1,6 @@
 #!/bin/sh
 
-errmsg="\033[01;31mERROR\033[00m"
-warnmsg="\033[01;33mWARNING\033[00m"
+. "$HOME/bin/error_utils"
 
 usage()
 {
@@ -29,15 +28,28 @@ while [ "$1" ]; do
     case "$1" in
         -h | --help) usage
             exit 0 ;;
-        -c | --click) click_id=$2
+        -c | --click)
+            case ${2#[-+]} in
+                "") error_msg "incomplete command line option, $1" 1 ;;
+                *[!0-9]*) error_msg "invalid command line option-value, $1 $2" 1 ;;
+                *) click_id=$2 ;;
+            esac
             shift 2 ;;
-        -d | --delay) click_delay=$2
+        -d | --delay)
+            case ${2#[-+]} in
+                "") error_msg "incomplete command line option, $1" 1 ;;
+                *[!0-9]*) error_msg "invalid command line option-value, $1 $2" 1 ;;
+                *) click_delay=$2 ;;
+            esac
             shift 2 ;;
-        -a | --applet) applet="$2"
+        -a | --applet)
+            case "$2" in
+                "") error_msg "incomplete command line option, $1" 1 ;;
+                *) applet="$2" ;;
+            esac
             shift 2 ;;
         *) usage
-            printf "%b\n" "$errmsg: invalid command line option, $1"
-            exit 1 ;;
+            error_msg "invalid command line option, $1" 1 ;;
     esac
 done
 
@@ -45,7 +57,7 @@ done
 missing_apps=0
 for a in xdotool xwininfo; do
     if [ ! "$(command -v "$a")" ]; then
-        printf "%b\n" "$errmsg: application '$a' was not found"
+        error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))
     fi
 done
@@ -53,16 +65,13 @@ done
 
 # Validate
 if [ $click_id -lt 0 ] || [ $click_id -gt 3 ]; then
-    printf "%b\n" "$errmsg: invalid mouse click value [0-3]"
-    exit 1
+    error_msg "invalid mouse click value [0-3]" 1
 fi
 if [ $click_delay -lt 0 ] || [ $click_delay -gt 30 ]; then
-    printf "%b\n" "$errmsg: invalid delay value [0-30]"
-    exit 1
+    error_msg "invalid delay value [0-30]" 1
 fi
 if [ -z "$applet" ]; then
-    printf "%b\n" "$errmsg: no applet was specified"
-    exit 1
+    error_msg "no applet was specified" 1
 fi
 
 # Save initial mouse position and active window
@@ -73,8 +82,7 @@ win_active=$(xdotool getactivewindow)
 # Query applet information
 applet_query="$(xwininfo -root -tree | grep -i "$applet" | head -n 1)"
 if [ -z "$applet_query" ]; then
-    printf "%b\n" "$errmsg: applet '$applet' was not found in desktop panel"
-    exit 1
+    error_msg "applet '$applet' was not found in desktop panel" 1
 fi
 
 # Get dimensions and position of applet
