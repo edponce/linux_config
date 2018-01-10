@@ -14,7 +14,6 @@ alias mag2='xmag -source 960x270 -mag 2'
 alias poweroff='sudo systemctl poweroff'
 alias reboot='sudo systemctl reboot'
 alias suspend='sudo systemctl suspend'
-alias hibernate='sudo systemctl hibernate'
 
 # Handy aliases
 alias ll='ls -alF'

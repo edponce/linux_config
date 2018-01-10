@@ -1276,10 +1276,6 @@
         <height>300</height>
       </size>
     </application>
-    <!-- VirtualBox -->
-    <application name="VirtualBox">
-      <decor>no</decor>
-    </application>
     <!-- gpicview -->
     <application name="gpicview">
       <position force="no">
