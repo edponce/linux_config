@@ -67,28 +67,43 @@ fi
 
 # Get connected monitors
 connected_monitors 2
+num_mon_connected=${#monitors_select[@]}
 
 # Configure primary monitor
-primary_opts="--output ${monitors_select[0]} --primary --auto --pos 0x0 --rotate normal"
+mon_primary="${monitors_select[0]}"
+primary_opts="--output $mon_primary --primary --auto --pos 0x0 --rotate normal"
 
 # Configure secondary monitor
+mon_secondary=
 secondary_opts=
-if [ $mon_proto -eq 0 ]; then
-    if [ ${#monitors_select[@]} -gt 1 ]; then
-        secondary_opts="--output ${monitors_select[1]} --off"
-    fi
-else
-    if [ ${#monitors_select[@]} -eq 1 ]; then
+if [ $num_mon_connected -gt 1 ]; then
+    mon_secondary="${monitors_select[1]}"
+    secondary_opts="--output $mon_secondary --off"
+fi
+
+# Get disconnected monitors
+connected_monitors 3
+disconnect_opts=
+for each in "${monitors_select[@]}"; do
+    disconnect_opts+="--output $each --off "
+done
+
+# Configure secondary monitor
+if [ $mon_proto -eq 1 ]; then
+    if [ $num_mon_connected -eq 1 ]; then
         error_msg "Secondary monitor was not detected" 1
     fi
 
     if [ $mirror -eq 0 ]; then
+        # Run to have only primary monitor active (restore settings)
+        xrandr $primary_opts $secondary_opts
+
         # Extended mode
         case $direction_id in
-            0) rel_pos="--left-of ${monitors_select[0]}" ;;
-            1) rel_pos="--above ${monitors_select[0]}" ;;
-            2) rel_pos="--right-of ${monitors_select[0]}" ;;
-            3) rel_pos="--below ${monitors_select[0]}" ;;
+            0) rel_pos="--left-of $mon_primary" ;;
+            1) rel_pos="--above $mon_primary" ;;
+            2) rel_pos="--right-of $mon_primary" ;;
+            3) rel_pos="--below $mon_primary" ;;
         esac
         scale_res=
     elif [ $mirror -eq 1 ]; then
@@ -99,15 +114,8 @@ else
         screen_position 0
         scale_res="--scale-from ${screen_dims[0]}x${screen_dims[1]}"
     fi
-    secondary_opts="--output ${monitors_select[1]} --auto $scale_res $rel_pos --rotate normal"
+    secondary_opts="--output $mon_secondary --auto $scale_res $rel_pos --rotate normal"
 fi
-
-# Get disconnected monitors
-connected_monitors 3
-disconnect_opts=
-for each in "${monitors_select[@]}"; do
-    disconnect_opts+="--output $each --off "
-done
 
 # Run
 xrandr $primary_opts $secondary_opts $disconnect_opts
