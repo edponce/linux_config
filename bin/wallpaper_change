@@ -61,5 +61,3 @@ fi
 # Run
 pcmanfm --set-wallpaper="$wallfile" --wallpaper-mode=stretch
 
-exit 0
-

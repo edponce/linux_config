@@ -165,5 +165,3 @@ else
     xdotool "$movement" --sync -- $x $y
 fi
 
-exit 0
-

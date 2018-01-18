@@ -79,5 +79,3 @@ echo "Number of matched files: $num_files"
 # Change to initial directory
 popd > /dev/null 2>&1
 
-exit 0
-
