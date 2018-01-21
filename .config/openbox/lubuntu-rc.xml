@@ -461,7 +461,12 @@
     </keybind>
     <keybind key="C-W-5">
       <action name="Execute">
-        <command>monitor_change -p 1 -m</command>
+        <command>monitor_change -p 1 -m 1</command>
+      </action>
+    </keybind>
+    <keybind key="C-W-6">
+      <action name="Execute">
+        <command>monitor_change -p 1 -m 2</command>
       </action>
     </keybind>
     <keybind key="C-W-H">        # SendToPrevMonitor

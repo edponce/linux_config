@@ -143,6 +143,8 @@ tlmgr update --list
 tlmgr update --all
 tlmgr info PACKAGE
 tlmgr install PACKAGE
+kpsewhich PACKAGE.sty  # check if a package is installed
+texhash ~/texmf
 
 # Configure Openbox
 # ~/.config/openbox/lubuntu-rc.xml

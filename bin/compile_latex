@@ -89,8 +89,10 @@ texfile="$(basename "$texffile")"
 texbase="${texfile%.*}"
 texpdf="$texbase.pdf"
 texpng="$texbase.png"
+texidx="$texbase.idx"
 pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=\"$workdir\" \"$texfile\""
 bibtex_cmd="bibtex \"$workdir/$texbase\""
+makeidx_cmd="makeindex \"$workdir/$texidx\""
 graphic_cmd="convert -density $graphic_density -units PixelsPerInch -quality 90 \"$workdir/$texpdf\" \"$texpng\""
 view_png="xdg-open \"$texpng\""
 case $pdfpc in
@@ -111,6 +113,12 @@ if [ $bibtex -eq 1 ]; then
     eval $pdflatex_cmd; [ $? -eq 0 ] || exit 1
 fi
 eval $pdflatex_cmd; [ $? -eq 0 ] || exit 1
+
+# Make index
+if [ -f "$workdir/$texidx" ]; then
+    eval $makeidx_cmd; [ $? -eq 0 ] || exit 1
+    eval $pdflatex_cmd; [ $? -eq 0 ] || exit 1
+fi
 
 # Compile into graphics document
 if [ $graphic -eq 1 ]; then

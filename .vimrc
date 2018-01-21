@@ -58,7 +58,7 @@ set softtabstop=4	" set number of columns for a TAB
 set shiftwidth=4	" set width of indents (<< and >>)
 set expandtab		" expand TABs to spaces
 set hlsearch		" enable highlighting during searches
-let &colorcolumn="".join(range(81,999),",")  " color column limit
+let &colorcolumn="".join(range(80,999),",")  " color column limit
 
 " Simpler symbol for commands
 nnoremap ; :

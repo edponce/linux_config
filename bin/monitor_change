@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: can remove protocol option, since it is implicit when either mirror or direction are provided
 
 . "$HOME/bin/error_utils"
 . "$HOME/bin/custom_utils"
@@ -6,12 +7,17 @@
 usage()
 {
 cat << _USAGE_
-Usage: $(basename $0) [--help] [--mirror] [--protocol PROTOCOL] [--direction DIRECTION_ID]
+Usage: $(basename $0) [--help] [--mirror MIRROR_ID] [--protocol PROTOCOL_ID] [--direction DIRECTION_ID]
 
 Change monitor configuration.
 
 For secondary monitor protocol, default is extended screen.
 Direction ID is not used for primary protocol or if mirror option is set.
+
+Mirror ID:
+ *0 -> disabled
+  1 -> use resolution of primary monitor (default when enabled)
+  2 -> use resolution of secondary monitor
 
 Protocols:
  *0 -> Primary (LVDS, DP, VGA, HDMI)
@@ -26,8 +32,8 @@ _USAGE_
 }
 
 # Default options
-mirror=0
-mon_proto=0
+mirror_id=0
+protocol_id=0
 direction_id=0
 
 # Get command line options
@@ -38,11 +44,11 @@ while [ "$1" ]; do
             exit 0
             ;;
         -m | --mirror)
-            mirror=1
-            shift
+            mirror_id=$2
+            shift 2
             ;;
         -p | --protocol)
-            mon_proto=$2
+            protocol_id=$2
             shift 2
             ;;
         -d | --direction)
@@ -57,7 +63,11 @@ while [ "$1" ]; do
 done
 
 # Validate
-if [ $mon_proto -lt 0 ] || [ $mon_proto -gt 1 ]; then
+if [ $mirror_id -lt 0 ] || [ $mirror_id -gt 2 ]; then
+    error_msg "invalid mirror value" 1
+fi
+
+if [ $protocol_id -lt 0 ] || [ $protocol_id -gt 1 ]; then
     error_msg "invalid protocol value" 1
 fi
 
@@ -89,32 +99,45 @@ for each in "${monitors_select[@]}"; do
 done
 
 # Configure secondary monitor
-if [ $mon_proto -eq 1 ]; then
+if [ $protocol_id -eq 1 ]; then
     if [ $num_mon_connected -eq 1 ]; then
         error_msg "Secondary monitor was not detected" 1
     fi
 
-    if [ $mirror -eq 0 ]; then
+    # Extended mode
+    if [ $mirror_id -eq 0 ]; then
         # Run to have only primary monitor active (restore settings)
         xrandr $primary_opts $secondary_opts
 
-        # Extended mode
         case $direction_id in
             0) rel_pos="--left-of $mon_primary" ;;
             1) rel_pos="--above $mon_primary" ;;
             2) rel_pos="--right-of $mon_primary" ;;
             3) rel_pos="--below $mon_primary" ;;
         esac
-        scale_res=
-    elif [ $mirror -eq 1 ]; then
-        # Mirror mode
+        secondary_opts="--output $mon_secondary --auto $rel_pos --rotate normal"
+
+    # Mirror mode
+    else
         rel_pos="--pos 0x0"
 
         # Scale resolution of secondary monitor to match primary monitor
-        screen_position 0
-        scale_res="--scale-from ${screen_dims[0]}x${screen_dims[1]}"
+        if [ $mirror_id -eq 1 ]; then
+            screen_position 0
+            scale_res="--scale-from ${screen_dims[0]}x${screen_dims[1]}"
+            secondary_opts="--output $mon_secondary --auto $scale_res $rel_pos --rotate normal"
+
+        # Scale resolution of primary monitor to match secondary monitor
+        elif [ $mirror_id -eq 2 ]; then
+            # Note: secondary monitor needs to be connected to allow query
+            secondary_opts="--output $mon_secondary --auto $rel_pos --rotate normal"
+            xrandr $primary_opts $secondary_opts
+
+            screen_position 2
+            scale_res="--scale-from ${screen_dims[0]}x${screen_dims[1]}"
+            primary_opts="--output $mon_primary --primary --auto $scale_res --pos 0x0 --rotate normal"
+        fi
     fi
-    secondary_opts="--output $mon_secondary --auto $scale_res $rel_pos --rotate normal"
 fi
 
 # Run
