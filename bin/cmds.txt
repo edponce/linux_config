@@ -304,6 +304,8 @@ convert file.png file.pdf
 
 # Merge PDF files
 pdftk "file1.pdf" "file2.pdf" cat output "merged.pdf"
+# Extract page/range from PDF file
+pdftk "file1.pdf" cat 2-4 output "part.pdf"
 
 # Openbox window properties
 obxprop | grep "^_OB_APP"

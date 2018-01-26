@@ -1,3 +1,34 @@
+" Vim TIPS
+"
+" * Visual mode
+"    v - character-by-character visual mode
+"    V - line-by-line visual mode
+"    d,y,c - delete, yank, change commands
+"
+" * Visual block mode
+"    CTRL+v - visual block mode, select block
+"    SHIFT+i - write text to insert before every line
+"    SHIFT+a - write text to append after every line
+"    ESC - apply text
+"
+" * Make command
+"    :make - run make command and captures output, a Makefile must exist
+"    :cn - go to line causing next error
+"    :cc - view current error message
+"
+" * Word completion
+"    Begin typing a partial word
+"    CTRL+p - previous match
+"    CTRL+n - next match
+"
+" * Tag navigation
+"    ctags *.c - generate 'tags' file
+"    ctags -x *.c - print 'tags'
+"    vi -t <tag> - open file and position cursor at tag
+"    :ta <tag> - open file and position cursor at tag
+"    CTRL-] - go to tag under cursor
+"    CTRL-T - return to previous tag
+
 " Set color scheme from /usr/share/vim/vim74/colors, ~/.vim/colors
 "colorscheme blue
 "colorscheme darkblue
@@ -73,7 +104,7 @@ nnoremap <silent> <F4> :%s/\(\t\\| \)\+$//g<CR>
 nnoremap <silent> <F5> /<C-R><C-W><CR><S-n>
 
 " Search and replace
-nnoremap <silent> <S-F5> :%s//g<Left><Left>
+nnoremap <silent> <S-F5> :%s//gn<Left><Left>
 
 " Remove search highlight
 nnoremap <silent> <F6> :nohlsearch<CR>
@@ -88,6 +119,10 @@ nnoremap <silent> <S-F7> :set spell! spelllang=es<CR>
 " Set aspell spell checker
 nnoremap <silent> <F8> :w!<CR>:!aspell -l en_US -c %<CR>:e! %<CR>
 nnoremap <silent> <S-F8> :w!<CR>:!aspell -l es -c %<CR>:e! %<CR>
+
+" Count number of printed lines, words, characters
+nnoremap <silent> <F9> :!wc %<CR>
+nnoremap <silent> <S-F9> :!detex % \| wc<CR>
 
 " Toggle line numbers
 nnoremap <silent> <F10> :set number!<CR>
