@@ -79,7 +79,7 @@ HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd ..:ps:ps -A:"
 HISTIGNORE+="exit:clear:history:env:date:vi:vim:cal:calendar:"
 for f in "$HOME/.shell_aliases" "$HOME/.shell_aliases2"; do
     if [ -f "$f" ]; then
-        HISTIGNORE+="$(grep '^\W*alias' "$f" | sed 's/=/ /' | awk '{ print $2 }' | tr '\n' ':')"
+        HISTIGNORE+="$(awk '/^\s*alias/ { sub("="," "); print $2 }' "$f" | tr '\n' ':')"
     fi
 done
 
@@ -97,11 +97,11 @@ prompt_command() {
     hist_backup_file=""
     hist_curr_val=0
     hist_curr_str=""
-    git_toplevel=""
-    git_project=""
-    git_branch=""
-    git_branch_str=""
-    git_branch_cnt=0
+    repo_toplevel=""
+    repo_project=""
+    repo_branch=""
+    repo_branch_str=""
+    repo_branch_cnt=0
     prompt_symbol_str=""
 
     # History consistency between shells
@@ -136,16 +136,24 @@ prompt_command() {
     hist_curr_val=$((hist_last_val + 1))
     hist_curr_str="(${cyan_c}${hist_curr_val}${off_c})"
 
-    # Check if current dir is part of a .git repo, but hide $HOME git repo
-    git_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)"
-    if [ $? -eq 0 ] && [ "$git_toplevel" != "$HOME" ]; then
-        git_project=$(grep -iv 'unnamed' "$git_toplevel/.git/description" | head -n 1)
-        git_branch="$(git branch | grep '^\*' | awk '{ print $NF }')"
-        git_branch_cnt=$(git branch | wc -l)
-        if [ $git_branch_cnt -eq 1 ]; then
-            git_branch_str="[${cyan_c}${git_project:-?}${off_c}:${green_c}${git_branch:-?}${off_c}]"
+    # Check if current dir is part of a Git repo, but hide $HOME git repo
+    repo_toplevel="$(git rev-parse --show-toplevel 2> /dev/null)"
+    if [ $? -eq 0 ] && [ "$repo_toplevel" != "$HOME" ]; then
+        repo_project=$(grep -iv 'unnamed' "$repo_toplevel/.git/description" | head -n 1)
+        repo_branch="$(git branch | awk '/^\*/ { print $NF }')"
+        repo_branch_cnt=$(git branch | wc -l)
+        if [ $repo_branch_cnt -eq 1 ]; then
+            repo_branch_str="[${cyan_c}${repo_project:-?}${off_c}:${green_c}${repo_branch:-?}${off_c}]"
         else
-            git_branch_str="[${cyan_c}${git_project:-?}${off_c}:${yellow_c}${git_branch:-?}${off_c}]"
+            repo_branch_str="[${cyan_c}${repo_project:-?}${off_c}:${yellow_c}${repo_branch:-?}${off_c}]"
+        fi
+    else
+        # Check if current dir is part of a SVN repo
+        repo_toplevel="$(svn info 2> /dev/null)"
+        if [ $? -eq 0 ]; then
+            repo_project="$(svn info | awk -F/ '/^Relative URL/ { print $2 }')"
+            repo_branch="$(svn info | awk -F/ '/^Relative URL/ { if ($3 == "trunk") print $3; else print $4 }')"
+            repo_branch_str="[${cyan_c}${repo_project:-?}${off_c}:${green_c}${repo_branch:-?}${off_c}]"
         fi
     fi
 
@@ -161,11 +169,11 @@ prompt_command() {
     esac
 
     # Set default interactive prompt
-    PS1="${hist_curr_str}${last_cmd_str}${git_branch_str} \W${prompt_symbol_str} "
+    PS1="${hist_curr_str}${last_cmd_str}${repo_branch_str} \W${prompt_symbol_str} "
 
     unset last_cmd_val last_cmd_str prompt_symbol_str
     unset hist_last_val hist_file_num hist_base_file hist_backup_file hist_curr_val hist_curr_str 
-    unset git_toplevel git_project git_branch git_branch_str git_branch_cnt
+    unset repo_toplevel repo_project repo_branch repo_branch_str repo_branch_cnt
 }
 
 prompt_234_command() {
