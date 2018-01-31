@@ -38,11 +38,11 @@ while [ "$1" ]; do
             shift ;;
         -g | --graphic) graphic=1
             case ${2#[-+]} in
-                "") error_msg "incomplete command line option, $1" 1 ;;
-                *[!0-9]*) error_msg "invalid command line option-value, $1 $2" 1 ;;
-                *) graphic_density=$2 ;;
+                "" | *[!0-9]*) ;;
+                *) graphic_density=$2
+                    shift ;;
             esac
-            shift 2 ;;
+            shift ;;
         -c | --clean) clean=1
             shift ;;
         -p | --pdfpc) pdfpc=1
