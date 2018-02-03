@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 . "$HOME/bin/error_utils"
 
@@ -12,52 +12,74 @@ Change wallpaper image.
 Wallpaper IDs:
 _USAGE_
 local wid=0
-for each in "$@"; do
+IFS=','
+for w in $@; do
+    wf=$(printf "$w" | tr -d '\n')
     case $wid in
-        0) echo " *$wid -> $each" ;;
-        *) echo "  $wid -> $each" ;;
+        0) printf " *$wid -> $wf\n" ;;
+        *) printf "  $wid -> $wf\n" ;;
     esac
     wid=$((wid + 1))
 done
+IFS=$(printf ' \t\n')
 }
 
 # Default options
 wallid=0
-wallfiles=(
-"$HOME/Documents/wallpapers/1604-lubuntu-default-wallpaper.png"
-"$HOME/Documents/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png"
-"$HOME/Documents/wallpapers/gray_1920x1080.png"
-"$HOME/Documents/wallpapers/black_1920x1080.png"
-)
+wallfiles="
+$HOME/Documents/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png,
+/usr/share/lubuntu/wallpapers/lubuntu-default-wallpaper.png,
+$HOME/Documents/wallpapers/gray_1920x1080.png,
+/usr/share/lubuntu/wallpapers/1604-lubuntu-default-wallpaper.png"
 
 # Get command line options
 while [ "$1" ]; do
     case "$1" in
-        -h | --help)
-            usage ${wallfiles[@]}
-            exit 0
-            ;;
+        -h | --help) usage "$wallfiles"
+            exit 0 ;;
         -w | --wallpaper)
-            wallid=$2
-            shift 2
-            ;;
-        *)
-            usage ${wallfiles[@]}
-            error_msg "invalid command line option, $1" 1
-            ;;
+            case ${2#[-+]} in
+                "") error_msg "incomplete command line option, $1" 1 ;;
+                *[!0-9]*) error_msg "invalid command line option-value, $1 $2" 1 ;;
+                *) wallid=$2 ;;
+            esac
+            shift 2 ;;
+        *) usage "$wallfiles"
+            error_msg "invalid command line option, $1" 1 ;;
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in cat pcmanfm; do
+    if [ ! "$(command -v "$a")" ]; then
+        error_msg "application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
-if [ $wallid -lt 0 ] || [ $wallid -ge ${#wallfiles[@]} ]; then
+wallfile=
+num_wallfiles=0
+IFS=','
+for w in $wallfiles; do
+    if [ $num_wallfiles -eq $wallid ]; then
+        wallfile=$(printf "$w" | tr -d '\n')
+    fi
+    num_wallfiles=$((num_wallfiles + 1))
+done
+IFS=$(printf ' \t\n')
+
+if [ $wallid -lt 0 ] || [ $wallid -ge $num_wallfiles ]; then
     error_msg "invalid wallpaper ID value" 1
 fi
 
-wallfile="${wallfiles[$wallid]}"
 if [ ! -e "$wallfile" ]; then
     error_msg "wallpaper file does not exists, '$wallfile'" 1
 fi
 
 # Run
-pcmanfm --set-wallpaper="$wallfile" --wallpaper-mode=stretch
+wallpaper_cmd="pcmanfm --set-wallpaper="$wallfile" --wallpaper-mode=stretch"
+eval $wallpaper_cmd
 

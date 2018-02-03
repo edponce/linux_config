@@ -66,7 +66,7 @@ done
 
 # Check application dependences
 missing_apps=0
-for a in pdflatex bibtex pdfpc xdg-open; do
+for a in cat dirname basename pdflatex bibtex pdfpc makeindex convert xdg-open; do
     if [ ! "$(command -v "$a")" ]; then
         error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))

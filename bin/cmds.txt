@@ -164,6 +164,11 @@ pcmanfm --set-wallpaper=/usr/share/lubuntu/wallpapers/lubuntu-eduardo-wallpaper.
 # texttohtml
 # pdf2[html|tex|...]
 
+# Convert between markup formats (TeX, Markdown, PDF)
+pandoc -t markdown ifile.tex -o ofile.md
+pandoc -t latex ifile.md -o ofile.tex
+pandoc ifile.md -o ofile.pdf
+
 # To disable services at boot
 # /etc/init
 # sudo echo "manual" >> /etc/init/SERVICE.override

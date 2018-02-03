@@ -45,6 +45,16 @@ while [ "$1" ]; do
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in cat tr; do
+    if [ ! "$(command -v "$a")" ]; then
+        error_msg "application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
 if [ ! -d "$search_path" ]; then
     error_msg "search path does not exists, '$search_path'" 1

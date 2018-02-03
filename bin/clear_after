@@ -25,6 +25,16 @@ while [ "$1" ]; do
     esac
 done
 
+# Check application dependences
+missing_apps=0
+for a in cat cut tput; do
+    if [ ! "$(command -v "$a")" ]; then
+        error_msg "application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
 # Validate
 if [ -z "$app_cmd" ]; then
     error_msg "no application was specified" 1

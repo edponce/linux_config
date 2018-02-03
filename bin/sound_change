@@ -47,7 +47,7 @@ done
 
 # Check application dependences
 missing_apps=0
-for a in pacmd; do
+for a in cat awk pacmd; do
     if [ ! "$(command -v "$a")" ]; then
         error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))

@@ -53,6 +53,7 @@ Dropbox/
 !.local/share/
 .local/share/*
 !.local/share/gedit/
+.m2/
 .macromedia/
 .mailrc
 .matlab/

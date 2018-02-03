@@ -39,7 +39,7 @@ done
 
 # Check application dependences
 missing_apps=0
-for a in dot xdg-open; do
+for a in cat dirname basename dot dot2tex xdg-open; do
     if [ ! "$(command -v "$a")" ]; then
         error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))

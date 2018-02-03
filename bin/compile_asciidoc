@@ -63,7 +63,7 @@ done
 
 # Check application dependences
 missing_apps=0
-for a in a2x dblatex xdg-open; do
+for a in cat dirname basename a2x dblatex xdg-open; do
     if [ ! "$(command -v "$a")" ]; then
         error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))
