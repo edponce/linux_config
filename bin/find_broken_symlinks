@@ -8,10 +8,10 @@ usage()
 cat << _USAGE_
 Usage: $(basename $0) [--help] [--recursive] [--path "SEARCH_PATH"]
 
-Search given path for dangling symbolic links and prints them.
+Search given path for broken symbolic links and prints them.
 
 Default is to search current directory non-recursively.
-Hidden directories and files are searched.
+Hidden directories and hidden files are searched.
 
 Directories with these names are ignored by default:
 _USAGE_
@@ -60,7 +60,7 @@ if [ ! -d "$search_path" ]; then
     error_msg "search path does not exists, '$search_path'" 1
 fi
 
-# Check if recursive search
+# Check if non-recursive search
 max_depth=""
 [ $recursive -eq 0 ] && max_depth="-maxdepth 1"
 
@@ -81,15 +81,15 @@ fi
 
 # Run
 find_cmd="find $search_path $max_depth $prune_opts -type l -exec test ! -f {} \; -print"
-symlinks="$(printf "$(eval $find_cmd)" | tr '\n' ',')"
-if [ ! -z "$symlinks" ]; then
+found_files="$(printf "$(eval $find_cmd)" | tr '\n' ',')"
+if [ ! -z "$found_files" ]; then
     cnt=0
     IFS=',';
-    for l in $symlinks; do
-        printf "$l\n"
+    for f in $found_files; do
+        printf "$f\n"
         cnt=$((cnt + 1))
     done
     IFS=$(printf ' \t\n')
-    printf "Dangling symbolic links: $cnt\n"
+    printf "Broken symbolic links: $cnt\n"
 fi
 

@@ -1,0 +1,113 @@
+#!/bin/sh
+# NOTE: unsafe use of 'eval' as it allows inputs without sanity checks
+
+. "$HOME/bin/error_utils"
+
+usage()
+{
+cat << _USAGE_
+Usage: $(basename $0) [--help] [--list] [--recursive] [--path "SEARCH_PATH"] ".EXT1" [".EXT2" ...]
+
+Search given path for files that match given extensions and prints them.
+Extensions can be provided as a comma/space separated list (dot is optional).
+
+Default is to search current directory non-recursively.
+Hidden directories and hidden files are ignored.
+_USAGE_
+}
+
+# Default options
+recursive=0
+search_path="$PWD"
+file_ext=""
+
+# Get command line options
+while [ "$1" ]; do
+    case "$1" in
+        -h | --help) usage
+            exit 0 ;;
+        -r | --recursive) recursive=1
+            shift ;;
+        -p | --path)
+            case "$2" in
+                "") error_msg "incomplete command line option, $1" 1 ;;
+                *) search_path="$2" ;;
+            esac
+            shift 2 ;;
+        *)
+            IFS=','
+            for e in $1; do
+                case "$e" in
+                    .*) new_ext="$e" ;;
+                    *) new_ext=".$e" ;;
+                esac
+                if [ -z "$file_ext" ]; then
+                    file_ext="$new_ext"
+                else
+                    file_ext="$file_ext,$new_ext"
+                fi
+            done
+            IFS=$(printf ' \t\n')
+            shift ;;
+    esac
+done
+
+# Check application dependences
+missing_apps=0
+for a in cat; do
+    if [ ! "$(command -v "$a")" ]; then
+        error_msg "application '$a' was not found"
+        missing_apps=$((missing_apps + 1))
+    fi
+done
+[ $missing_apps -eq 0 ] || exit 1
+
+# Validate
+num_ext=0
+IFS=','
+for e in $file_ext; do
+    num_ext=$((num_ext + 1))
+done
+IFS=$(printf ' \t\n')
+
+if [ ! -d "$search_path" ]; then
+    error_msg "search path does not exists, '$search_path'" 1
+fi
+
+if [ $num_ext -eq 0 ]; then
+    error_msg "no file extensions were provided" 1
+fi
+
+# Check if non-recursive search
+max_depth=""
+[ $recursive -eq 0 ] && max_depth="-maxdepth 1"
+
+# Set command to search all given extensions
+search_opts=""
+if [ ! -z "$file_ext" ]; then
+    search_opts="-type f \("
+    cnt=0
+    IFS=','
+    for e in $file_ext; do
+        [ $cnt -gt 0 ] && search_opts="$search_opts -o"
+        search_opts="$search_opts -name \"*$e\" "
+        cnt=$((cnt + 1))
+    done
+    IFS=$(printf ' \t\n')
+    search_opts="$search_opts \)"
+fi
+
+# Run
+find_cmd="find $search_path $max_depth -not -path '*/.*' $search_opts"
+found_files="$(printf "$(eval $find_cmd)" | tr '\n' ',')"
+if [ ! -z "$found_files" ]; then
+    cnt=0
+    IFS=',';
+    for f in $found_files; do
+        printf "$f\n"
+        cnt=$((cnt + 1))
+    done
+    IFS=$(printf ' \t\n')
+    printf "Number of matched files: $cnt\n"
+fi
+
