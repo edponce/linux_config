@@ -29,6 +29,63 @@
 "    CTRL-] - go to tag under cursor
 "    CTRL-T - return to previous tag
 
+" Vundle and Plugins
+set nocompatible  " be iMproved, required
+filetype off      " required
+
+" Set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" Alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" Let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+" https://valloric.github.io/YouCompleteMe/#diagnostic-display
+Plugin 'Valloric/YouCompleteMe'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+
+" All of your Plugins must be added before the following line
+call vundle#end()          " required
+filetype plugin indent on  " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_show_diagnostics_ui = 1
+let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_error_symbol = 'E>'
+let g:ycm_warning_symbol = 'W>'
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_max_diagnostics_to_display = 30
+let g:ycm_filetype_blacklist = {
+    \ 'notes' : 1,
+    \ 'markdown' : 1,
+    \ 'text' : 1,
+    \ 'pandoc' : 1,
+    \ 'mail' : 1
+    \}
+
+"highlight YcmErrorSign guibg=#3f0000
+"highlight YcmWarningSign guibg=#3f0000
+"highlight YcmErrorLine guibg=#3f0000
+"highlight YcmWarningLine guibg=#3f0000
+"highlight SyntasticErrorSign guibg=#3f0000
+"highlight SyntasticWarningSign guibg=#3f0000
+"highlight SyntasticErrorLine guibg=white
+"highlight SyntasticWarningLine guibg=white
+
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+
+" See :h vundle for more details or wiki for FAQ
+
 " Set color scheme from /usr/share/vim/vim74/colors, ~/.vim/colors
 "colorscheme blue
 "colorscheme darkblue

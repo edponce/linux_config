@@ -179,8 +179,8 @@ sudo mv /etc/init/SERVICE.conf /etc/init/SERVICE.conf.disabled
 
 # Disabled services
 bluetooth
-mysql
 whoopsie
+docker
 
 # View tasks, memory, and network usage
 top # tasks
