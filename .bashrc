@@ -153,7 +153,7 @@ prompt_command() {
         if [ $? -eq 0 ]; then
             repo_project="$(svn info | awk -F/ '/^Relative URL/ { print $2 }')"
             repo_branch="$(svn info | awk -F/ '/^Relative URL/ { if ($3 == "trunk") print $3; else print $4 }')"
-            repo_branch_str="[${cyan_c}${repo_project:-?}${off_c}:${green_c}${repo_branch:-?}${off_c}]"
+            repo_branch_str="[${magenta_c}${repo_project:-?}${off_c}:${green_c}${repo_branch:-?}${off_c}]"
         fi
     fi
 
@@ -172,7 +172,7 @@ prompt_command() {
     PS1="${hist_curr_str}${last_cmd_str}${repo_branch_str} \W${prompt_symbol_str} "
 
     unset last_cmd_val last_cmd_str prompt_symbol_str
-    unset hist_last_val hist_file_num hist_base_file hist_backup_file hist_curr_val hist_curr_str 
+    unset hist_last_val hist_file_num hist_base_file hist_backup_file hist_curr_val hist_curr_str
     unset repo_toplevel repo_project repo_branch repo_branch_str repo_branch_cnt
 }
 

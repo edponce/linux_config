@@ -41,18 +41,25 @@ call vundle#begin()
 
 " Let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
+" Code-completion engine for C/C++/Python and others
 " https://valloric.github.io/YouCompleteMe/#diagnostic-display
 Plugin 'Valloric/YouCompleteMe'
+
+" Markdown preview support
+" https://github.com/JamshedVesuna/vim-markdown-preview
+Plugin 'JamshedVesuna/vim-markdown-preview'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 
 " All of your Plugins must be added before the following line
 call vundle#end()          " required
-filetype plugin indent on  " required
+"filetype plugin indent on  " required
 " To ignore plugin indent changes, instead use:
-"filetype plugin on
+filetype plugin on
 
+" YouCompleteMe configuration
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_show_diagnostics_ui = 1
@@ -68,7 +75,6 @@ let g:ycm_filetype_blacklist = {
     \ 'pandoc' : 1,
     \ 'mail' : 1
     \}
-
 "highlight YcmErrorSign guibg=#3f0000
 "highlight YcmWarningSign guibg=#3f0000
 "highlight YcmErrorLine guibg=#3f0000
@@ -77,6 +83,21 @@ let g:ycm_filetype_blacklist = {
 "highlight SyntasticWarningSign guibg=#3f0000
 "highlight SyntasticErrorLine guibg=white
 "highlight SyntasticWarningLine guibg=white
+
+" Markdown-preview configuration
+let g:vim_markdown_preview_toggle=1  " 0 = display on hotkey map, uses /tmp directory
+                                     " 1 = display on hotkey map, uses current directory
+                                     " 2 = display on buffer write, uses current directory
+                                     " 3 = display on buffer write, uses /tmp directory
+let g:vim_markdown_preview_hotkey='<C-p>'  " hotkey for generating html preview
+let g:vim_markdown_preview_temp_file=0  " 0 = keep html file
+                                        " 1 = remove html file
+let g:vim_markdown_preview_github=1  " requires Python grip
+let g:vim_markdown_preview_perl=0  " requires John Gruber's Markdown.pl
+let g:vim_markdown_preview_pandoc=0  " requires John MacFarlane's Pandoc
+let g:vim_markdown_preview_browser='Mozilla Firefox'  " for other than Google Chrome,
+" need to run 'sudo update-alternatives --config x-www-browser' ('gnome-www-browser')
+let g:vim_markdown_preview_use_xdg_open=1  " (enable/disable) use xdg-open to view html
 
 " Brief help
 " :PluginList       - lists configured plugins
@@ -146,7 +167,8 @@ set softtabstop=4	" set number of columns for a TAB
 set shiftwidth=4	" set width of indents (<< and >>)
 set expandtab		" expand TABs to spaces
 set hlsearch		" enable highlighting during searches
-let &colorcolumn="".join(range(80,999),",")  " color column limit
+"let &colorcolumn="".join(range(80,999),",")  " color column limit
+let &colorcolumn="80"  " color column limit
 
 " Simpler symbol for commands
 nnoremap ; :

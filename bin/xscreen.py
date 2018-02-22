@@ -97,6 +97,9 @@ def get_active_screen_dims(screen_id = 0):
             str_screen_dims = subprocess.getoutput('. $HOME/bin/custom_utils; screen_position 2; echo "${screen_dims[@]} ${screen_offs[@]}"').split()
             screen_all_dims = [int(x) for x in str_screen_dims]
 
+            # NOTE: move a bit windows located next to multiple monitor borders
+            screen_all_dims[2] += 1
+
     # Screen dimensions and offsets
     screen_dims = screen_all_dims[0:2]
     screen_offs = screen_all_dims[2:4]

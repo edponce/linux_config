@@ -100,6 +100,7 @@ xdotool mousemove --sync -- $x $y
 sleep 1 # allow panel to appear, if hidden
 
 # Move mouse on top of applet icon
+x=$((applet_pos0 + applet_dims0/2))
 y=$((applet_pos1 + applet_dims1/2))
 xdotool mousemove --sync -- $x $y
 sleep $click_delay # wait for applet detection
