@@ -50,6 +50,12 @@ Plugin 'Valloric/YouCompleteMe'
 " https://github.com/JamshedVesuna/vim-markdown-preview
 Plugin 'JamshedVesuna/vim-markdown-preview'
 
+" Pandoc support
+" https://github.com/vim-pandoc/vim-pandoc
+" https://github.com/vim-pandoc/vim-pandoc-syntax
+Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'vim-pandoc/vim-pandoc-syntax'
+
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 
@@ -60,8 +66,9 @@ call vundle#end()          " required
 filetype plugin on
 
 " YouCompleteMe configuration
+"let g:loaded_youcompleteme = 1  " hack to disable plugin
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
-let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_python_binary_path = '/usr/bin/env python3'
 let g:ycm_show_diagnostics_ui = 1
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_error_symbol = 'E>'
@@ -98,6 +105,13 @@ let g:vim_markdown_preview_pandoc=0  " requires John MacFarlane's Pandoc
 let g:vim_markdown_preview_browser='Mozilla Firefox'  " for other than Google Chrome,
 " need to run 'sudo update-alternatives --config x-www-browser' ('gnome-www-browser')
 let g:vim_markdown_preview_use_xdg_open=1  " (enable/disable) use xdg-open to view html
+
+" Vim-pandoc, vim-pandoc-syntax configuration
+let g:pandoc#filetypes#handled = ["pandoc", "markdown"]  " enable markdown filetypes
+"let g:pandoc#filetypes#handled = []  " disable markdown filetypes
+let g:pandoc#filetypes#pandoc_markdown = 1  " 1 = enable, 0 = disable markdown filetypes
+"let g:pandoc#modules#disabled = ["folding"]  " disable folding
+" To unfold: 'l', to fold: 'zc'
 
 " Brief help
 " :PluginList       - lists configured plugins
