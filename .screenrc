@@ -12,7 +12,7 @@ vbell off # visual bell
 vbell_msg ""
 bell off # sound bell
 bell_msg ""
-defscrollback 4096 # set size for scrollback buffer
+defscrollback 8192 # set size for scrollback buffer
 defwrap on # line-wrap
 mousetrack on # mouse support for selecting regions
 altscreen on # use an alternate screen to run commands, view shell after execution
@@ -104,25 +104,25 @@ hardstatus alwayslastline
 hardstatus string "%{= dW}%{+b W}%{+b dG}[%H]%{-} %=[%-w%{+b bW}%n%f %t%{-}%+w]%= %{+b dC}[%D %M-%d-%Y%{-} %{+b dC}%C %A]%{-}%{-}"
 
 # Set the hardstatus prop on gui terms to set the titlebar/icon title
-termcapinfo xterm hs:ts=\E]2;:fs=\007:ds=\E]2;LXTerminal\007
+termcapinfo xterm* hs:ts=\E]2;:fs=\007:ds=\E]2;LXTerminal\007
 
 # Set these terminals up to be 'optimal' instead of vt100
-termcapinfo xterm OP
+termcapinfo xterm* OP
 
 # Allow switching 80/132 character-per-line mode
-termcapinfo xterm Z0=\E[?3h:Z1=\E[?3l
+termcapinfo xterm* Z0=\E[?3h:Z1=\E[?3l
 
 # Change the xterm initialization string from is2=\E[!p\E[?3;4l\E[4l\E>
 # (Fixes the "Aborted because of window size change" konsole symptoms, bug #134198)
-termcapinfo xterm "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
+termcapinfo xterm* "is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l"
 
 # To get screen to add lines to xterm's scrollback buffer, uncomment the
 # following termcapinfo line which tells xterm to use the normal screen buffer
 # (which has scrollback), not the alternate screen buffer.
-termcapinfo xterm ti@:te@
+termcapinfo xterm* ti@:te@
 
 # Tell screen how to set colors (AB = background, AF = foreground)
-termcapinfo xterm "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
+termcapinfo xterm* "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
 
 # Allow bold colors
 attrcolor b ".I"
