@@ -109,7 +109,7 @@ let g:vim_markdown_preview_use_xdg_open=1  " (enable/disable) use xdg-open to vi
 " Vim-pandoc, vim-pandoc-syntax configuration
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]  " enable markdown filetypes
 "let g:pandoc#filetypes#handled = []  " disable markdown filetypes
-let g:pandoc#filetypes#pandoc_markdown = 1  " 1 = enable, 0 = disable markdown filetypes
+let g:pandoc#filetypes#pandoc_markdown = 0  " 1 = enable, 0 = disable markdown filetypes
 "let g:pandoc#modules#disabled = ["folding"]  " disable folding
 " To unfold: 'l', to fold: 'zc'
 

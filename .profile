@@ -17,6 +17,11 @@ if [ "$(command -v xrandr)" ]; then
     fi
 fi
 
+# Turn off caps lock key
+if [ "$(command -v setxkbmap)" ]; then
+    setxkbmap -option ctrl:nocaps
+fi
+
 # General environment settings
 export VISUAL=/usr/bin/vim
 export EDITOR="$VISUAL"
