@@ -1,0 +1,43 @@
+#!/bin/sh
+
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+
+BASE = $(current_dir)
+
+SOURCES = $(BASE).md
+HTML_OBJECTS = $(SOURCES:.md=.html)
+DOCX_OBJECTS= $(SOURCES:.md=.docx)
+PDF_OBJECTS = $(SOURCES:.md=.pdf)
+TEX_OBJECTS = $(SOURCES:.md=.tex)
+OBJECTS = $(HTML_OBJECTS) $(DOCX_OBJECTS) $(PDF_OBJECTS)
+
+
+all: html docx pdf tex
+
+html: $(HTML_OBJECTS)
+
+docx: $(DOCX_OBJECTS)
+
+pdf: $(PDF_OBJECTS)
+
+tex: $(TEX_OBJECTS)
+
+%.tex: %.md
+    pandoc $< -o $@
+
+%.html: %.md
+    pandoc $< -s --self-contained -o $@
+
+%.docx: %.md
+    pandoc $< -o $@
+
+%.pdf: %.md
+    pandoc $< --pdf-engine=pdflatex -o $@
+
+$(BASE).md: README.md
+    ln -s README.md $@
+
+clean:
+    rm -f $(OBJECTS)
+

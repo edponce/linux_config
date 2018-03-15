@@ -7,6 +7,38 @@ case $- in
       *) return ;;
 esac
 
+# Enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
+
+# Global definitions
+# e.g., /etc/bashrc
+definition_files=(
+"/etc/bashrc"
+)
+
+for f in "${definition_files[@]}"; do
+    [ -f "$f" ] && . "$f"
+done
+
+# General/local alias settings
+alias_files=(
+"$HOME/.bash_aliases"
+"$HOME/.shell_aliases"
+"$HOME/.shell_aliases2"
+)
+
+for f in "${alias_files[@]}"; do
+    [ -f "$f" ] && . "$f"
+done
+
 # Append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -76,9 +108,9 @@ HISTSIZE=10000
 HISTFILESIZE=100000
 HISTTIMEFORMAT="[%F %T] "
 # Commands to ignore and not save in history (make sure it ends with ':')
-HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd ..:ps:ps -A:"
+HISTIGNORE="ls -l:ls -a:ls -la:ls -lh:ls -lah:LS:sl:pwd:cd:cd :cd .:cd ..:ps:"
 HISTIGNORE+="exit:clear:history:env:date:vi:vim:cal:calendar:"
-for f in "$HOME/.shell_aliases" "$HOME/.shell_aliases2"; do
+for f in "${alias_files[@]}"; do
     if [ -f "$f" ]; then
         HISTIGNORE+="$(awk '/^\s*alias/ { sub("="," "); print $2 }' "$f" | tr '\n' ':')"
     fi
@@ -188,25 +220,5 @@ prompt_234_command() {
 PROMPT_COMMAND=prompt_command
 prompt_234_command
 
-# Enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-    fi
-fi
-
-# General/local alias settings
-alias_files=(
-"$HOME/.shell_aliases"
-"$HOME/.shell_aliases2"
-)
-for f in "${alias_files[@]}"; do
-    [ -f "$f" ] && . "$f"
-done
-
-unset color_prompt alias_files f
+unset color_prompt definition_files alias_files f
 

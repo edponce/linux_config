@@ -111,6 +111,7 @@ texmf/
 .texmf-var/
 .thumbnails/
 #.tmux.conf
+.tox/
 .units_history
 Videos/
 .vim/*
