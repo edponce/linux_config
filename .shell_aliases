@@ -1,20 +1,3 @@
-# Common directories
-alias down='cd $HOME/Downloads'
-alias doc='cd $HOME/Documents'
-
-# Commands/utilities
-alias dropbox_start='dbus-launch dropbox start; sleep 3'
-alias iotop='sudo iotop'
-alias powertop='sudo powertop'
-alias imagemagick='display-im6'
-alias mag1='xmag -source 480x135 -mag 3'
-alias mag2='xmag -source 960x270 -mag 2'
-
-# Session control
-alias poweroff='sudo systemctl poweroff'
-alias reboot='sudo systemctl reboot'
-alias suspend='sudo systemctl suspend'
-
 # Handy aliases
 alias ll='ls -alF'
 alias la='ls -A'
