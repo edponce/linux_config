@@ -50,7 +50,7 @@ bind \\ eval "split -v" "focus right" "screen" # vertical split
 bind f fit # fit window to region
 bind t title # set title of window
 bind x remove # set remove region to 'x' instead of 'X'
-bind q only # retain only current region, remove others
+bind o only # retain only current region, remove others
 bind ; colon # change colon (literal command) symbol to a semi-colon
 
 # Move input focus between regions using vi-like shortcuts

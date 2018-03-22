@@ -76,6 +76,7 @@ PDF/
 Pictures/
 .pki/
 .PlayOnLinux/
+.plotly/
 #.profile
 .psensor/
 .pulse-cookie
