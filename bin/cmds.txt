@@ -188,6 +188,9 @@ htop
 sudo iotop # memory
 sudo ntop -u ntop # network, http://localhost:3000, admin (e8l!)
 
+# Identify channels of Wifi networks
+sudo iwlist wlp2s0 scan | grep Frequency | sort | uniq -c | sort -n
+
 # Convert/transform/resize image
 # Use larger dimension, keep aspect ratio
 convert -resize 1920x1200 orig.png dest.png
@@ -541,4 +544,3 @@ ffmpeg -i big_video.avi small_video.mp4
 # compare hash of local and remote repos
 git rev-parse master # local
 git ls-remote --heads --exit-code origin master # remote
-
