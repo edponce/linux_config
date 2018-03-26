@@ -578,16 +578,6 @@
         <command>xterm</command>
       </action>
     </keybind>
-    <!-- Launch GNU Screen in terminal -->
-    <keybind key="C-A-S">
-      <action name="Execute">
-        <startupnotify>
-            <enabled>yes</enabled>
-            <name>LXTerminal</name>
-        </startupnotify>
-        <command>lxauto -x screen</command>
-      </action>
-    </keybind>
     <!-- Launch browser -->
     <keybind key="C-A-B">
       <action name="Execute">
@@ -598,10 +588,26 @@
         <command>firefox</command>
       </action>
     </keybind>
+    <!-- Launch Citrix -->
+    <keybind key="C-A-C">
+      <action name="Execute">
+        <command>/opt/Citrix/ICAClient/selfservice --icaroot /opt/Citrix/ICAClient</command>
+      </action>
+    </keybind>
     <!-- Launch TOR browser -->
     <keybind key="C-A-O">
       <action name="Execute">
         <command>torbrowser-launcher</command>
+      </action>
+    </keybind>
+    <!-- Launch Slack -->
+    <keybind key="C-A-S">
+      <action name="Execute">
+        <startupnotify>
+            <enabled>yes</enabled>
+            <name>Slack</name>
+        </startupnotify>
+        <command>slack</command>
       </action>
     </keybind>
     <!-- Launch MATLAB -->
