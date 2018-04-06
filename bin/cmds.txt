@@ -466,8 +466,10 @@ gpasswd -a $USER autologin
 autologin-user=myusername
 autologin-user-timeout=0
 
-# Convert between package formats
-fakeroot alien --to-deb archive.rpm # .rpm to .deb
+# Convert  between package formats
+# .rpm to .deb
+fakeroot alien --to-deb archive.rpm
+fakeroot alien --scripts --to-deb archive.rpm
 
 # Extract files from .rpm package
 rpm2cpio archive.rpm | cpio -i --make-directories
