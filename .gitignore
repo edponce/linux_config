@@ -1,5 +1,8 @@
 *.swp
 .adobe/
+.anaconda/
+AnacondaProjects/
+anaconda3/
 .aspell*
 #.shell_aliases
 #.shell_environ
@@ -13,6 +16,7 @@
 .cache/
 .cinelerra-cv/
 .clamtk/
+.condarc
 .config/*
 !.config/lxterminal/
 !.config/openbox/
@@ -20,6 +24,7 @@
 .cups/
 .dbus/
 Desktop/
+.dia/
 #.dircolors
 .dmrc
 Documents/
@@ -121,6 +126,7 @@ Videos/
 .viminfo
 #.vimrc
 VirtualBox*/
+.vscode/
 .weather/
 .wget-hsts
 .wine/
