@@ -92,7 +92,7 @@ let g:ycm_filetype_blacklist = {
 "highlight SyntasticWarningLine guibg=white
 
 " Markdown-preview configuration
-let g:vim_markdown_preview_toggle=1  " 0 = display on hotkey map, uses /tmp directory
+let g:vim_markdown_preview_toggle=0  " 0 = display on hotkey map, uses /tmp directory
                                      " 1 = display on hotkey map, uses current directory
                                      " 2 = display on buffer write, uses current directory
                                      " 3 = display on buffer write, uses /tmp directory
