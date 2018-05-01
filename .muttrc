@@ -1,0 +1,45 @@
+# Connection
+set ssl_starttls = yes
+#set ssl_use_sslv3 = no
+#set ssl_force_tls = no
+#set timeout = 900
+#set mail_check = 5
+
+# Outgoing
+set realname = "Eduardo Ponce"
+set from = "eponcemo@utk.edu"
+#set smtp_pass = ""
+set smtp_authenticators = "login"
+set smtp_url = "smtp://eponcemo@utk.edu@smtp.office365.com:587"
+
+# Incoming
+set imap_user = "eponcemo@utk.edu"
+#set imap_pass = ""
+set folder = "imaps://outlook.office365.com:993"
+set mbox = "+INBOX"
+set spoolfile = "+INBOX"
+set postponed = "+Drafts"
+set record = "+Sent Items"
+set trash = "+Deleted Items"
+#set imap_check_subscribed
+#unset imap_passive
+
+# Caches
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
+set tmpdir = "~/.mutt/tmp"
+set signature = "~/.mutt/signature"
+
+# Useful customizations
+set smart_wrap = yes
+set sort = "threads"
+set sort_aux = "last-date-received"
+ignore "Authentication-Results:"
+ignore "DomainKey-Signature:"
+ignore "DKIM-Signature:"
+
+#mailboxes
+
+# Editor
+set editor = vim
