@@ -53,6 +53,8 @@ Dropbox/
 .ICAClient/
 .ipython/
 .java/
+.julia/
+.julia_history
 .jupyter/
 .lesshst
 .local/*
@@ -64,6 +66,7 @@ Dropbox/
 .mailrc
 .matlab/
 Mail/
+.mmsys/
 .mozilla
 .mplayer/
 .mtpaint
