@@ -13,6 +13,7 @@ anaconda3/
 #.bash_logout
 #.bashrc
 #bin/
+.bundle/
 .cache/
 .cinelerra-cv/
 .clamtk/
@@ -39,6 +40,7 @@ Dropbox/
 .fceux/
 .FreeCAD/
 .gconf/
+.gem/
 .gimp-*/
 .gitconfig
 .gksu.lock
@@ -56,6 +58,7 @@ Dropbox/
 .julia/
 .julia_history
 .jupyter/
+.latexdraw/
 .lesshst
 .local/*
 !.local/share/
