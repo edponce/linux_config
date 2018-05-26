@@ -82,4 +82,3 @@ fi
 # Run
 wallpaper_cmd="pcmanfm --set-wallpaper="$wallfile" --wallpaper-mode=stretch"
 eval $wallpaper_cmd
-

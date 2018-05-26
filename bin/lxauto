@@ -62,7 +62,7 @@ if [ $(bc <<< "if ($delay < 0 || $delay > 5) 1 else 0") -eq 1 ]; then
 fi
 
 # app [args]
-appname="$(echo "$app" | sed 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
+appname="$(echo "$app" | sed -e 's/^env //' -e 's/\b\w\+=\S*\s\b//' | awk '{ print $1 }')"
 if [ ! "$(command -v $appname)" ]; then
     error_msg "application '$app' was not found" 1
 fi
@@ -96,4 +96,3 @@ else
     xdotool key --window "$wid" Return
     xdotool windowactivate --sync "$wid"
 fi
-

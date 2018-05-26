@@ -138,4 +138,3 @@ fi
 
 # Change to initial directory
 popd > /dev/null 2>&1
-

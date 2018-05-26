@@ -33,4 +33,3 @@ warn_msg()
     esac
     unset errcolor offcolor
 }
-

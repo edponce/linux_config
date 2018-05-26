@@ -66,4 +66,3 @@ eval $sas_cmd; [ $? -eq 0 ] || exit 1
 
 # Change to initial directory
 popd > /dev/null 2>&1
-

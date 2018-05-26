@@ -112,4 +112,3 @@ window_position()
 
     unset wid win_values
 }
-

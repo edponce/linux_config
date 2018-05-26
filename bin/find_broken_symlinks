@@ -1,5 +1,4 @@
 #!/bin/sh
-# NOTE: unsafe use of 'eval' as it allows inputs without sanity checks
 
 . "$HOME/bin/error_utils"
 
@@ -92,4 +91,3 @@ if [ ! -z "$found_files" ]; then
     IFS=$(printf ' \t\n')
     printf "Broken symbolic links: $cnt\n"
 fi
-

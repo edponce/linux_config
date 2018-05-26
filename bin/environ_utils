@@ -81,4 +81,3 @@ set_envvar()
 
     unset overwrite delim env_var arg_value env_value env_str v
 }
-

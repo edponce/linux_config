@@ -148,4 +148,3 @@ case $direction_id in
     0 | 3) mouse_teleport -s 1 -d 4 ;;
     1 | 2) mouse_teleport -s 2 -d 4 ;;
 esac
-

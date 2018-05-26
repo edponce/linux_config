@@ -111,4 +111,3 @@ sleep $click_delay # wait for applet detection
 # Restore initial mouse position and active window
 #xdotool mousemove --sync -- $X $Y windowactivate $win_active
 xdotool mousemove --sync -- $X $Y
-

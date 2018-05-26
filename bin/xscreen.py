@@ -353,4 +353,3 @@ if __name__ == '__main__':
     win_dims, win_offs = create_layout(args.layout_id, screen_dims, screen_offs)
     set_layout(win_id_active, win_ids, win_names, win_dims, win_offs)
     sys.exit(os.EX_OK)
-

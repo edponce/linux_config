@@ -40,4 +40,3 @@ $(BASE).md: README.md
 
 clean:
     rm -f $(OBJECTS)
-

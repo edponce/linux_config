@@ -29,4 +29,3 @@ fi
 
 # Enable numlock
 [ "$(command -v numlockx)" ] && numlockx on
-

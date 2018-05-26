@@ -74,4 +74,3 @@ fi
 # -K Do not override window manager key bindings
 #rdesktop -z -x l -g 1916x1024 -r clipboard:PRIMARYCLIPBOARD -u firemodel "$nuc_ip_domain.$nuc_master" &
 rdesktop -K -x l -g 1916x1024 -r clipboard:PRIMARYCLIPBOARD -u firemodel "$nuc_ip_domain.$nuc_master" &
-

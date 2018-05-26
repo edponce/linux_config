@@ -1,14 +1,14 @@
 #!/bin/sh
-# NOTE: unsafe use of 'eval' as it allows inputs without sanity checks
 
 . "$HOME/bin/error_utils"
 
 usage()
 {
 cat << _USAGE_
-Usage: $(basename $0) [--help] "APPLICATION" "ARGS"
+Usage: $(basename $0) [--help] "APPLICATION" ["ARGS"]
 
 Wrapper to invoke an application and clear terminal after its completion.
+Sanity checks are not performed for given application (unsafe use of 'eval').
 _USAGE_
 }
 
@@ -41,7 +41,7 @@ if [ -z "$app_cmd" ]; then
 fi
 
 # [ENV_VAR=value] app_name [args]
-app_name="$(printf "$app_cmd" | sed 's/\b\w\+=\S*\s\b//g' | cut -d ' ' -f 1)"
+app_name="$(printf "$app_cmd" | sed -e 's/^env //' -e 's/\b\w\+=\S*\s\b//g' | cut -d ' ' -f 1)"
 if [ ! "$(command -v "$app_name")" ]; then
     error_msg "application '$app_name' was not found" 1
 fi
@@ -49,4 +49,3 @@ fi
 # Run
 eval $app_cmd
 tput clear
-

@@ -56,4 +56,3 @@ done
 # Run
 matlab_cmd="matlab $deskcmd $jvmcmd $runcmd"
 eval $matlab_cmd; [ $? -eq 0 ] || exit 1
-
