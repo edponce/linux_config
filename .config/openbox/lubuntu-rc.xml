@@ -588,8 +588,8 @@
         <command>firefox</command>
       </action>
     </keybind>
-    <!-- Launch Citrix -->
-    <keybind key="C-A-C">
+    <!-- Launch Citrix Receiver -->
+    <keybind key="C-A-R">
       <action name="Execute">
         <command>/opt/Citrix/ICAClient/selfservice --icaroot /opt/Citrix/ICAClient</command>
       </action>
