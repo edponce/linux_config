@@ -6,23 +6,28 @@
 usage()
 {
 cat << _USAGE_
-Usage: $(basename $0) [--help] [--graphic [GRAPHIC_DENSITY]] [--bibtex] [--clean] [--pdfpc] [--workdir "WORDIR"] [--file "TeXFILE"]
+Usage: $(basename $0) [--help] [--graphic [GRAPHIC_DENSITY]] [--engine TEX_ENGINE] [--bibtex] [--clean] [--pdfpc] [--workdir "WORDIR"] [--file "TeXFILE"]
 
-Compile a LaTeX file into PDF/PNG format.
+Compile a TeX file into PDF/PNG format.
 
-If a LaTeX file is not provided, current directory is searched for one.
+If a TeX file is not provided, current directory is searched for one.
 Default working directory is 'build'.
 To compile into PNG format, enable the 'graphic' option (default density is 300).
 To remove working directory after compiling, enable the 'clean' option.
 To run bibTeX enable the 'bibtex' option.
 To view as Beamer presentation with pdfpc, enable 'pc' option.
+
+TEX_ENGINE:
+ *0 -> pdfLaTeX
+  1 -> XeTeX
 _USAGE_
 }
 
 # Default options
-bibtex=0
 graphic=0
 graphic_density=300
+engine=0
+bibtex=0
 clean=0
 pdfpc=0
 workdir="build"
@@ -34,6 +39,8 @@ while [ "$1" ]; do
     case "$1" in
         -h | --help) usage
             exit 0 ;;
+        -e | --engine) engine=$2
+            shift 2 ;;
         -b | --bibtex) bibtex=1
             shift ;;
         -g | --graphic) graphic=1
@@ -66,7 +73,7 @@ done
 
 # Check application dependences
 missing_apps=0
-for a in cat dirname basename pdflatex bibtex pdfpc makeindex convert xdg-open; do
+for a in cat dirname basename pdflatex xelatex bibtex pdfpc makeindex convert xdg-open; do
     if [ ! "$(command -v "$a")" ]; then
         error_msg "application '$a' was not found"
         missing_apps=$((missing_apps + 1))
@@ -79,6 +86,9 @@ done
 if [ ! -f "$texffile" ]; then
     error_msg "file '$texffile' does not exists" 1
 fi
+if [ $engine -lt 0 ] || [ $engine -gt 1 ]; then
+    error_msg "invalid TeX engine" 1
+fi
 if [ $graphic_density -le 0 ] || [ $graphic_density -gt 600 ]; then
     error_msg "invalid density value [1-600]" 1
 fi
@@ -90,7 +100,13 @@ texbase="${texfile%.*}"
 texpdf="$texbase.pdf"
 texpng="$texbase.png"
 texidx="$texbase.idx"
-pdflatex_cmd="pdflatex -synctex=1 -interaction=nonstopmode -output-dir=\"$workdir\" \"$texfile\""
+
+case $engine in
+    0) texengine="pdflatex" ;;
+    1) texengine="xelatex" ;;
+esac
+
+pdflatex_cmd="$texengine -synctex=1 -interaction=nonstopmode -output-dir=\"$workdir\" \"$texfile\""
 bibtex_cmd="bibtex \"$workdir/$texbase\""
 makeidx_cmd="makeindex \"$workdir/$texidx\""
 graphic_cmd="convert -density $graphic_density -units PixelsPerInch -quality 90 \"$workdir/$texpdf\" \"$texpng\""
