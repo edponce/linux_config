@@ -27,5 +27,8 @@ if [ "$(command -v synclient)" ]; then
      [ $? -eq 0 ] && synclient HorizTwoFingerScroll=1
 fi
 
+# Set keymap: model, layout, and disable Caps Lock
+[ "$(command -v setxkbmap)" ] && setxkbmap -model pc104 -layout us -option caps:none
+
 # Enable numlock
 [ "$(command -v numlockx)" ] && numlockx on

@@ -53,6 +53,7 @@ Dropbox/
 .local_history/
 .hplip/
 .ICAClient/
+.IdeaIC2018.1/
 .ipython/
 .java/
 .julia/
@@ -144,4 +145,5 @@ VirtualBox*/
 #.xscreensaver
 .xsession-errors
 .xsession-errors.old
+.zinc/
 .zoom/

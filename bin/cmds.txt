@@ -355,9 +355,6 @@ ispell
 aspell -l en_US -c file.txt
 aspell -l es -a
 
-# Change keyboard layout to US (international with dead keys)
-setxkbmap -model pc105 -layout us -variant intl
-
 # Check memory usage for process
 cat /proc/<PROC_ID>/smaps
 valgrind --tool=massif --pages-as-heap=yes --massif-out-file=massif.out a.out
@@ -455,6 +452,14 @@ locale -a # show available locales
 locale -a -v # show available locales
 update-locale LANG=en_US.UTF-8
 update-locale LANG=es_PR.UTF-8
+
+# Does not works correctly (/etc/locale.conf, /etc/x11/xorg.conf.d/00-keyboard.conf)
+localectl status # show current settings
+localectl set-x11-keymap us pc104 "" ctrl:nocaps
+localectl set-locale LANG=en_US.UTF-8
+
+# Change keyboard keymap to US, disable Caps Lock
+setxkbmap -model pc104 -layout us -option caps:none
 
 # Setup autologin in LightDM
 # user must be part of 'autologin' group

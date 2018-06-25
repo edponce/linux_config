@@ -17,10 +17,11 @@ if [ "$(command -v xrandr)" ]; then
     fi
 fi
 
-# Turn off caps lock key
-if [ "$(command -v setxkbmap)" ]; then
-    setxkbmap -option ctrl:nocaps
-fi
+# Set keymap: model, layout, and disable Caps Lock
+[ "$(command -v setxkbmap)" ] && setxkbmap -model pc104 -layout us -option caps:none
+
+# Enable numlock
+[ "$(command -v numlockx)" ] && numlockx on
 
 # General environment settings
 export VISUAL=/usr/bin/vim
@@ -44,4 +45,3 @@ for f in "${environ_files[@]}"; do
 done
 
 unset environ_files f
-

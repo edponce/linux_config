@@ -11,7 +11,7 @@ def parse_args():
     '''
     Parse command line arguments
     '''
-    parser = argparse.ArgumentParser(prog=__file__, description='xscreen:\n'
+    parser = argparse.ArgumentParser(prog=__file__, description='Xscreen: '
              'Layouts for arranging windows in X',
              formatter_class=RawTextHelpFormatter)
     parser.add_argument('-l', '--layout_id', type=int, default=2,
@@ -50,7 +50,7 @@ def parse_args():
         err = 1
 
     if err != 0:
-        print
+        print()
         parser.print_help()
         sys.exit(os.EX_USAGE)
 
