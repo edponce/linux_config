@@ -1,5 +1,5 @@
 # Java VM environment
-export JAVA_HOME=/usr/lib/jvm/default-java
+export JAVA_HOME="/usr/lib/jvm/default-java"
 export JRE_HOME="$JAVA_HOME/jre"
 
 # OpenMP options
@@ -24,4 +24,3 @@ env_values=(
 set_envvar PATH "${env_values[@]}"
 
 unset env_values
-

@@ -128,10 +128,11 @@ termcapinfo xterm* "Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm"
 attrcolor b ".I"
 
 # Use current bg color for erased chars
-defbce "on"
+#defbce "on"
 
 # Set TERM with color support
 #term screen.xterm-256color
+term screen-256color
 shell -$SHELL
 
 
@@ -152,4 +153,3 @@ screen -t main 0 bash
 #layout remove v2 # allow sourcing this file multiple times
 #source ~/.screen/v2
 select 0
-

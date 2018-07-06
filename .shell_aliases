@@ -9,9 +9,6 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias clear='tput clear'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
 alias h='history 25'
 alias hh='history 50'
 alias hhh='history 100'
@@ -20,4 +17,3 @@ alias open='xdg-open'
 # Add an "alert" alias for long running commands
 # Usage: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n 1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
