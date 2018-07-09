@@ -1276,17 +1276,6 @@
         <height>100%</height>
       </size>
     </application>
-    <!-- pcmanfm -->
-    <application name="pcmanfm">
-      <position force="no">
-        <x>0</x>
-        <y>0</y>
-      </position>
-      <size>
-        <width>700</width>
-        <height>300</height>
-      </size>
-    </application>
     <!-- gpicview -->
     <application name="gpicview">
       <position force="no">
