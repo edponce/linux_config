@@ -61,6 +61,7 @@ Dropbox/
 .jupyter/
 .latexdraw/
 .lesshst
+.links2/
 .local/*
 !.local/share/
 .local/share/*

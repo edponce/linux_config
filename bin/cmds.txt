@@ -551,3 +551,7 @@ ffmpeg -i big_video.avi small_video.mp4
 # compare hash of local and remote repos
 git rev-parse master # local
 git ls-remote --heads --exit-code origin master # remote
+
+# Count/stats lines of code
+cloc /directory
+sloccount /directory
