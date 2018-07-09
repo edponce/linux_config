@@ -21,7 +21,7 @@ anaconda3/
 .config/*
 !.config/lxterminal/
 !.config/openbox/
-!.config/pcmanfm/
+!.config/pcmanfm/desktop-items*
 .cups/
 .dbus/
 Desktop/
