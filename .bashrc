@@ -20,13 +20,12 @@ fi
 
 # Global definitions
 # e.g., /etc/bashrc
-definition_files=(
-"/etc/bashrc"
-)
-
-for f in "${definition_files[@]}"; do
-    [ -f "$f" ] && . "$f"
-done
+#definition_files=(
+#"/etc/bashrc"
+#)
+#for f in "${definition_files[@]}"; do
+#    [ -f "$f" ] && . "$f"
+#done
 
 # General/local alias settings
 alias_files=(
@@ -34,7 +33,6 @@ alias_files=(
 "$HOME/.shell_aliases"
 "$HOME/.shell_aliases2"
 )
-
 for f in "${alias_files[@]}"; do
     [ -f "$f" ] && . "$f"
 done
@@ -63,8 +61,7 @@ fi
 
 # Set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color | *-256color) color_prompt=yes ;;
-    screen*-256color*) color_prompt=yes ;;
+    *-color | *-256color) color_prompt=yes ;;
 esac
 
 # Uncomment for a colored prompt, if the terminal has the capability
@@ -220,4 +217,4 @@ prompt_234_command() {
 PROMPT_COMMAND=prompt_command
 prompt_234_command
 
-unset color_prompt definition_files alias_files f
+unset force_color_prompt color_prompt definition_files alias_files f

@@ -1,6 +1,6 @@
 # Environment utilities (e.g., set_envvar)
-[ -f "$HOME/bin/environ_utils" ] || return
-. "$HOME/bin/environ_utils"
+ss="$HOME/bin/environ_utils"
+[ -f "$ss" ] && . "$ss" || return
 
 # Linker library paths
 #env_values=()
@@ -12,4 +12,4 @@ env_values=(
 )
 set_envvar PATH "${env_values[@]}"
 
-unset env_values
+unset ss env_values

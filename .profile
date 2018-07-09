@@ -24,15 +24,16 @@ fi
 [ "$(command -v numlockx)" ] && numlockx on
 
 # General environment settings
-export VISUAL=/usr/bin/vim
+export VISUAL="$(which vim)"
 export EDITOR="$VISUAL"
 #export MAIL="/var/spool/mail/$USER"
 export MAILPATH=/var/spool/mail/$USER?"$USER, you've got mail!":/var/spool/mail/mail?"root, you've got mail!"
-export PAGER=/usr/bin/less
+export PAGER="$(which less)"
 
 # If running bash, include .bashrc if it exists
 if [ -n "$BASH_VERSION" ]; then
-    [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+    ss="$HOME/.bashrc"
+    [ -f "$ss" ] && . "$ss"
 fi
 
 # General/local environment settings
