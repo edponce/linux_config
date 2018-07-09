@@ -27,10 +27,11 @@ IFS=$(printf ' \t\n')
 # Default options
 wallid=0
 wallfiles="
-$HOME/Documents/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png,
+$HOME/bin/wallpapers/lubuntu-eduardo-wallpaper-1920x1080.png,
 /usr/share/lubuntu/wallpapers/lubuntu-default-wallpaper.png,
-$HOME/Documents/wallpapers/gray_1920x1080.png,
-/usr/share/lubuntu/wallpapers/1604-lubuntu-default-wallpaper.png"
+$HOME/bin/wallpapers/gray_1920x1080.png,
+/usr/share/lubuntu/wallpapers/1604-lubuntu-default-wallpaper.png
+"
 
 # Get command line options
 while [ "$1" ]; do
