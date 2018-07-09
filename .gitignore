@@ -132,7 +132,6 @@ Videos/
 .vim/*
 !.vim/after/
 !.vim/colors/
-!.vim/bundle/Vundle.vim/
 .viminfo
 #.vimrc
 VirtualBox*/
